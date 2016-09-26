@@ -1,18 +1,22 @@
 <?php
 
-
 namespace AppBundle\Controller;
- 
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
- 
+
 class DefaultController extends FOSRestController
 {
     /**
-     * @Rest\Get("/hello")
+     * @Route("/login")
+     * @Rest\Get("/login")
      * @ApiDoc(
      *  description="Returns a collection of Object",
      *  requirements={
@@ -28,10 +32,25 @@ class DefaultController extends FOSRestController
      *  }
      * )
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $view = $this->view(['hello' => 'world'], Response::HTTP_OK);
-        return $view;
-    }
+        $userManager = $this->get('fos_user.user_manager');
 
+           $user = $userManager->findUserBy(array('username' => 'admin'));
+
+
+
+            $clientManager = $this->get('fos_oauth_server.client_manager.default');
+            $client = $clientManager->createClient();
+            $client->setAllowedGrantTypes(array('password'));
+            $clientManager->updateClient($client);
+
+
+
+        return new JsonResponse(array(
+            'id' => $user->getId(),
+            'secret'=>$client->getSecret(),
+            'client_id' => $client->getPublicId(),
+            ), Response::HTTP_OK);
+    }
 }
