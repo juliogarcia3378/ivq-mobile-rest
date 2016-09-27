@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
  use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+ use Symfony\Component\Security\Core\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -18,34 +19,60 @@ class DefaultController extends FOSRestController
      * @Route("/login")
      * @Rest\Get("/login")
      * @ApiDoc(
-     *  description="Returns a collection of Object",
+     *  description="Returns the secret_id and the client_id",
      *  requirements={
      *      {
-     *          "name"="limit",
-     *          "dataType"="integer",
-     *          "requirement"="\d+",
-     *          "description"="how many objects to return"
-     *      }
+     *          "name"="username",
+     *          "dataType"="string",
+     *          "description"="username"
+     *      },
+          *      {
+     *          "name"="password",
+     *          "dataType"="string",
+     *          "description"="password"
+     *      },
+
      *  },
-     *  parameters={
-     *      {"name"="categoryId", "dataType"="integer", "required"=true, "description"="category id"}
-     *  }
      * )
      */
     public function indexAction()
     {
-        $userManager = $this->get('fos_user.user_manager');
+        $request = $this->getRequest();
+        $username = $request->get('username',NULL);
+        $password = $request->get('password',NULL);
 
-           $user = $userManager->findUserBy(array('username' => 'admin'));
+        if (!isset($username) || !isset($password)){
+              return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'You must pass username and password fields',
+                    ), Response::HTTP_OK);
+        }
 
+        $um = $this->get('fos_user.user_manager');
+        $user = $um->findUserByUsernameOrEmail($username);
+        if (!$user instanceof \Acme\ApiBundle\Entity\User) {
+                          return new JsonResponse(array(
+                            'error' => '301',
+                            'message'=>'No matching user account found with info provided',
+                            ), Response::HTTP_OK);
+        }
 
+        $encoder_service = $this->get('security.encoder_factory');
+        $encoder = $encoder_service->getEncoder($user);
+        $encoded_pass = $encoder->encodePassword($password, $user->getSalt());
+
+        if ($encoded_pass != $user->getPassword()) {
+                        return new JsonResponse(array(
+                            'error' => '301',
+                             'message'=>'No matching user account found with info provided',
+                            ), Response::HTTP_OK);
+        }
+       
 
             $clientManager = $this->get('fos_oauth_server.client_manager.default');
             $client = $clientManager->createClient();
             $client->setAllowedGrantTypes(array('password'));
             $clientManager->updateClient($client);
-
-
 
         return new JsonResponse(array(
             'id' => $user->getId(),

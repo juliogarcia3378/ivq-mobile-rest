@@ -3052,7 +3052,7 @@ namespace
 {
 class Twig_Environment
 {
-const VERSION ='1.24.2';
+const VERSION ='1.25.0';
 protected $charset;
 protected $loader;
 protected $debug;
@@ -3192,6 +3192,7 @@ public function getTemplateClass($name, $index = null)
 $key = $this->getLoader()->getCacheKey($name);
 $key .= json_encode(array_keys($this->extensions));
 $key .= function_exists('twig_template_get_attributes');
+$key .=':'.PHP_MAJOR_VERSION.':'.PHP_MINOR_VERSION;
 return $this->templateClassPrefix.hash('sha256', $key).(null === $index ?'':'_'.$index);
 }
 public function getTemplateClassPrefix()
@@ -3306,6 +3307,7 @@ if ($file->isFile()) {
 }
 public function getLexer()
 {
+@trigger_error(sprintf('The %s() method is deprecated since version 1.25 and will be removed in 2.0.', __FUNCTION__), E_USER_DEPRECATED);
 if (null === $this->lexer) {
 $this->lexer = new Twig_Lexer($this);
 }
@@ -3317,10 +3319,14 @@ $this->lexer = $lexer;
 }
 public function tokenize($source, $name = null)
 {
-return $this->getLexer()->tokenize($source, $name);
+if (null === $this->lexer) {
+$this->lexer = new Twig_Lexer($this);
+}
+return $this->lexer->tokenize($source, $name);
 }
 public function getParser()
 {
+@trigger_error(sprintf('The %s() method is deprecated since version 1.25 and will be removed in 2.0.', __FUNCTION__), E_USER_DEPRECATED);
 if (null === $this->parser) {
 $this->parser = new Twig_Parser($this);
 }
@@ -3332,10 +3338,14 @@ $this->parser = $parser;
 }
 public function parse(Twig_TokenStream $stream)
 {
-return $this->getParser()->parse($stream);
+if (null === $this->parser) {
+$this->parser = new Twig_Parser($this);
+}
+return $this->parser->parse($stream);
 }
 public function getCompiler()
 {
+@trigger_error(sprintf('The %s() method is deprecated since version 1.25 and will be removed in 2.0.', __FUNCTION__), E_USER_DEPRECATED);
 if (null === $this->compiler) {
 $this->compiler = new Twig_Compiler($this);
 }
@@ -3347,16 +3357,15 @@ $this->compiler = $compiler;
 }
 public function compile(Twig_NodeInterface $node)
 {
-return $this->getCompiler()->compile($node)->getSource();
+if (null === $this->compiler) {
+$this->compiler = new Twig_Compiler($this);
+}
+return $this->compiler->compile($node)->getSource();
 }
 public function compileSource($source, $name = null)
 {
 try {
-$compiled = $this->compile($this->parse($this->tokenize($source, $name)), $source);
-if (isset($source[0])) {
-$compiled .='/* '.str_replace(array('*/',"\r\n","\r","\n"), array('*//* ',"\n","\n","*/\n/* "), $source)."*/\n";
-}
-return $compiled;
+return $this->compile($this->parse($this->tokenize($source, $name)));
 } catch (Twig_Error $e) {
 $e->setTemplateFile($name);
 throw $e;
@@ -4739,6 +4748,11 @@ public function __construct(Twig_Environment $env)
 $this->env = $env;
 }
 abstract public function getTemplateName();
+abstract public function getDebugInfo();
+public function getSource()
+{
+return'';
+}
 public function getEnvironment()
 {
 @trigger_error('The '.__METHOD__.' method is deprecated since version 1.20 and will be removed in 2.0.', E_USER_DEPRECATED);
@@ -4869,23 +4883,6 @@ throw $e;
 public function getBlocks()
 {
 return $this->blocks;
-}
-public function getSource()
-{
-$reflector = new ReflectionClass($this);
-$file = $reflector->getFileName();
-if (!file_exists($file)) {
-return;
-}
-$source = file($file, FILE_IGNORE_NEW_LINES);
-array_splice($source, 0, $reflector->getEndLine());
-$i = 0;
-while (isset($source[$i]) &&'/* */'=== substr_replace($source[$i],'', 3, -2)) {
-$source[$i] = str_replace('*//* ','*/', substr($source[$i], 3, -2));
-++$i;
-}
-array_splice($source, $i);
-return implode("\n", $source);
 }
 public function display(array $context, array $blocks = array())
 {
@@ -6727,7 +6724,7 @@ return $this->connections;
 }
 public function getConnections()
 {
-$connections = array();
+$connections = [];
 foreach ($this->connections as $name => $id) {
 $connections[$name] = $this->getService($id);
 }
@@ -6777,7 +6774,7 @@ return $this->managers;
 }
 public function getManagers()
 {
-$dms = array();
+$dms = [];
 foreach ($this->managers as $name => $id) {
 $dms[$name] = $this->getService($id);
 }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
-    <parameter key="kernel.root_dir">/Applications/XAMPP/xamppfiles/htdocs/api/app</parameter>
+    <parameter key="kernel.root_dir">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app</parameter>
     <parameter key="kernel.environment">dev</parameter>
     <parameter key="kernel.debug">true</parameter>
     <parameter key="kernel.name">app</parameter>
-    <parameter key="kernel.cache_dir">/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev</parameter>
-    <parameter key="kernel.logs_dir">/Applications/XAMPP/xamppfiles/htdocs/api/app/logs</parameter>
+    <parameter key="kernel.cache_dir">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev</parameter>
+    <parameter key="kernel.logs_dir">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/logs</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
       <parameter key="SecurityBundle">Symfony\Bundle\SecurityBundle\SecurityBundle</parameter>
@@ -38,7 +38,7 @@
     <parameter key="mailer_host">127.0.0.1</parameter>
     <parameter key="mailer_user">null</parameter>
     <parameter key="mailer_password">null</parameter>
-    <parameter key="secret">fe4b467affde7423a099cd4ae85ba10411a2261b</parameter>
+    <parameter key="secret">ThisTokenIsNotSoSecretChangeIt</parameter>
     <parameter key="locale">en</parameter>
     <parameter key="controller_resolver.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver</parameter>
     <parameter key="controller_name_converter.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser</parameter>
@@ -88,7 +88,7 @@
     <parameter key="translation.extractor.class">Symfony\Component\Translation\Extractor\ChainExtractor</parameter>
     <parameter key="translation.writer.class">Symfony\Component\Translation\Writer\TranslationWriter</parameter>
     <parameter key="property_accessor.class">Symfony\Component\PropertyAccess\PropertyAccessor</parameter>
-    <parameter key="kernel.secret">fe4b467affde7423a099cd4ae85ba10411a2261b</parameter>
+    <parameter key="kernel.secret">ThisTokenIsNotSoSecretChangeIt</parameter>
     <parameter key="kernel.http_method_override">true</parameter>
     <parameter key="kernel.trusted_hosts" type="collection"/>
     <parameter key="kernel.trusted_proxies" type="collection"/>
@@ -108,7 +108,7 @@
       <parameter key="cookie_httponly">true</parameter>
       <parameter key="gc_probability">1</parameter>
     </parameter>
-    <parameter key="session.save_path">/Applications/XAMPP/xamppfiles/htdocs/api/app/../var/sessions/dev</parameter>
+    <parameter key="session.save_path">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/../var/sessions/dev</parameter>
     <parameter key="session.metadata.update_threshold">0</parameter>
     <parameter key="security.secure_random.class">Symfony\Component\Security\Core\Util\SecureRandom</parameter>
     <parameter key="form.resolved_type_factory.class">Symfony\Component\Form\ResolvedFormTypeFactory</parameter>
@@ -165,7 +165,7 @@
     <parameter key="data_collector.form.extractor.class">Symfony\Component\Form\Extension\DataCollector\FormDataExtractor</parameter>
     <parameter key="profiler_listener.only_exceptions">false</parameter>
     <parameter key="profiler_listener.only_master_requests">false</parameter>
-    <parameter key="profiler.storage.dsn">file:/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/profiler</parameter>
+    <parameter key="profiler.storage.dsn">file:/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/profiler</parameter>
     <parameter key="profiler.storage.username"></parameter>
     <parameter key="profiler.storage.password"></parameter>
     <parameter key="profiler.storage.lifetime">86400</parameter>
@@ -189,7 +189,7 @@
     <parameter key="router.request_context.host">localhost</parameter>
     <parameter key="router.request_context.scheme">http</parameter>
     <parameter key="router.request_context.base_url"></parameter>
-    <parameter key="router.resource">/Applications/XAMPP/xamppfiles/htdocs/api/app/config/routing_dev.yml</parameter>
+    <parameter key="router.resource">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/config/routing_dev.yml</parameter>
     <parameter key="router.cache_class_prefix">appDev</parameter>
     <parameter key="request_listener.http_port">80</parameter>
     <parameter key="request_listener.https_port">443</parameter>
@@ -200,7 +200,7 @@
     <parameter key="debug.stopwatch.class">Symfony\Component\Stopwatch\Stopwatch</parameter>
     <parameter key="debug.error_handler.throw_at">-1</parameter>
     <parameter key="debug.event_dispatcher.class">Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher</parameter>
-    <parameter key="debug.container.dump">/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/appDevDebugProjectContainer.xml</parameter>
+    <parameter key="debug.container.dump">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/appDevDebugProjectContainer.xml</parameter>
     <parameter key="debug.controller_resolver.class">Symfony\Component\HttpKernel\Controller\TraceableControllerResolver</parameter>
     <parameter key="security.context.class">Symfony\Component\Security\Core\SecurityContext</parameter>
     <parameter key="security.user_checker.class">Symfony\Component\Security\Core\User\UserChecker</parameter>
@@ -383,7 +383,7 @@
     <parameter key="swiftmailer.mailer.default.transport.smtp.auth_mode">null</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.timeout">30</parameter>
     <parameter key="swiftmailer.mailer.default.transport.smtp.source_ip">null</parameter>
-    <parameter key="swiftmailer.spool.default.memory.path">/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/swiftmailer/spool/default</parameter>
+    <parameter key="swiftmailer.spool.default.memory.path">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/swiftmailer/spool/default</parameter>
     <parameter key="swiftmailer.mailer.default.spool.enabled">true</parameter>
     <parameter key="swiftmailer.mailer.default.plugin.impersonate">null</parameter>
     <parameter key="swiftmailer.mailer.default.single_address">null</parameter>
@@ -501,7 +501,7 @@
     <parameter key="doctrine.orm.second_level_cache.cache_configuration.class">Doctrine\ORM\Cache\CacheConfiguration</parameter>
     <parameter key="doctrine.orm.second_level_cache.regions_configuration.class">Doctrine\ORM\Cache\RegionsConfiguration</parameter>
     <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
-    <parameter key="doctrine.orm.proxy_dir">/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/doctrine/orm/Proxies</parameter>
+    <parameter key="doctrine.orm.proxy_dir">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/doctrine/orm/Proxies</parameter>
     <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
     <parameter key="sensio_framework_extra.view.guesser.class">Sensio\Bundle\FrameworkExtraBundle\Templating\TemplateGuesser</parameter>
     <parameter key="sensio_framework_extra.controller.listener.class">Sensio\Bundle\FrameworkExtraBundle\EventListener\ControllerListener</parameter>
@@ -779,7 +779,7 @@
               <service class="Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinder" public="false">
                 <argument type="service" id="kernel"/>
                 <argument type="service" id="templating.filename_parser"/>
-                <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/Resources</argument>
+                <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/Resources</argument>
               </service>
             </argument>
             <argument type="service" id="templating.locator"/>
@@ -806,7 +806,7 @@
               <service class="Symfony\Bundle\FrameworkBundle\CacheWarmer\TemplateFinder" public="false">
                 <argument type="service" id="kernel"/>
                 <argument type="service" id="templating.filename_parser"/>
-                <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/Resources</argument>
+                <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/Resources</argument>
               </service>
             </argument>
             <argument type="collection"/>
@@ -819,7 +819,7 @@
             <argument type="service">
               <service class="Symfony\Bundle\TwigBundle\TemplateIterator" public="false">
                 <argument type="service" id="kernel"/>
-                <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app</argument>
+                <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app</argument>
                 <argument type="collection"/>
               </service>
             </argument>
@@ -850,10 +850,10 @@
     <service id="filesystem" class="Symfony\Component\Filesystem\Filesystem"/>
     <service id="file_locator" class="Symfony\Component\HttpKernel\Config\FileLocator">
       <argument type="service" id="kernel"/>
-      <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/Resources</argument>
+      <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/Resources</argument>
     </service>
     <service id="uri_signer" class="Symfony\Component\HttpKernel\UriSigner">
-      <argument>fe4b467affde7423a099cd4ae85ba10411a2261b</argument>
+      <argument>ThisTokenIsNotSoSecretChangeIt</argument>
     </service>
     <service id="config_cache_factory" class="Symfony\Component\Config\ResourceCheckerConfigCacheFactory">
       <argument type="collection">
@@ -970,7 +970,7 @@
         </argument>
       </argument>
       <argument type="collection">
-        <argument key="cache_dir">/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/translations</argument>
+        <argument key="cache_dir">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/translations</argument>
         <argument key="debug">true</argument>
       </argument>
       <argument type="collection"/>
@@ -1488,7 +1488,7 @@
     <service id="templating.filename_parser" class="Symfony\Bundle\FrameworkBundle\Templating\TemplateFilenameParser"/>
     <service id="templating.locator" class="Symfony\Bundle\FrameworkBundle\Templating\Loader\TemplateLocator" public="false">
       <argument type="service" id="file_locator"/>
-      <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev</argument>
+      <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev</argument>
     </service>
     <service id="templating.helper.assets" class="Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper">
       <tag name="templating.helper" alias="assets"/>
@@ -1527,9 +1527,9 @@
       </call>
       <call method="addXmlMappings">
         <argument type="collection">
-          <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/config/validation.xml</argument>
-          <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/validation.xml</argument>
-          <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/validation.xml</argument>
+          <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Component/Form/Resources/config/validation.xml</argument>
+          <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/validation.xml</argument>
+          <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/validation.xml</argument>
         </argument>
       </call>
       <call method="enableAnnotationMapping">
@@ -1550,7 +1550,7 @@
         </argument>
       </call>
       <call method="addXmlMapping">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/DependencyInjection/Compiler/../../Resources/config/storage-validation/orm.xml</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/DependencyInjection/Compiler/../../Resources/config/storage-validation/orm.xml</argument>
       </call>
       <factory class="Symfony\Component\Validator\Validation" method="createValidatorBuilder"/>
     </service>
@@ -1571,7 +1571,7 @@
       <tag name="monolog.logger" channel="profiler"/>
       <argument type="service">
         <service class="Symfony\Component\HttpKernel\Profiler\FileProfilerStorage" public="false">
-          <argument>file:/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/profiler</argument>
+          <argument>file:/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/profiler</argument>
           <argument></argument>
           <argument></argument>
           <argument>86400</argument>
@@ -2237,7 +2237,7 @@
           <argument>form_div_layout.html.twig</argument>
         </argument>
         <argument key="autoescape">filename</argument>
-        <argument key="cache">/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/twig</argument>
+        <argument key="cache">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/twig</argument>
         <argument key="charset">UTF-8</argument>
         <argument key="paths" type="collection"/>
         <argument key="date" type="collection">
@@ -2312,7 +2312,7 @@
           <service class="Symfony\Bridge\Twig\Extension\CodeExtension" public="false">
             <tag name="twig.extension"/>
             <argument>null</argument>
-            <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app</argument>
+            <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app</argument>
             <argument>UTF-8</argument>
           </service>
         </argument>
@@ -2477,7 +2477,7 @@
       <argument>twig.controller.exception:showAction</argument>
     </service>
     <service id="monolog.handler.main" class="Monolog\Handler\StreamHandler">
-      <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/logs/dev.log</argument>
+      <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/logs/dev.log</argument>
       <argument>100</argument>
       <argument>true</argument>
       <argument>null</argument>
@@ -2560,6 +2560,12 @@
               </service>
             </argument>
           </call>
+          <call method="addEventListener">
+            <argument type="collection">
+              <argument>loadClassMetadata</argument>
+            </argument>
+            <argument type="service" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
+          </call>
         </service>
       </argument>
       <argument type="collection"/>
@@ -2583,20 +2589,23 @@
     </service>
     <service id="doctrine_cache.providers.doctrine.orm.default_metadata_cache" class="Doctrine\Common\Cache\ArrayCache">
       <call method="setNamespace">
-        <argument>sf2orm_default_bb5954e08df3aae7e8886855c4d5ed99b12337d6924b1964493dd1b8e0508084</argument>
+        <argument>sf2orm_default_bf9dbe4c7ad2461fd65a6fafc919fb0d5833c4ad042ee5d13db98e89be78449e</argument>
       </call>
     </service>
     <service id="doctrine_cache.providers.doctrine.orm.default_result_cache" class="Doctrine\Common\Cache\ArrayCache">
       <call method="setNamespace">
-        <argument>sf2orm_default_bb5954e08df3aae7e8886855c4d5ed99b12337d6924b1964493dd1b8e0508084</argument>
+        <argument>sf2orm_default_bf9dbe4c7ad2461fd65a6fafc919fb0d5833c4ad042ee5d13db98e89be78449e</argument>
       </call>
     </service>
     <service id="doctrine_cache.providers.doctrine.orm.default_query_cache" class="Doctrine\Common\Cache\ArrayCache">
       <call method="setNamespace">
-        <argument>sf2orm_default_bb5954e08df3aae7e8886855c4d5ed99b12337d6924b1964493dd1b8e0508084</argument>
+        <argument>sf2orm_default_bf9dbe4c7ad2461fd65a6fafc919fb0d5833c4ad042ee5d13db98e89be78449e</argument>
       </call>
     </service>
     <service id="doctrine.orm.default_entity_listener_resolver" class="Doctrine\ORM\Mapping\DefaultEntityListenerResolver"/>
+    <service id="doctrine.orm.default_listeners.attach_entity_listeners" class="Doctrine\ORM\Tools\AttachEntityListenersListener">
+      <tag name="doctrine.event_listener" event="loadClassMetadata"/>
+    </service>
     <service id="doctrine.orm.default_manager_configurator" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator">
       <argument type="collection"/>
       <argument type="collection"/>
@@ -2628,8 +2637,8 @@
                   <argument type="service">
                     <service class="Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver" public="false">
                       <argument type="collection">
-                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine">FOS\UserBundle\Entity</argument>
-                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine">FOS\OAuthServerBundle\Entity</argument>
+                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine">FOS\UserBundle\Entity</argument>
+                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine">FOS\OAuthServerBundle\Entity</argument>
                       </argument>
                       <call method="setGlobalBasename">
                         <argument>mapping</argument>
@@ -2642,8 +2651,8 @@
                   <argument type="service">
                     <service class="Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver" public="false">
                       <argument type="collection">
-                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine">FOS\UserBundle\Entity</argument>
-                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine">FOS\OAuthServerBundle\Entity</argument>
+                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine">FOS\UserBundle\Entity</argument>
+                        <argument key="/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine">FOS\OAuthServerBundle\Entity</argument>
                       </argument>
                       <call method="setGlobalBasename">
                         <argument>mapping</argument>
@@ -2657,7 +2666,7 @@
                     <service class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
                       <argument type="service" id="annotation_reader"/>
                       <argument type="collection">
-                        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/src/Acme/ApiBundle/Entity</argument>
+                        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Entity</argument>
                       </argument>
                     </service>
                   </argument>
@@ -2667,7 +2676,7 @@
             </argument>
           </call>
           <call method="setProxyDir">
-            <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/doctrine/orm/Proxies</argument>
+            <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/doctrine/orm/Proxies</argument>
           </call>
           <call method="setProxyNamespace">
             <argument>Proxies</argument>
@@ -2961,7 +2970,7 @@
       <call method="setCache">
         <argument type="service">
           <service class="Metadata\Cache\FileCache" public="false">
-            <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/jms_serializer</argument>
+            <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/jms_serializer</argument>
           </service>
         </argument>
       </call>
@@ -3381,12 +3390,12 @@
       <argument type="service" id="nelmio_api_doc.doc_comment_extractor"/>
     </service>
     <service id="session.storage.filesystem" class="Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage">
-      <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/sessions</argument>
+      <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/sessions</argument>
       <argument>MOCKSESSID</argument>
       <argument type="service" id="session.storage.metadata_bag"/>
     </service>
     <service id="session.handler" class="Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler">
-      <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/../var/sessions/dev</argument>
+      <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/../var/sessions/dev</argument>
     </service>
     <service id="templating.loader" class="Symfony\Bundle\FrameworkBundle\Templating\Loader\FilesystemLoader">
       <argument type="service" id="templating.locator"/>
@@ -3399,9 +3408,9 @@
     <service id="router" class="Symfony\Bundle\FrameworkBundle\Routing\Router">
       <tag name="monolog.logger" channel="router"/>
       <argument type="service" id="service_container"/>
-      <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/config/routing_dev.yml</argument>
+      <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/config/routing_dev.yml</argument>
       <argument type="collection">
-        <argument key="cache_dir">/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev</argument>
+        <argument key="cache_dir">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev</argument>
         <argument key="debug">true</argument>
         <argument key="generator_class">Symfony\Component\Routing\Generator\UrlGenerator</argument>
         <argument key="generator_base_class">Symfony\Component\Routing\Generator\UrlGenerator</argument>
@@ -3425,7 +3434,7 @@
       </argument>
       <argument type="service">
         <service class="Doctrine\Common\Cache\FilesystemCache" public="false">
-          <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/cache/dev/annotations</argument>
+          <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/cache/dev/annotations</argument>
         </service>
       </argument>
       <argument>true</argument>
@@ -3451,54 +3460,54 @@
       <argument type="service" id="templating.locator"/>
       <argument type="service" id="templating.name_parser"/>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/views</argument>
         <argument>Framework</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/views</argument>
         <argument>Security</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/views</argument>
         <argument>Twig</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/swiftmailer-bundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/swiftmailer-bundle/Resources/views</argument>
         <argument>Swiftmailer</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/doctrine/doctrine-bundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/doctrine/doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views</argument>
         <argument>FOSUser</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/oauth-server-bundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/views</argument>
         <argument>FOSOAuthServer</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/views</argument>
         <argument>NelmioApiDoc</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/src/Acme/ApiBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/views</argument>
         <argument>Api</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views</argument>
         <argument>Debug</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/views</argument>
         <argument>WebProfiler</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/app/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/app/Resources/views</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form</argument>
       </call>
     </service>
     <service id="logger" class="Symfony\Bridge\Monolog\Logger">
@@ -3664,24 +3673,24 @@
                 <argument type="service">
                   <service class="Metadata\Driver\FileLocator" public="false">
                     <argument type="collection">
-                      <argument key="Symfony\Bundle\FrameworkBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\SecurityBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\TwigBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\MonologBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/monolog-bundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\SwiftmailerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/swiftmailer-bundle/Resources/config/serializer</argument>
-                      <argument key="Doctrine\Bundle\DoctrineBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/doctrine/doctrine-bundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\FrameworkExtraBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/framework-extra-bundle/Resources/config/serializer</argument>
-                      <argument key="AppBundle">/Applications/XAMPP/xamppfiles/htdocs/api/src/AppBundle/Resources/config/serializer</argument>
-                      <argument key="FOS\RestBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer</argument>
-                      <argument key="FOS\UserBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
-                      <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
-                      <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
-                      <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
-                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/api/src/Acme/ApiBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\GeneratorBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/generator-bundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\FrameworkBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\SecurityBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\TwigBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\MonologBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/monolog-bundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\SwiftmailerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/swiftmailer-bundle/Resources/config/serializer</argument>
+                      <argument key="Doctrine\Bundle\DoctrineBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/doctrine/doctrine-bundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\FrameworkExtraBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/framework-extra-bundle/Resources/config/serializer</argument>
+                      <argument key="AppBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/AppBundle/Resources/config/serializer</argument>
+                      <argument key="FOS\RestBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer</argument>
+                      <argument key="FOS\UserBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
+                      <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
+                      <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
+                      <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
+                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\GeneratorBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/generator-bundle/Resources/config/serializer</argument>
                     </argument>
                   </service>
                 </argument>
@@ -3692,24 +3701,24 @@
                 <argument type="service">
                   <service class="Metadata\Driver\FileLocator" public="false">
                     <argument type="collection">
-                      <argument key="Symfony\Bundle\FrameworkBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\SecurityBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\TwigBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\MonologBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/monolog-bundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\SwiftmailerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/swiftmailer-bundle/Resources/config/serializer</argument>
-                      <argument key="Doctrine\Bundle\DoctrineBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/doctrine/doctrine-bundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\FrameworkExtraBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/framework-extra-bundle/Resources/config/serializer</argument>
-                      <argument key="AppBundle">/Applications/XAMPP/xamppfiles/htdocs/api/src/AppBundle/Resources/config/serializer</argument>
-                      <argument key="FOS\RestBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer</argument>
-                      <argument key="FOS\UserBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
-                      <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
-                      <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
-                      <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
-                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/api/src/Acme/ApiBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\GeneratorBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/generator-bundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\FrameworkBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\SecurityBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\TwigBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\MonologBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/monolog-bundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\SwiftmailerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/swiftmailer-bundle/Resources/config/serializer</argument>
+                      <argument key="Doctrine\Bundle\DoctrineBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/doctrine/doctrine-bundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\FrameworkExtraBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/framework-extra-bundle/Resources/config/serializer</argument>
+                      <argument key="AppBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/AppBundle/Resources/config/serializer</argument>
+                      <argument key="FOS\RestBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer</argument>
+                      <argument key="FOS\UserBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
+                      <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
+                      <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
+                      <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
+                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\GeneratorBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/generator-bundle/Resources/config/serializer</argument>
                     </argument>
                   </service>
                 </argument>
@@ -3720,24 +3729,24 @@
                 <argument type="service">
                   <service class="Metadata\Driver\FileLocator" public="false">
                     <argument type="collection">
-                      <argument key="Symfony\Bundle\FrameworkBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\SecurityBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\TwigBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\MonologBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/monolog-bundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\SwiftmailerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/swiftmailer-bundle/Resources/config/serializer</argument>
-                      <argument key="Doctrine\Bundle\DoctrineBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/doctrine/doctrine-bundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\FrameworkExtraBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/framework-extra-bundle/Resources/config/serializer</argument>
-                      <argument key="AppBundle">/Applications/XAMPP/xamppfiles/htdocs/api/src/AppBundle/Resources/config/serializer</argument>
-                      <argument key="FOS\RestBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer</argument>
-                      <argument key="FOS\UserBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
-                      <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
-                      <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
-                      <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
-                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/api/src/Acme/ApiBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
-                      <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
-                      <argument key="Sensio\Bundle\GeneratorBundle">/Applications/XAMPP/xamppfiles/htdocs/api/vendor/sensio/generator-bundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\FrameworkBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\SecurityBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\TwigBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\MonologBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/monolog-bundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\SwiftmailerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/swiftmailer-bundle/Resources/config/serializer</argument>
+                      <argument key="Doctrine\Bundle\DoctrineBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/doctrine/doctrine-bundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\FrameworkExtraBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/framework-extra-bundle/Resources/config/serializer</argument>
+                      <argument key="AppBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/AppBundle/Resources/config/serializer</argument>
+                      <argument key="FOS\RestBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer</argument>
+                      <argument key="FOS\UserBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer</argument>
+                      <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
+                      <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
+                      <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
+                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
+                      <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
+                      <argument key="Sensio\Bundle\GeneratorBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/generator-bundle/Resources/config/serializer</argument>
                     </argument>
                   </service>
                 </argument>
