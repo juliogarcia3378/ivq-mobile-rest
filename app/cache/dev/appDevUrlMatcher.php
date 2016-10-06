@@ -135,6 +135,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
         not_index:
 
+        // forgot_password
+        if ($pathinfo === '/forgotten-password') {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_forgot_password;
+            }
+
+            return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::forgotPasswordAction',  '_format' => 'json',  '_route' => 'forgot_password',);
+        }
+        not_forgot_password:
+
         // nelmio_api_doc_index
         if (0 === strpos($pathinfo, '/api/doc') && preg_match('#^/api/doc(?:/(?P<view>[^/]++))?$#s', $pathinfo, $matches)) {
             if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {

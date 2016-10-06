@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Acme\ApiBundle\ApiBundle(),
+            new Vresh\TwilioBundle\VreshTwilioBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

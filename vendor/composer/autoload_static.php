@@ -18,9 +18,14 @@ class ComposerStaticInit917bc215fa2be63e2a977782f3130d65
         '3e2471375464aac821502deb0ac64275' => __DIR__ . '/..' . '/symfony/polyfill-php54/bootstrap.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         '32dcc8afd4335739640db7d200c1971d' => __DIR__ . '/..' . '/symfony/polyfill-apcu/bootstrap.php',
+        'bccfaf6207f67190a92f35585e9a78b2' => __DIR__ . '/..' . '/twilio/sdk/Services/Twilio.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'V' => 
+        array (
+            'Vresh\\TwilioBundle\\' => 19,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Util\\' => 22,
@@ -80,6 +85,10 @@ class ComposerStaticInit917bc215fa2be63e2a977782f3130d65
     );
 
     public static $prefixDirsPsr4 = array (
+        'Vresh\\TwilioBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vresh/twilio-bundle',
+        ),
         'Symfony\\Polyfill\\Util\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-util',

@@ -22,6 +22,7 @@
       <parameter key="JMSSerializerBundle">JMS\SerializerBundle\JMSSerializerBundle</parameter>
       <parameter key="NelmioApiDocBundle">Nelmio\ApiDocBundle\NelmioApiDocBundle</parameter>
       <parameter key="ApiBundle">Acme\ApiBundle\ApiBundle</parameter>
+      <parameter key="VreshTwilioBundle">Vresh\TwilioBundle\VreshTwilioBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -659,6 +660,9 @@
       <parameter key="licenseUrl">null</parameter>
     </parameter>
     <parameter key="nelmio_api_doc.swagger.model_naming_strategy">dot_notation</parameter>
+    <parameter key="twilio.class">Vresh\TwilioBundle\Service\TwilioWrapper</parameter>
+    <parameter key="twilio.capability.class">Vresh\TwilioBundle\Service\TwilioCapabilityWrapper</parameter>
+    <parameter key="twilio.lookups.class">Vresh\TwilioBundle\Service\TwilioLookupsWrapper</parameter>
     <parameter key="web_profiler.controller.profiler.class">Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController</parameter>
     <parameter key="web_profiler.controller.router.class">Symfony\Bundle\WebProfilerBundle\Controller\RouterController</parameter>
     <parameter key="web_profiler.controller.exception.class">Symfony\Bundle\WebProfilerBundle\Controller\ExceptionController</parameter>
@@ -3154,6 +3158,20 @@
       <argument type="service" id="nelmio_api_doc.formatter.html_formatter"/>
       <argument>_doc</argument>
     </service>
+    <service id="twilio.api" class="Vresh\TwilioBundle\Service\TwilioWrapper">
+      <argument>AC7ff55e4e1318b1853b267c5729a656a2</argument>
+      <argument>c076c00c867bc4e26f1a2d127c927a58</argument>
+      <argument>2010-04-01</argument>
+      <argument>3</argument>
+    </service>
+    <service id="twilio.capability" class="Vresh\TwilioBundle\Service\TwilioCapabilityWrapper">
+      <argument>AC7ff55e4e1318b1853b267c5729a656a2</argument>
+      <argument>c076c00c867bc4e26f1a2d127c927a58</argument>
+    </service>
+    <service id="twilio.lookups" class="Vresh\TwilioBundle\Service\TwilioLookupsWrapper">
+      <argument>AC7ff55e4e1318b1853b267c5729a656a2</argument>
+      <argument>c076c00c867bc4e26f1a2d127c927a58</argument>
+    </service>
     <service id="data_collector.dump" class="Symfony\Component\HttpKernel\DataCollector\DumpDataCollector">
       <tag name="data_collector" id="dump" template="@Debug/Profiler/dump.html.twig" priority="240"/>
       <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
@@ -3687,6 +3705,7 @@
                       <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
                       <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
                       <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="Vresh\TwilioBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/vresh/twilio-bundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
                       <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
@@ -3715,6 +3734,7 @@
                       <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
                       <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
                       <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="Vresh\TwilioBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/vresh/twilio-bundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
                       <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
@@ -3743,6 +3763,7 @@
                       <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
                       <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
                       <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="Vresh\TwilioBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/vresh/twilio-bundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
                       <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>

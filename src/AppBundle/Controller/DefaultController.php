@@ -80,4 +80,41 @@ class DefaultController extends FOSRestController
             'client_id' => $client->getPublicId(),
             ), Response::HTTP_OK);
     }
+
+     /**
+     * @Route("/forgot-password")
+     * @Rest\Get("/forgotten-password")
+     * @ApiDoc(
+     *  description="Send to # provided a token for accesing to account",
+     *  requirements={
+     *      {
+     *          "name"="limit",
+     *          "dataType"="string",
+     *          "description"="Send a message through Twilio API Services"
+     *      }
+     *  },
+     *  parameters={
+     *      {"name"="number", "dataType"="string", "required"=true, "description"="mobile number"}
+     *  }
+     * )
+     */
+         public function forgotPasswordAction()
+        {
+             $request = $this->getRequest();
+
+            $number= $request->get('number');
+            $number = "+".$number;
+
+
+            $twilio = $this->get('twilio.api');
+            $message = $twilio->account->messages->sendMessage(
+          '+17865817808 ', // From a Twilio number in your account
+          $number, // Text any number
+          "Hello monkey!"
+        );
+
+            $otherInstance = $twilio->createInstance('BBBB', 'CCCCC');
+            return new Response($message->sid);
+        }
+
 }

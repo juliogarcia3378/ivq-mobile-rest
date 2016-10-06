@@ -70,6 +70,12 @@ swiftmailer:
 # app/config/config.yml
 nelmio_api_doc: ~
 
+vresh_twilio:
+    sid: 'AC7ff55e4e1318b1853b267c5729a656a2'
+    authToken: 'c076c00c867bc4e26f1a2d127c927a58'
+    version: '2010-04-01'
+    retryAttempts: 3
+    
 fos_rest:
     routing_loader:
         default_format: json                            # All responses should be JSON formated

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
-class DefaultController extends Controller
+class DefaultController extends FOSRestController
 {
     /**
      * @Route("/hello")
@@ -34,16 +34,13 @@ class DefaultController extends Controller
     {
     	$user = $this->get('security.context')->getToken()->getUser();
     	if ($this->get('security.context')->isGranted('ROLE_ADMIN') === FALSE) {
-    		return new JSONResponse("Access Denied");
-            //throw new AccessDeniedException();
+    		$view = $this->view(array(
+            'user' => 'usser'), Response::HTTP_OK);
+        return $view;
         }
 
 $view = $this->view(array(
-            'last_username' => $lastUsername,
-            'action'=>'rest/web/app_dev.php/login_check',
-            'error' => $error,
-            'csrf_token' => $csrfToken), Response::HTTP_OK);
+            'user' => 'ussdfsder'), Response::HTTP_OK);
         return $view;
-        return $this->render('ApiBundle:Default:index.html.twig');
     }
 }
