@@ -1,0 +1,12 @@
+<div class = "col-md-11 no-padding-left">
+
+{% for menu in menus %}
+
+    {% if menu.ruta == null or menu.id in parentsMenu %}
+        {{ include('ComunBundle:architecture/templates:dashboard_parent_node.html.twig',{'menu':menu}) }}
+    {% else %}
+         {{ include('ComunBundle:architecture/templates:dashboard_child_node.html.twig',{'menu':menu,"parent":true}) }}
+    {% endif %}
+
+{% endfor %}
+</div>

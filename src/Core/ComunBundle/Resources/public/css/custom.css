@@ -1,0 +1,229 @@
+/* here you can put your own css to customize and override the theme */
+
+.select2-container-multi .select2-choices .select2-search-choice {
+    background-image: linear-gradient(to top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%); !important;
+}
+
+.datatable_detail_element
+{
+    background-color: #FFFFFF !important;
+}
+.datatable_detail_table
+{
+    border: 1px solid #ddd !important;
+}
+.no-padding-left{
+    padding-left: 0px!important;
+}
+.dataTable .datatable_detail_table td, .dataTable .datatable_detail_table th {
+    border: 1px solid #ddd !important;
+    padding: 4px;
+}
+.dataTable .datatable_detail_element td, .dataTable .datatable_detail_element th {
+    border: 0px none;
+    padding: 4px;
+}
+.pagination-panel{
+    width: 101%;
+}
+.green{
+     color:white;
+     background-color: #66cdb1 !important;
+}
+.blue{
+    background-color: #2d3344 !important;
+}
+.-login{
+    width: 100%;
+}
+.actions-table{
+    padding: 7px 66px 10px 30px!important;
+    text-align: center;
+}
+
+/*tamaños de letras*/
+.table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>th, .table>caption+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>td, .table>thead:first-child>tr:first-child>td {
+    font-size: 12px;
+}
+.span,.select2-results{
+    font-size: 12px;
+}
+
+.page-content-wrapper, .footer{
+    background-color: #181c26;
+    border-radius: 0px;
+
+}
+
+.floating-menu{
+    float: left;
+    width: 300px;
+    height: 100%;
+    position: absolute;
+    background-color: red;
+    right: 0px;
+}
+#logout:hover{
+    color: #FFFFFF!important;
+    background-color: #26a1ab!important;
+    border-color: #2499a3!important;
+    transition: all 0.3s!important;
+}
+#dropdown_user:hover,.dropdown:hover{
+    background-color: #ffffff!important;
+}
+
+#logout{
+    height: 37px;
+    width: 113px;
+    color: #26a1ab!important;
+    border-radius: 50px;
+    border: 1px solid #ddd;
+    padding: 9px 0px 0px 0px;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    filter: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    display: inline-block !important;
+    color: #646464 !important;
+    text-shadow: none !important;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    -webkit-transition: all 0.3s ease !important;
+    -moz-transition: all 0.3s ease !important;
+    -ms-transition: all 0.3s ease !important;
+    -o-transition: all 0.3s ease !important;
+    transition: all 0.3s ease !important;
+}
+    
+#fileDisplayArea img{
+  height:  100px;
+  max-width: 100%; 
+}
+
+#dropdown_user{
+    border-radius: 0px;
+    border-left: #c5c6c9;
+    border-left-width: thin;
+    border-left-style: solid;
+    padding: 1px 7px 8px 5px;
+    height: 45px;
+    margin-left: 22px;
+}
+#dropdown_user a img{
+    background-image: url(../../planeacionadmin/img/user-background.png);
+    border-radius: 59px;
+    padding: 2px;
+    background-image: url(../../planeacionadmin/img/user-background.png);
+    outline: none;
+}
+.dropdown-menu li{
+    width:200px ;
+}
+.profile_img_100{
+   margin-left: 50px;
+    margin-top: 10px;
+    width:100px;
+    height:100px;
+}
+.profile_user{
+    margin-left: 50px;
+}
+.general_configuration{
+    margin-left: 50px;
+}
+.page-bar {
+    background-image: url('../images/breadcrumbs.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 79px;
+    margin-left: -22px;
+    margin-right: -18px;
+    margin-top: -25px;
+    padding: 1px;
+    padding-left: 32px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+.btn-add {
+    float: right;
+    background-image: url('../images/add.png');
+    background-size: 100% 101%;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px!important;
+       margin-right: 25px!important;
+    margin-top: 35px!important;
+}
+.btn-export {
+    float: right;
+    background-image: url('../images/export.png');
+    background-size: 100% 101%;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px!important;
+    margin-right: 100px!important;
+    margin-top: 35px!important;
+}
+.homepage{
+        height: 78px;
+}
+.homepage a{
+    height: 100%;
+    text-align: left;
+    padding-top: 32px!important;
+}
+.page-bar .btn-group{
+    float: right;
+} 
+.block {
+    background: #ffffff;
+    border-radius: 3px!important;
+    height: 200px;
+    width: 100%;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.2);
+}
+.page-content-body, .page-content{
+    float:left;
+    
+}
+.table-container{
+    padding-top: 20px;
+}
+h1 i, h1 .fa{
+    font-size: 36px;
+    padding-right: 10px;
+}
+h1 li .fa {
+    font-size: 20px;
+    padding-right: 0px;
+}
+.modal-header{
+    border-bottom: 1px solid #e5e5e5;
+    background-image: url('../images/breadcrumbs.png');
+    background-size: 100%;
+    height: 53px;
+    padding: 11px;
+    padding-left: 32px;
+    color: #ffffff;
+    margin-bottom: 8px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+.description, .block h4{
+    color: black;
+}
+.description{
+        margin-top: -10px;
+}

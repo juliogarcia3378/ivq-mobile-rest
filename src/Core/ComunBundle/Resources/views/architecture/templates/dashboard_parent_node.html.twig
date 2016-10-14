@@ -1,0 +1,16 @@
+
+{% if is_granted(menu.permiso) %}
+ 
+
+    <li>
+        <a href="javascript:;">
+            <i class="fa {% if menu.icon is not null %}{{ menu.icon }}{% else %}fa-circle-o{% endif %}"></i>
+                                            <span class="title">
+                                                {{ menu.denominacion }}
+                                            </span>
+                                            <span class="arrow">
+                                            </span>
+        </a>
+        {{ include('ComunBundle:architecture/templates:dashboard_item.html.twig',{'menus':menu.hijos}) }}
+    </li>
+{% endif %}

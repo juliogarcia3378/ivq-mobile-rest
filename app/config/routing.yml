@@ -6,13 +6,17 @@ api:
 app:
     resource: "@AppBundle/Controller/"
     type:     rest
+    prefix:   /app
+
+
+acme_api_demos:
+    type: rest
+    resource: ApiBundle\Controller\DemoController
+
+    
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
 
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
-
-acme_api_demos:
-    type: rest
-    resource: Acme\ApiBundle\Controller\DemoController

@@ -21,8 +21,9 @@
       <parameter key="FOSOAuthServerBundle">FOS\OAuthServerBundle\FOSOAuthServerBundle</parameter>
       <parameter key="JMSSerializerBundle">JMS\SerializerBundle\JMSSerializerBundle</parameter>
       <parameter key="NelmioApiDocBundle">Nelmio\ApiDocBundle\NelmioApiDocBundle</parameter>
-      <parameter key="ApiBundle">Acme\ApiBundle\ApiBundle</parameter>
+      <parameter key="ApiBundle">ApiBundle\ApiBundle</parameter>
       <parameter key="VreshTwilioBundle">Vresh\TwilioBundle\VreshTwilioBundle</parameter>
+      <parameter key="ComunBundle">Core\ComunBundle\ComunBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -32,7 +33,7 @@
     <parameter key="kernel.container_class">appDevDebugProjectContainer</parameter>
     <parameter key="database_host">127.0.0.1</parameter>
     <parameter key="database_port">null</parameter>
-    <parameter key="database_name">api</parameter>
+    <parameter key="database_name">IVQ_</parameter>
     <parameter key="database_user">root</parameter>
     <parameter key="database_password">null</parameter>
     <parameter key="mailer_transport">smtp</parameter>
@@ -524,7 +525,7 @@
     <parameter key="fos_user.storage">orm</parameter>
     <parameter key="fos_user.firewall_name">api</parameter>
     <parameter key="fos_user.model_manager_name">null</parameter>
-    <parameter key="fos_user.model.user.class">Acme\ApiBundle\Entity\User</parameter>
+    <parameter key="fos_user.model.user.class">AppBundle\Entity\User</parameter>
     <parameter key="fos_user.template.engine">twig</parameter>
     <parameter key="fos_user.profile.form.type">fos_user_profile</parameter>
     <parameter key="fos_user.profile.form.name">fos_user_profile_form</parameter>
@@ -564,10 +565,10 @@
     <parameter key="fos_oauth_server.security.entry_point.class">FOS\OAuthServerBundle\Security\EntryPoint\OAuthEntryPoint</parameter>
     <parameter key="fos_oauth_server.server.options" type="collection"/>
     <parameter key="fos_oauth_server.model_manager_name">null</parameter>
-    <parameter key="fos_oauth_server.model.client.class">Acme\ApiBundle\Entity\Client</parameter>
-    <parameter key="fos_oauth_server.model.access_token.class">Acme\ApiBundle\Entity\AccessToken</parameter>
-    <parameter key="fos_oauth_server.model.refresh_token.class">Acme\ApiBundle\Entity\RefreshToken</parameter>
-    <parameter key="fos_oauth_server.model.auth_code.class">Acme\ApiBundle\Entity\AuthCode</parameter>
+    <parameter key="fos_oauth_server.model.client.class">AppBundle\Entity\Client</parameter>
+    <parameter key="fos_oauth_server.model.access_token.class">AppBundle\Entity\AccessToken</parameter>
+    <parameter key="fos_oauth_server.model.refresh_token.class">AppBundle\Entity\RefreshToken</parameter>
+    <parameter key="fos_oauth_server.model.auth_code.class">AppBundle\Entity\AuthCode</parameter>
     <parameter key="fos_oauth_server.template.engine">twig</parameter>
     <parameter key="fos_oauth_server.authorize.form.type">FOS\OAuthServerBundle\Form\Type\AuthorizeFormType</parameter>
     <parameter key="fos_oauth_server.authorize.form.name">fos_oauth_server_authorize_form</parameter>
@@ -634,7 +635,12 @@
     <parameter key="nelmio_api_doc.formatter.simple_formatter.class">Nelmio\ApiDocBundle\Formatter\SimpleFormatter</parameter>
     <parameter key="nelmio_api_doc.formatter.html_formatter.class">Nelmio\ApiDocBundle\Formatter\HtmlFormatter</parameter>
     <parameter key="nelmio_api_doc.formatter.swagger_formatter.class">Nelmio\ApiDocBundle\Formatter\SwaggerFormatter</parameter>
-    <parameter key="nelmio_api_doc.sandbox.authentication">null</parameter>
+    <parameter key="nelmio_api_doc.sandbox.authentication" type="collection">
+      <parameter key="delivery">http</parameter>
+      <parameter key="type">bearer</parameter>
+      <parameter key="name">Authorization</parameter>
+      <parameter key="custom_endpoint">false</parameter>
+    </parameter>
     <parameter key="nelmio_api_doc.extractor.api_doc_extractor.class">Nelmio\ApiDocBundle\Extractor\ApiDocExtractor</parameter>
     <parameter key="nelmio_api_doc.form.extension.description_form_type_extension.class">Nelmio\ApiDocBundle\Form\Extension\DescriptionFormTypeExtension</parameter>
     <parameter key="nelmio_api_doc.twig.extension.extra_markdown.class">Nelmio\ApiDocBundle\Twig\Extension\MarkdownExtension</parameter>
@@ -663,6 +669,7 @@
     <parameter key="twilio.class">Vresh\TwilioBundle\Service\TwilioWrapper</parameter>
     <parameter key="twilio.capability.class">Vresh\TwilioBundle\Service\TwilioCapabilityWrapper</parameter>
     <parameter key="twilio.lookups.class">Vresh\TwilioBundle\Service\TwilioLookupsWrapper</parameter>
+    <parameter key="comunes.motorgtr.class">Core\ComunBundle\Gestores\MotorGtr</parameter>
     <parameter key="web_profiler.controller.profiler.class">Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController</parameter>
     <parameter key="web_profiler.controller.router.class">Symfony\Bundle\WebProfilerBundle\Controller\RouterController</parameter>
     <parameter key="web_profiler.controller.exception.class">Symfony\Bundle\WebProfilerBundle\Controller\ExceptionController</parameter>
@@ -2524,7 +2531,7 @@
         <argument key="driver">pdo_mysql</argument>
         <argument key="host">127.0.0.1</argument>
         <argument key="port">null</argument>
-        <argument key="dbname">api</argument>
+        <argument key="dbname">IVQ_</argument>
         <argument key="user">root</argument>
         <argument key="password">null</argument>
         <argument key="charset">UTF8</argument>
@@ -2620,9 +2627,10 @@
         <service class="Doctrine\ORM\Configuration" public="false">
           <call method="setEntityNamespaces">
             <argument type="collection">
+              <argument key="AppBundle">AppBundle\Entity</argument>
               <argument key="FOSUserBundle">FOS\UserBundle\Entity</argument>
               <argument key="FOSOAuthServerBundle">FOS\OAuthServerBundle\Entity</argument>
-              <argument key="ApiBundle">Acme\ApiBundle\Entity</argument>
+              <argument key="ApiBundle">ApiBundle\Entity</argument>
             </argument>
           </call>
           <call method="setMetadataCacheImpl">
@@ -2637,6 +2645,30 @@
           <call method="setMetadataDriverImpl">
             <argument type="service">
               <service class="Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain" public="false">
+                <call method="addDriver">
+                  <argument type="service">
+                    <service class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
+                      <argument type="service" id="annotation_reader"/>
+                      <argument type="collection">
+                        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/AppBundle/Entity</argument>
+                        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/ApiBundle/Entity</argument>
+                      </argument>
+                    </service>
+                  </argument>
+                  <argument>AppBundle\Entity</argument>
+                </call>
+                <call method="addDriver">
+                  <argument type="service">
+                    <service class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
+                      <argument type="service" id="annotation_reader"/>
+                      <argument type="collection">
+                        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/AppBundle/Entity</argument>
+                        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/ApiBundle/Entity</argument>
+                      </argument>
+                    </service>
+                  </argument>
+                  <argument>ApiBundle\Entity</argument>
+                </call>
                 <call method="addDriver">
                   <argument type="service">
                     <service class="Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver" public="false">
@@ -2664,17 +2696,6 @@
                     </service>
                   </argument>
                   <argument>FOS\OAuthServerBundle\Entity</argument>
-                </call>
-                <call method="addDriver">
-                  <argument type="service">
-                    <service class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
-                      <argument type="service" id="annotation_reader"/>
-                      <argument type="collection">
-                        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Entity</argument>
-                      </argument>
-                    </service>
-                  </argument>
-                  <argument>Acme\ApiBundle\Entity</argument>
                 </call>
               </service>
             </argument>
@@ -2837,7 +2858,7 @@
     </service>
     <service id="fos_user.profile.form.type" class="FOS\UserBundle\Form\Type\ProfileFormType">
       <tag name="form.type" alias="fos_user_profile"/>
-      <argument>Acme\ApiBundle\Entity\User</argument>
+      <argument>AppBundle\Entity\User</argument>
     </service>
     <service id="fos_user.registration.form" class="Symfony\Component\Form\Form" factory-method="createNamed" factory-service="form.factory">
       <argument>fos_user_registration_form</argument>
@@ -2852,7 +2873,7 @@
     </service>
     <service id="fos_user.registration.form.type" class="FOS\UserBundle\Form\Type\RegistrationFormType">
       <tag name="form.type" alias="fos_user_registration"/>
-      <argument>Acme\ApiBundle\Entity\User</argument>
+      <argument>AppBundle\Entity\User</argument>
     </service>
     <service id="fos_user.change_password.form" class="Symfony\Component\Form\Form" factory-method="createNamed" factory-service="form.factory">
       <argument>fos_user_change_password_form</argument>
@@ -2889,19 +2910,19 @@
     </service>
     <service id="fos_oauth_server.client_manager.default" class="FOS\OAuthServerBundle\Entity\ClientManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>Acme\ApiBundle\Entity\Client</argument>
+      <argument>AppBundle\Entity\Client</argument>
     </service>
     <service id="fos_oauth_server.access_token_manager.default" class="FOS\OAuthServerBundle\Entity\AccessTokenManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>Acme\ApiBundle\Entity\AccessToken</argument>
+      <argument>AppBundle\Entity\AccessToken</argument>
     </service>
     <service id="fos_oauth_server.refresh_token_manager.default" class="FOS\OAuthServerBundle\Entity\RefreshTokenManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>Acme\ApiBundle\Entity\RefreshToken</argument>
+      <argument>AppBundle\Entity\RefreshToken</argument>
     </service>
     <service id="fos_oauth_server.auth_code_manager.default" class="FOS\OAuthServerBundle\Entity\AuthCodeManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>Acme\ApiBundle\Entity\AuthCode</argument>
+      <argument>AppBundle\Entity\AuthCode</argument>
     </service>
     <service id="fos_oauth_server.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
       <argument>null</argument>
@@ -3055,7 +3076,12 @@
         <argument>form</argument>
       </call>
       <call method="setAuthentication">
-        <argument>null</argument>
+        <argument type="collection">
+          <argument key="delivery">http</argument>
+          <argument key="type">bearer</argument>
+          <argument key="name">Authorization</argument>
+          <argument key="custom_endpoint">false</argument>
+        </argument>
       </call>
       <call method="setDefaultSectionsOpened">
         <argument>true</argument>
@@ -3080,6 +3106,14 @@
           <argument key="contact">null</argument>
           <argument key="license">null</argument>
           <argument key="licenseUrl">null</argument>
+        </argument>
+      </call>
+      <call method="setAuthenticationConfig">
+        <argument type="collection">
+          <argument key="delivery">http</argument>
+          <argument key="type">bearer</argument>
+          <argument key="name">Authorization</argument>
+          <argument key="custom_endpoint">false</argument>
         </argument>
       </call>
     </service>
@@ -3172,6 +3206,8 @@
       <argument>AC7ff55e4e1318b1853b267c5729a656a2</argument>
       <argument>c076c00c867bc4e26f1a2d127c927a58</argument>
     </service>
+    <service id="comunes.basegtr" class="Core\ComunBundle\Gestores\BaseGestor"/>
+    <service id="comunes.motorgtr" class="Core\ComunBundle\Gestores\MotorGtr"/>
     <service id="data_collector.dump" class="Symfony\Component\HttpKernel\DataCollector\DumpDataCollector">
       <tag name="data_collector" id="dump" template="@Debug/Profiler/dump.html.twig" priority="240"/>
       <argument type="service" id="debug.stopwatch" on-invalid="ignore"/>
@@ -3510,8 +3546,12 @@
         <argument>NelmioApiDoc</argument>
       </call>
       <call method="addPath">
-        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/views</argument>
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/ApiBundle/Resources/views</argument>
         <argument>Api</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Core/ComunBundle/Resources/views</argument>
+        <argument>Comun</argument>
       </call>
       <call method="addPath">
         <argument>/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/views</argument>
@@ -3655,7 +3695,7 @@
           <argument>null</argument>
         </service>
       </argument>
-      <argument>Acme\ApiBundle\Entity\User</argument>
+      <argument>AppBundle\Entity\User</argument>
     </service>
     <service id="fos_user.profile.form.handler" class="FOS\UserBundle\Form\Handler\ProfileFormHandler" scope="request">
       <argument type="service" id="fos_user.profile.form"/>
@@ -3704,8 +3744,9 @@
                       <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
                       <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
                       <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
-                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/ApiBundle/Resources/config/serializer</argument>
                       <argument key="Vresh\TwilioBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/vresh/twilio-bundle/Resources/config/serializer</argument>
+                      <argument key="Core\ComunBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Core/ComunBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
                       <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
@@ -3733,8 +3774,9 @@
                       <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
                       <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
                       <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
-                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/ApiBundle/Resources/config/serializer</argument>
                       <argument key="Vresh\TwilioBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/vresh/twilio-bundle/Resources/config/serializer</argument>
+                      <argument key="Core\ComunBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Core/ComunBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
                       <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
@@ -3762,8 +3804,9 @@
                       <argument key="FOS\OAuthServerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer</argument>
                       <argument key="JMS\SerializerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer</argument>
                       <argument key="Nelmio\ApiDocBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer</argument>
-                      <argument key="Acme\ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Acme/ApiBundle/Resources/config/serializer</argument>
+                      <argument key="ApiBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/ApiBundle/Resources/config/serializer</argument>
                       <argument key="Vresh\TwilioBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/vresh/twilio-bundle/Resources/config/serializer</argument>
+                      <argument key="Core\ComunBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/src/Core/ComunBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\DebugBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/DebugBundle/Resources/config/serializer</argument>
                       <argument key="Symfony\Bundle\WebProfilerBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/symfony/symfony/src/Symfony/Bundle/WebProfilerBundle/Resources/config/serializer</argument>
                       <argument key="Sensio\Bundle\DistributionBundle">/Applications/XAMPP/xamppfiles/htdocs/ivq-rest/vendor/sensio/distribution-bundle/Resources/config/serializer</argument>
