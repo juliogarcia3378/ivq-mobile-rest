@@ -13,6 +13,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Core\ComunBundle\Util\Util;
+use AppBundle\Entity\Profile;
 
 class SecurityController extends FOSRestController
 {
@@ -98,6 +99,13 @@ class SecurityController extends FOSRestController
         $encoder = $encoder_service->getEncoder($user);
         $encoded_pass = $encoder->encodePassword($password, $user->getSalt());
         $user->setPassword($encoded_pass);
+
+        $profile = new Profile();
+        $profile->setName("");
+        $profile->setLastName("");
+        $profile->setAvatar("");
+        $profile->setPhone($mobile);
+        $user->setProfile($profile);
         $userManager->updateUser($user);
         
         
@@ -116,6 +124,72 @@ class SecurityController extends FOSRestController
         return new JsonResponse(array(
             'id' => $user->getId()
             ), Response::HTTP_OK);
+    }
+         
+     /**
+     * @Route("/user/activate")
+     * @Rest\Get("/user/activate")
+     * @ApiDoc(
+     *  description="Confirm ",
+     *  requirements={
+     *      {
+     *          "name"="token",
+     *          "dataType"="string",
+     *          "description"="Token for activate user"
+     *      },
+     *      {
+     *          "name"="mobile",
+     *          "dataType"="string",
+     *          "description"="Mobile number for the current account"
+     *      },
+
+     *  },
+     * )
+     */
+    public function activateUserAction()
+    {
+        $request = $this->getRequest();
+        $token = $request->get('token',NULL);
+        $mobile = $request->get('mobile',NULL);
+        
+
+        if (!isset($token) || !isset($mobile)){
+              return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'You must pass all fields',
+                    ), Response::HTTP_OK);
+        }
+
+        if (strlen($mobile)!=11)
+       return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'The mobile provided is not a valid number',
+                    ), Response::HTTP_OK);
+
+          $userManager = $this->get('fos_user.user_manager');
+
+        $user = $userManager->findUserByConfirmationToken($token);
+        if ($user===null){
+                 return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'This is not a valid confirmation token',
+                    ),Response::HTTP_OK);  
+        }
+        if ($user->getProfile()->getPhone()!=$mobile)
+            return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'The mobile and the confirmation token provided dont match',
+                    ), Response::HTTP_OK);
+
+        if ($user instanceof \AppBundle\Entity\User) {
+             $user->setConfirmationToken("");
+             $user->setEnabled(true);
+             $userManager->updateUser($user);
+        }
+
+        return new JsonResponse(array(
+                    'message'=>'User activated',
+                    ),Response::HTTP_OK);  
     }
 
     /**

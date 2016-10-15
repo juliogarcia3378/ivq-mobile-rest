@@ -41,6 +41,8 @@ class appProdProjectContainer extends Container
             'assets.packages' => 'getAssets_PackagesService',
             'cache_clearer' => 'getCacheClearerService',
             'cache_warmer' => 'getCacheWarmerService',
+            'comunes.basegtr' => 'getComunes_BasegtrService',
+            'comunes.motorgtr' => 'getComunes_MotorgtrService',
             'config_cache_factory' => 'getConfigCacheFactoryService',
             'controller_name_converter' => 'getControllerNameConverterService',
             'debug.debug_handlers_listener' => 'getDebug_DebugHandlersListenerService',
@@ -302,6 +304,9 @@ class appProdProjectContainer extends Container
             'twig.loader' => 'getTwig_LoaderService',
             'twig.profile' => 'getTwig_ProfileService',
             'twig.translation.extractor' => 'getTwig_Translation_ExtractorService',
+            'twilio.api' => 'getTwilio_ApiService',
+            'twilio.capability' => 'getTwilio_CapabilityService',
+            'twilio.lookups' => 'getTwilio_LookupsService',
             'uri_signer' => 'getUriSignerService',
             'validate_request_listener' => 'getValidateRequestListenerService',
             'validator' => 'getValidatorService',
@@ -421,6 +426,32 @@ class appProdProjectContainer extends Container
     }
 
     /*
+     * Gets the 'comunes.basegtr' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Core\ComunBundle\Gestores\BaseGestor A Core\ComunBundle\Gestores\BaseGestor instance
+     */
+    protected function getComunes_BasegtrService()
+    {
+        return $this->services['comunes.basegtr'] = new \Core\ComunBundle\Gestores\BaseGestor();
+    }
+
+    /*
+     * Gets the 'comunes.motorgtr' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Core\ComunBundle\Gestores\MotorGtr A Core\ComunBundle\Gestores\MotorGtr instance
+     */
+    protected function getComunes_MotorgtrService()
+    {
+        return $this->services['comunes.motorgtr'] = new \Core\ComunBundle\Gestores\MotorGtr();
+    }
+
+    /*
      * Gets the 'config_cache_factory' service.
      *
      * This service is shared.
@@ -499,7 +530,7 @@ class appProdProjectContainer extends Container
         $a->addEventSubscriber(new \FOS\UserBundle\Entity\UserListener($this));
         $a->addEventListener(array(0 => 'loadClassMetadata'), $this->get('doctrine.orm.default_listeners.attach_entity_listeners'));
 
-        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'api', 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driverOptions' => array(), 'defaultTableOptions' => array()), new \Doctrine\DBAL\Configuration(), $a, array());
+        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'IVQ_', 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driverOptions' => array(), 'defaultTableOptions' => array()), new \Doctrine\DBAL\Configuration(), $a, array());
     }
 
     /*
@@ -527,30 +558,35 @@ class appProdProjectContainer extends Container
      */
     protected function getDoctrine_Orm_DefaultEntityManagerService($lazyLoad = true)
     {
-        $a = new \Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver(array(($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine') => 'FOS\\UserBundle\\Entity', ($this->targetDirs[3].'/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine') => 'FOS\\OAuthServerBundle\\Entity'));
-        $a->setGlobalBasename('mapping');
+        $a = $this->get('annotation_reader');
 
-        $b = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
-        $b->addDriver($a, 'FOS\\UserBundle\\Entity');
-        $b->addDriver($a, 'FOS\\OAuthServerBundle\\Entity');
-        $b->addDriver(new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($this->get('annotation_reader'), array(0 => ($this->targetDirs[3].'/src/Acme/ApiBundle/Entity'))), 'Acme\\ApiBundle\\Entity');
+        $b = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($a, array(0 => ($this->targetDirs[3].'/src/AppBundle/Entity'), 1 => ($this->targetDirs[3].'/src/ApiBundle/Entity')));
 
-        $c = new \Doctrine\ORM\Configuration();
-        $c->setEntityNamespaces(array('FOSUserBundle' => 'FOS\\UserBundle\\Entity', 'FOSOAuthServerBundle' => 'FOS\\OAuthServerBundle\\Entity', 'ApiBundle' => 'Acme\\ApiBundle\\Entity'));
-        $c->setMetadataCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_metadata_cache'));
-        $c->setQueryCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_query_cache'));
-        $c->setResultCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_result_cache'));
-        $c->setMetadataDriverImpl($b);
-        $c->setProxyDir((__DIR__.'/doctrine/orm/Proxies'));
-        $c->setProxyNamespace('Proxies');
-        $c->setAutoGenerateProxyClasses(false);
-        $c->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
-        $c->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
-        $c->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
-        $c->setQuoteStrategy(new \Doctrine\ORM\Mapping\DefaultQuoteStrategy());
-        $c->setEntityListenerResolver($this->get('doctrine.orm.default_entity_listener_resolver'));
+        $c = new \Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver(array(($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine') => 'FOS\\UserBundle\\Entity', ($this->targetDirs[3].'/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine') => 'FOS\\OAuthServerBundle\\Entity'));
+        $c->setGlobalBasename('mapping');
 
-        $this->services['doctrine.orm.default_entity_manager'] = $instance = \Doctrine\ORM\EntityManager::create($this->get('doctrine.dbal.default_connection'), $c);
+        $d = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
+        $d->addDriver($b, 'AppBundle\\Entity');
+        $d->addDriver($b, 'ApiBundle\\Entity');
+        $d->addDriver($c, 'FOS\\UserBundle\\Entity');
+        $d->addDriver($c, 'FOS\\OAuthServerBundle\\Entity');
+
+        $e = new \Doctrine\ORM\Configuration();
+        $e->setEntityNamespaces(array('AppBundle' => 'AppBundle\\Entity', 'FOSUserBundle' => 'FOS\\UserBundle\\Entity', 'FOSOAuthServerBundle' => 'FOS\\OAuthServerBundle\\Entity', 'ApiBundle' => 'ApiBundle\\Entity'));
+        $e->setMetadataCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_metadata_cache'));
+        $e->setQueryCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_query_cache'));
+        $e->setResultCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_result_cache'));
+        $e->setMetadataDriverImpl($d);
+        $e->setProxyDir((__DIR__.'/doctrine/orm/Proxies'));
+        $e->setProxyNamespace('Proxies');
+        $e->setAutoGenerateProxyClasses(false);
+        $e->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
+        $e->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
+        $e->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
+        $e->setQuoteStrategy(new \Doctrine\ORM\Mapping\DefaultQuoteStrategy());
+        $e->setEntityListenerResolver($this->get('doctrine.orm.default_entity_listener_resolver'));
+
+        $this->services['doctrine.orm.default_entity_manager'] = $instance = \Doctrine\ORM\EntityManager::create($this->get('doctrine.dbal.default_connection'), $e);
 
         $this->get('doctrine.orm.default_manager_configurator')->configure($instance);
 
@@ -1324,7 +1360,7 @@ class appProdProjectContainer extends Container
      */
     protected function getFosOauthServer_AccessTokenManager_DefaultService()
     {
-        return $this->services['fos_oauth_server.access_token_manager.default'] = new \FOS\OAuthServerBundle\Entity\AccessTokenManager($this->get('fos_oauth_server.entity_manager'), 'Acme\\ApiBundle\\Entity\\AccessToken');
+        return $this->services['fos_oauth_server.access_token_manager.default'] = new \FOS\OAuthServerBundle\Entity\AccessTokenManager($this->get('fos_oauth_server.entity_manager'), 'AppBundle\\Entity\\AccessToken');
     }
 
     /*
@@ -1337,7 +1373,7 @@ class appProdProjectContainer extends Container
      */
     protected function getFosOauthServer_AuthCodeManager_DefaultService()
     {
-        return $this->services['fos_oauth_server.auth_code_manager.default'] = new \FOS\OAuthServerBundle\Entity\AuthCodeManager($this->get('fos_oauth_server.entity_manager'), 'Acme\\ApiBundle\\Entity\\AuthCode');
+        return $this->services['fos_oauth_server.auth_code_manager.default'] = new \FOS\OAuthServerBundle\Entity\AuthCodeManager($this->get('fos_oauth_server.entity_manager'), 'AppBundle\\Entity\\AuthCode');
     }
 
     /*
@@ -1389,7 +1425,7 @@ class appProdProjectContainer extends Container
      */
     protected function getFosOauthServer_ClientManager_DefaultService()
     {
-        return $this->services['fos_oauth_server.client_manager.default'] = new \FOS\OAuthServerBundle\Entity\ClientManager($this->get('fos_oauth_server.entity_manager'), 'Acme\\ApiBundle\\Entity\\Client');
+        return $this->services['fos_oauth_server.client_manager.default'] = new \FOS\OAuthServerBundle\Entity\ClientManager($this->get('fos_oauth_server.entity_manager'), 'AppBundle\\Entity\\Client');
     }
 
     /*
@@ -1415,7 +1451,7 @@ class appProdProjectContainer extends Container
      */
     protected function getFosOauthServer_RefreshTokenManager_DefaultService()
     {
-        return $this->services['fos_oauth_server.refresh_token_manager.default'] = new \FOS\OAuthServerBundle\Entity\RefreshTokenManager($this->get('fos_oauth_server.entity_manager'), 'Acme\\ApiBundle\\Entity\\RefreshToken');
+        return $this->services['fos_oauth_server.refresh_token_manager.default'] = new \FOS\OAuthServerBundle\Entity\RefreshTokenManager($this->get('fos_oauth_server.entity_manager'), 'AppBundle\\Entity\\RefreshToken');
     }
 
     /*
@@ -1697,7 +1733,7 @@ class appProdProjectContainer extends Container
      */
     protected function getFosUser_Profile_Form_TypeService()
     {
-        return $this->services['fos_user.profile.form.type'] = new \FOS\UserBundle\Form\Type\ProfileFormType('Acme\\ApiBundle\\Entity\\User');
+        return $this->services['fos_user.profile.form.type'] = new \FOS\UserBundle\Form\Type\ProfileFormType('AppBundle\\Entity\\User');
     }
 
     /*
@@ -1742,7 +1778,7 @@ class appProdProjectContainer extends Container
      */
     protected function getFosUser_Registration_Form_TypeService()
     {
-        return $this->services['fos_user.registration.form.type'] = new \FOS\UserBundle\Form\Type\RegistrationFormType('Acme\\ApiBundle\\Entity\\User');
+        return $this->services['fos_user.registration.form.type'] = new \FOS\UserBundle\Form\Type\RegistrationFormType('AppBundle\\Entity\\User');
     }
 
     /*
@@ -1828,7 +1864,7 @@ class appProdProjectContainer extends Container
     {
         $a = $this->get('fos_user.util.email_canonicalizer');
 
-        return $this->services['fos_user.user_manager'] = new \FOS\UserBundle\Doctrine\UserManager($this->get('security.encoder_factory'), $a, $a, $this->get('doctrine')->getManager(NULL), 'Acme\\ApiBundle\\Entity\\User');
+        return $this->services['fos_user.user_manager'] = new \FOS\UserBundle\Doctrine\UserManager($this->get('security.encoder_factory'), $a, $a, $this->get('doctrine')->getManager(NULL), 'AppBundle\\Entity\\User');
     }
 
     /*
@@ -2132,7 +2168,7 @@ class appProdProjectContainer extends Container
      */
     protected function getJmsSerializer_MetadataDriverService()
     {
-        $a = new \Metadata\Driver\FileLocator(array('Symfony\\Bundle\\FrameworkBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer'), 'Symfony\\Bundle\\SecurityBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer'), 'Symfony\\Bundle\\TwigBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer'), 'Symfony\\Bundle\\MonologBundle' => ($this->targetDirs[3].'/vendor/symfony/monolog-bundle/Resources/config/serializer'), 'Symfony\\Bundle\\SwiftmailerBundle' => ($this->targetDirs[3].'/vendor/symfony/swiftmailer-bundle/Resources/config/serializer'), 'Doctrine\\Bundle\\DoctrineBundle' => ($this->targetDirs[3].'/vendor/doctrine/doctrine-bundle/Resources/config/serializer'), 'Sensio\\Bundle\\FrameworkExtraBundle' => ($this->targetDirs[3].'/vendor/sensio/framework-extra-bundle/Resources/config/serializer'), 'AppBundle' => ($this->targetDirs[3].'/src/AppBundle/Resources/config/serializer'), 'FOS\\RestBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer'), 'FOS\\UserBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer'), 'FOS\\OAuthServerBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer'), 'JMS\\SerializerBundle' => ($this->targetDirs[3].'/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer'), 'Nelmio\\ApiDocBundle' => ($this->targetDirs[3].'/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer'), 'Acme\\ApiBundle' => ($this->targetDirs[3].'/src/Acme/ApiBundle/Resources/config/serializer')));
+        $a = new \Metadata\Driver\FileLocator(array('Symfony\\Bundle\\FrameworkBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/config/serializer'), 'Symfony\\Bundle\\SecurityBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/SecurityBundle/Resources/config/serializer'), 'Symfony\\Bundle\\TwigBundle' => ($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/serializer'), 'Symfony\\Bundle\\MonologBundle' => ($this->targetDirs[3].'/vendor/symfony/monolog-bundle/Resources/config/serializer'), 'Symfony\\Bundle\\SwiftmailerBundle' => ($this->targetDirs[3].'/vendor/symfony/swiftmailer-bundle/Resources/config/serializer'), 'Doctrine\\Bundle\\DoctrineBundle' => ($this->targetDirs[3].'/vendor/doctrine/doctrine-bundle/Resources/config/serializer'), 'Sensio\\Bundle\\FrameworkExtraBundle' => ($this->targetDirs[3].'/vendor/sensio/framework-extra-bundle/Resources/config/serializer'), 'AppBundle' => ($this->targetDirs[3].'/src/AppBundle/Resources/config/serializer'), 'FOS\\RestBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/rest-bundle/Resources/config/serializer'), 'FOS\\UserBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/serializer'), 'FOS\\OAuthServerBundle' => ($this->targetDirs[3].'/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/serializer'), 'JMS\\SerializerBundle' => ($this->targetDirs[3].'/vendor/jms/serializer-bundle/JMS/SerializerBundle/Resources/config/serializer'), 'Nelmio\\ApiDocBundle' => ($this->targetDirs[3].'/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/config/serializer'), 'ApiBundle' => ($this->targetDirs[3].'/src/ApiBundle/Resources/config/serializer'), 'Vresh\\TwilioBundle' => ($this->targetDirs[3].'/vendor/vresh/twilio-bundle/Resources/config/serializer'), 'Core\\ComunBundle' => ($this->targetDirs[3].'/src/Core/ComunBundle/Resources/config/serializer')));
 
         return $this->services['jms_serializer.metadata_driver'] = new \JMS\Serializer\Metadata\Driver\DoctrineTypeDriver(new \Metadata\Driver\DriverChain(array(0 => new \JMS\Serializer\Metadata\Driver\YamlDriver($a), 1 => new \JMS\Serializer\Metadata\Driver\XmlDriver($a), 2 => new \JMS\Serializer\Metadata\Driver\PhpDriver($a), 3 => new \JMS\Serializer\Metadata\Driver\AnnotationDriver($this->get('annotation_reader')))), $this->get('doctrine'));
     }
@@ -2523,7 +2559,7 @@ class appProdProjectContainer extends Container
         $instance->setAcceptType(NULL);
         $instance->setBodyFormats(array(0 => 'form', 1 => 'json'));
         $instance->setDefaultBodyFormat('form');
-        $instance->setAuthentication(NULL);
+        $instance->setAuthentication(array('delivery' => 'http', 'type' => 'bearer', 'name' => 'Authorization', 'custom_endpoint' => false));
         $instance->setDefaultSectionsOpened(true);
 
         return $instance;
@@ -2571,6 +2607,7 @@ class appProdProjectContainer extends Container
         $instance->setApiVersion('0.1');
         $instance->setSwaggerVersion('1.2');
         $instance->setInfo(array('title' => 'Symfony2', 'description' => 'My awesome Symfony2 app!', 'TermsOfServiceUrl' => NULL, 'contact' => NULL, 'license' => NULL, 'licenseUrl' => NULL));
+        $instance->setAuthenticationConfig(array('delivery' => 'http', 'type' => 'bearer', 'name' => 'Authorization', 'custom_endpoint' => false));
 
         return $instance;
     }
@@ -3934,7 +3971,8 @@ class appProdProjectContainer extends Container
         $instance->addPath(($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/views'), 'FOSUser');
         $instance->addPath(($this->targetDirs[3].'/vendor/friendsofsymfony/oauth-server-bundle/Resources/views'), 'FOSOAuthServer');
         $instance->addPath(($this->targetDirs[3].'/vendor/nelmio/api-doc-bundle/Nelmio/ApiDocBundle/Resources/views'), 'NelmioApiDoc');
-        $instance->addPath(($this->targetDirs[3].'/src/Acme/ApiBundle/Resources/views'), 'Api');
+        $instance->addPath(($this->targetDirs[3].'/src/ApiBundle/Resources/views'), 'Api');
+        $instance->addPath(($this->targetDirs[3].'/src/Core/ComunBundle/Resources/views'), 'Comun');
         $instance->addPath(($this->targetDirs[2].'/Resources/views'));
         $instance->addPath(($this->targetDirs[3].'/vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form'));
 
@@ -3965,6 +4003,45 @@ class appProdProjectContainer extends Container
     protected function getTwig_Translation_ExtractorService()
     {
         return $this->services['twig.translation.extractor'] = new \Symfony\Bridge\Twig\Translation\TwigExtractor($this->get('twig'));
+    }
+
+    /*
+     * Gets the 'twilio.api' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Vresh\TwilioBundle\Service\TwilioWrapper A Vresh\TwilioBundle\Service\TwilioWrapper instance
+     */
+    protected function getTwilio_ApiService()
+    {
+        return $this->services['twilio.api'] = new \Vresh\TwilioBundle\Service\TwilioWrapper('AC7ff55e4e1318b1853b267c5729a656a2', 'c076c00c867bc4e26f1a2d127c927a58', '2010-04-01', 3);
+    }
+
+    /*
+     * Gets the 'twilio.capability' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Vresh\TwilioBundle\Service\TwilioCapabilityWrapper A Vresh\TwilioBundle\Service\TwilioCapabilityWrapper instance
+     */
+    protected function getTwilio_CapabilityService()
+    {
+        return $this->services['twilio.capability'] = new \Vresh\TwilioBundle\Service\TwilioCapabilityWrapper('AC7ff55e4e1318b1853b267c5729a656a2', 'c076c00c867bc4e26f1a2d127c927a58');
+    }
+
+    /*
+     * Gets the 'twilio.lookups' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Vresh\TwilioBundle\Service\TwilioLookupsWrapper A Vresh\TwilioBundle\Service\TwilioLookupsWrapper instance
+     */
+    protected function getTwilio_LookupsService()
+    {
+        return $this->services['twilio.lookups'] = new \Vresh\TwilioBundle\Service\TwilioLookupsWrapper('AC7ff55e4e1318b1853b267c5729a656a2', 'c076c00c867bc4e26f1a2d127c927a58');
     }
 
     /*
@@ -4431,13 +4508,15 @@ class appProdProjectContainer extends Container
                 'FOSOAuthServerBundle' => 'FOS\\OAuthServerBundle\\FOSOAuthServerBundle',
                 'JMSSerializerBundle' => 'JMS\\SerializerBundle\\JMSSerializerBundle',
                 'NelmioApiDocBundle' => 'Nelmio\\ApiDocBundle\\NelmioApiDocBundle',
-                'ApiBundle' => 'Acme\\ApiBundle\\ApiBundle',
+                'ApiBundle' => 'ApiBundle\\ApiBundle',
+                'VreshTwilioBundle' => 'Vresh\\TwilioBundle\\VreshTwilioBundle',
+                'ComunBundle' => 'Core\\ComunBundle\\ComunBundle',
             ),
             'kernel.charset' => 'UTF-8',
             'kernel.container_class' => 'appProdProjectContainer',
             'database_host' => '127.0.0.1',
             'database_port' => NULL,
-            'database_name' => 'api',
+            'database_name' => 'IVQ_',
             'database_user' => 'root',
             'database_password' => NULL,
             'mailer_transport' => 'smtp',
@@ -4908,7 +4987,7 @@ class appProdProjectContainer extends Container
             'fos_user.storage' => 'orm',
             'fos_user.firewall_name' => 'api',
             'fos_user.model_manager_name' => NULL,
-            'fos_user.model.user.class' => 'Acme\\ApiBundle\\Entity\\User',
+            'fos_user.model.user.class' => 'AppBundle\\Entity\\User',
             'fos_user.template.engine' => 'twig',
             'fos_user.profile.form.type' => 'fos_user_profile',
             'fos_user.profile.form.name' => 'fos_user_profile_form',
@@ -4950,10 +5029,10 @@ class appProdProjectContainer extends Container
 
             ),
             'fos_oauth_server.model_manager_name' => NULL,
-            'fos_oauth_server.model.client.class' => 'Acme\\ApiBundle\\Entity\\Client',
-            'fos_oauth_server.model.access_token.class' => 'Acme\\ApiBundle\\Entity\\AccessToken',
-            'fos_oauth_server.model.refresh_token.class' => 'Acme\\ApiBundle\\Entity\\RefreshToken',
-            'fos_oauth_server.model.auth_code.class' => 'Acme\\ApiBundle\\Entity\\AuthCode',
+            'fos_oauth_server.model.client.class' => 'AppBundle\\Entity\\Client',
+            'fos_oauth_server.model.access_token.class' => 'AppBundle\\Entity\\AccessToken',
+            'fos_oauth_server.model.refresh_token.class' => 'AppBundle\\Entity\\RefreshToken',
+            'fos_oauth_server.model.auth_code.class' => 'AppBundle\\Entity\\AuthCode',
             'fos_oauth_server.template.engine' => 'twig',
             'fos_oauth_server.authorize.form.type' => 'FOS\\OAuthServerBundle\\Form\\Type\\AuthorizeFormType',
             'fos_oauth_server.authorize.form.name' => 'fos_oauth_server_authorize_form',
@@ -5024,7 +5103,12 @@ class appProdProjectContainer extends Container
             'nelmio_api_doc.formatter.simple_formatter.class' => 'Nelmio\\ApiDocBundle\\Formatter\\SimpleFormatter',
             'nelmio_api_doc.formatter.html_formatter.class' => 'Nelmio\\ApiDocBundle\\Formatter\\HtmlFormatter',
             'nelmio_api_doc.formatter.swagger_formatter.class' => 'Nelmio\\ApiDocBundle\\Formatter\\SwaggerFormatter',
-            'nelmio_api_doc.sandbox.authentication' => NULL,
+            'nelmio_api_doc.sandbox.authentication' => array(
+                'delivery' => 'http',
+                'type' => 'bearer',
+                'name' => 'Authorization',
+                'custom_endpoint' => false,
+            ),
             'nelmio_api_doc.extractor.api_doc_extractor.class' => 'Nelmio\\ApiDocBundle\\Extractor\\ApiDocExtractor',
             'nelmio_api_doc.form.extension.description_form_type_extension.class' => 'Nelmio\\ApiDocBundle\\Form\\Extension\\DescriptionFormTypeExtension',
             'nelmio_api_doc.twig.extension.extra_markdown.class' => 'Nelmio\\ApiDocBundle\\Twig\\Extension\\MarkdownExtension',
@@ -5050,6 +5134,10 @@ class appProdProjectContainer extends Container
                 'licenseUrl' => NULL,
             ),
             'nelmio_api_doc.swagger.model_naming_strategy' => 'dot_notation',
+            'twilio.class' => 'Vresh\\TwilioBundle\\Service\\TwilioWrapper',
+            'twilio.capability.class' => 'Vresh\\TwilioBundle\\Service\\TwilioCapabilityWrapper',
+            'twilio.lookups.class' => 'Vresh\\TwilioBundle\\Service\\TwilioLookupsWrapper',
+            'comunes.motorgtr.class' => 'Core\\ComunBundle\\Gestores\\MotorGtr',
             'console.command.ids' => array(
 
             ),

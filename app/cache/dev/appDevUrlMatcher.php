@@ -158,6 +158,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             }
             not_register_consumer:
 
+            // activate_user
+            if ($pathinfo === '/app/user/activate') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_activate_user;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\SecurityController::activateUserAction',  '_format' => 'json',  '_route' => 'activate_user',);
+            }
+            not_activate_user:
+
             // login
             if ($pathinfo === '/app/login') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
@@ -170,7 +181,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             not_login:
 
             // forgot_password
-            if ($pathinfo === '/app/forgotten-password') {
+            if ($pathinfo === '/app/forgot-password') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                     $allow = array_merge($allow, array('GET', 'HEAD'));
                     goto not_forgot_password;

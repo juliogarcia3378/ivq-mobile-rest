@@ -24,20 +24,20 @@ class Profile
 
     /**
      * @var string
-     * @ORM\Column(name="name", type="string",length=50, nullable=false)
+     * @ORM\Column(name="name", type="string",length=50, nullable=true)
      */
     private $name;
 
     /**
      * @var string
-     * @ORM\Column(name="lastname", type="string", length=50, nullable=false)
+     * @ORM\Column(name="lastname", type="string", length=50, nullable=true)
      */
     private $lastname;
 
 
     /**
      * @var integer
-     * @ORM\Column(name="phone", type="string", length=12, nullable=false)
+     * @ORM\Column(name="phone", type="string", length=12, nullable=true)
      * @Assert\NotBlank(message="Phone field Required ")
      */
     private $phone;

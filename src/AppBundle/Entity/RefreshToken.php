@@ -1,5 +1,5 @@
 <?php
-// src/Acme/ApiBundle/Entity/RefreshToken.php
+// src/ApiBundle/Entity/RefreshToken.php
 
 namespace AppBundle\Entity;
 
