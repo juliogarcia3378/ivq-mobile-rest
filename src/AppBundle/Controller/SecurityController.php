@@ -194,7 +194,7 @@ class SecurityController extends FOSRestController
 
      /**
      * @Route("/forgot-password")
-     * @Rest\Get("/forgotten-password")
+     * @Rest\Get("/forgot-password")
      * @ApiDoc(
      *  description="Send to # provided a token for accesing to account",
      *  requirements={
