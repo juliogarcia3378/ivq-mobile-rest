@@ -40,6 +40,7 @@ class TokenController
      *
      * @Rest\Get("/oauth/v2/token")
      * @ApiDoc(
+     *  section = "Authentication", 
      *     headers={
      *         {
                     "name"="no-store,private",
@@ -47,22 +48,22 @@ class TokenController
      *             "Connection"="Close"
      *         }
      *     },
-     *  description="Returns the token of the user",
+     *  description=" (Step 2) Returns the tokens for the user logged",
      *  requirements={
      *      {
      *          "name"="grant_type",
      *          "dataType"="string",
-     *          "description"="password"
+     *          "description"="word 'password'"
      *      },
             {
      *          "name"="client_id",
      *          "dataType"="string",
-     *          "description"="client_id"
+     *          "description"="client_id from login response"
      *      },
             {
      *          "name"="client_secret",
      *          "dataType"="string",
-     *          "description"="Client Secret Token"
+     *          "description"="client secret token from login response"
      *      },
             {
      *          "name"="username",

@@ -106,43 +106,27 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         if (0 === strpos($pathinfo, '/ivq')) {
-            if (0 === strpos($pathinfo, '/ivq/hello')) {
-                // api_default_index
-                if ($pathinfo === '/ivq/hello') {
-                    return array (  '_controller' => 'ApiBundle\\Controller\\DefaultController::indexAction',  '_route' => 'api_default_index',);
+            // index
+            if ($pathinfo === '/ivq/index') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_index;
                 }
 
-                // api_default_index_1
-                if ($pathinfo === '/ivq/hello') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_api_default_index_1;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\DefaultController::indexAction',  '_route' => 'api_default_index_1',);
-                }
-                not_api_default_index_1:
-
+                return array (  '_controller' => 'ApiBundle\\Controller\\DefaultController::indexAction',  '_format' => 'json',  '_route' => 'index',);
             }
+            not_index:
 
-            if (0 === strpos($pathinfo, '/ivq/profile')) {
-                // api_profile_profile
-                if ($pathinfo === '/ivq/profile') {
-                    return array (  '_controller' => 'ApiBundle\\Controller\\ProfileController::profileAction',  '_route' => 'api_profile_profile',);
+            // profile
+            if ($pathinfo === '/ivq/profile') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_profile;
                 }
 
-                // api_profile_profile_1
-                if ($pathinfo === '/ivq/profile') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_api_profile_profile_1;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\ProfileController::profileAction',  '_route' => 'api_profile_profile_1',);
-                }
-                not_api_profile_profile_1:
-
+                return array (  '_controller' => 'ApiBundle\\Controller\\ProfileController::profileAction',  '_format' => 'json',  '_route' => 'profile',);
             }
+            not_profile:
 
         }
 
@@ -190,6 +174,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array (  '_controller' => 'AppBundle\\Controller\\SecurityController::forgotPasswordAction',  '_format' => 'json',  '_route' => 'forgot_password',);
             }
             not_forgot_password:
+
+            // reset_password
+            if ($pathinfo === '/app/user/find') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_reset_password;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\SecurityController::resetPasswordAction',  '_format' => 'json',  '_route' => 'reset_password',);
+            }
+            not_reset_password:
 
         }
 

@@ -16,22 +16,13 @@ use FOS\RestBundle\Controller\FOSRestController;
 class ProfileController extends FOSRestController
 {
 
+
      /**
      * @Route("/profile")
      * @Rest\Get("/profile")
      * @ApiDoc(
+     *  section = "Profile",
      *  description="Returns the current user's profile",
-     *  requirements={
-     *      {
-     *          "name"="limit",
-     *          "dataType"="integer",
-     *          "requirement"="\d+",
-     *          "description"="how many objects to return"
-     *      }
-     *  },
-     *  parameters={
-     *      {"name"="categoryId", "dataType"="integer", "required"=true, "description"="category id"}
-     *  }
      * )
      */
       public function profileAction()

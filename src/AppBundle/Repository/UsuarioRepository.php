@@ -67,4 +67,12 @@ class UsuarioRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 
         return $members;
     }
+     public function findUserByMobile($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+         $qb = $this->getQB();
+        $qb->join('user.profile', 'profile');
+         $qb->andWhere('profile.phone = :phone')->setParameter('phone', $filters['mobile']);
+         unset($filters['mobile']);
+         return $this->filterQB($qb, $filters, ResultType::ObjectType);
+     }
+
 }

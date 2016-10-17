@@ -22,7 +22,8 @@ class SecurityController extends FOSRestController
      * @Route("/register")
      * @Rest\Get("/register")
      * @ApiDoc(
-     *  description="Register new user as consumer",
+     *  section = "Register new Customer",
+     *  description=" (Step 1) Register new user as consumer",
      *  requirements={
      *      {
      *          "name"="username",
@@ -42,7 +43,7 @@ class SecurityController extends FOSRestController
      *      {
      *          "name"="mobile",
      *          "dataType"="string",
-     *          "description"="Mobile number for the current account"
+     *          "description"="Mobile number for the current account (11 digits)"
      *      },
 
      *  },
@@ -72,6 +73,13 @@ class SecurityController extends FOSRestController
                     ), Response::HTTP_OK);
 
           $userManager = $this->get('fos_user.user_manager');
+        $em = $this->getDoctrine()->getEntityManager();
+       $exist= $em->getRepository("AppBundle:User")->findUserByMobile(array('mobile'=>$mobile));
+       if (count($exist)>0)
+                        return new JsonResponse(array(
+                            'error' => '302',
+                            'message'=>'This mobile already exist',
+                            ), Response::HTTP_OK);
 
         $user = $userManager->findUserByUsernameOrEmail($username);
         if ($user instanceof \AppBundle\Entity\User) {
@@ -122,7 +130,7 @@ class SecurityController extends FOSRestController
             $otherInstance = $twilio->createInstance('BBBB', 'CCCCC');
 
         return new JsonResponse(array(
-            'id' => $user->getId()
+             'message'=>'User created, a confirmation token has been sent at the number provided',
             ), Response::HTTP_OK);
     }
          
@@ -130,7 +138,8 @@ class SecurityController extends FOSRestController
      * @Route("/user/activate")
      * @Rest\Get("/user/activate")
      * @ApiDoc(
-     *  description="Confirm ",
+     *  section = "Register new Customer",
+     *  description=" (Step 2) Activate a new customer ",
      *  requirements={
      *      {
      *          "name"="token",
@@ -140,7 +149,7 @@ class SecurityController extends FOSRestController
      *      {
      *          "name"="mobile",
      *          "dataType"="string",
-     *          "description"="Mobile number for the current account"
+     *          "description"="Mobile number for the current account (11 digits)"
      *      },
 
      *  },
@@ -196,19 +205,21 @@ class SecurityController extends FOSRestController
      * @Route("/login")
      * @Rest\Get("/login")
      * @ApiDoc(
-     *  description="Returns the secret_id and the client_id",
-     *  requirements={
+     *  section = "Authentication", 
+     *  description="(Step 1)   Returns the secret_id and the client_id for the user",
+     *  parameters={
      *      {
      *          "name"="username",
      *          "dataType"="string",
-     *          "description"="username"
+     *          "description"="The username registered for an user",
+     *          "required"="true"
      *      },
-          *      {
+     *      {
      *          "name"="password",
      *          "dataType"="string",
-     *          "description"="password"
+     *          "description"="password",
+     *          "required"="true"
      *      },
-
      *  },
      * )
      */
@@ -253,7 +264,6 @@ class SecurityController extends FOSRestController
             $clientManager->updateClient($client);
 
         return new JsonResponse(array(
-            'id' => $user->getId(),
             'secret'=>$client->getSecret(),
             'client_id' => $client->getPublicId(),
             ), Response::HTTP_OK);
@@ -270,37 +280,141 @@ class SecurityController extends FOSRestController
      * @Route("/forgot-password")
      * @Rest\Get("/forgot-password")
      * @ApiDoc(
-     *  description="Send to # provided a token for accesing to account",
+     *  section = "Reset password",
+     *  description=" (Step 1)  Send to # provided a token for accesing to account",
      *  requirements={
-     *      {
-     *          "name"="limit",
-     *          "dataType"="string",
-     *          "description"="Send a message through Twilio API Services"
-     *      }
-     *  },
-     *  parameters={
      *      {"name"="number", "dataType"="string", "required"=true, "description"="mobile number"}
      *  }
      * )
      */
          public function forgotPasswordAction()
         {
-             $request = $this->getRequest();
-
+            $request = $this->getRequest();
             $number= $request->get('number');
-            $number = "+".$number;
+              $em = $this->getDoctrine()->getEntityManager();
+            if (!isset($number)){
+                  return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'You must pass all fields',
+                        ), Response::HTTP_OK);
+             }
+            if (strlen($number)!=11)
+                    return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'The mobile provided is not a valid number',
+                    ), Response::HTTP_OK);
+            $exist= $em->getRepository("AppBundle:User")->findUserByMobile(array('mobile'=>$number));
+            if (count($exist)==0)
+            return new JsonResponse(array(
+                            'error' => '301',
+                            'message'=>'This mobile is not registered',
+                            ), Response::HTTP_OK);
 
+            $number = "+".$number;
+            $random =Util::randomize(6);
 
             $twilio = $this->get('twilio.api');
             $message = $twilio->account->messages->sendMessage(
-          '+17865817808 ', // From a Twilio number in your account
-          $number, // Text any number
-          "Hello monkey!"
-        );
+            '+17865817808 ', // From a Twilio number in your account
+            $number, // Text any number
+            "Hello, your access token for change the password is ".$random
+            );
+            $user = $exist[0];
+            $user->setConfirmationToken($random);
+            $userManager = $this->get('fos_user.user_manager');
+            $userManager->updateUser($user);
+           
+            return new JsonResponse(array(
+                            'message'=>'The token has been already sent to number provided',
+                            ), Response::HTTP_OK);
 
-            $otherInstance = $twilio->createInstance('BBBB', 'CCCCC');
-            return new Response($message->sid);
         }
 
+     /**
+     * @Route("/user/find")
+     * @Rest\Get("/user/find")
+     * @ApiDoc(
+     *  section = "Reset password",
+     *  description=" (Step 2) Reset password using the token and mobile number",
+     *  requirements={
+     *      {"name"="number", "dataType"="string", "require"=true, "description"="mobile number"},
+     *      {"name"="token", "dataType"="string", "require"=true, "description"="token provided"},
+     *      {"name"="password", "dataType"="password", "require"=true, "description"="password"},
+     *      {"name"="password_confirmation", "dataType"="password", "require"=true, "description"="password confirmation"}
+     *  }
+     * )
+     */
+         public function resetPasswordAction()
+        {
+            $request = $this->getRequest();
+            $number= $request->get('number');
+            $token= $request->get('token');
+            $password= $request->get('password');
+            $password_confirmation= $request->get('password_confirmation');
+            if (!isset($password) || !isset($password_confirmation) || ($password_confirmation!=$password) ){
+                  return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'The password fields provided does not match',
+                        ), Response::HTTP_OK);
+             }
+            if (strlen($password)<6){
+                  return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'The password fields must have at least 6 characters',
+                        ), Response::HTTP_OK);
+             }
+
+              $em = $this->getDoctrine()->getEntityManager();
+            if (!isset($number) || !isset($token) ){
+                  return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'You must pass all fields',
+                        ), Response::HTTP_OK);
+             }
+            if (strlen($number)!=11)
+                    return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'The mobile provided is not a valid number',
+                    ), Response::HTTP_OK);
+
+            $exist= $em->getRepository("AppBundle:User")->findUserByMobile(array('mobile'=>$number));
+            if (count($exist)==0)
+            return new JsonResponse(array(
+                            'error' => '301',
+                            'message'=>'This mobile is not registered',
+                            ), Response::HTTP_OK);
+
+            $user = $exist[0];
+            if (!$user instanceof \AppBundle\Entity\User) {
+                          return new JsonResponse(array(
+                            'error' => '302',
+                            'message'=>'No matching user account found with info provided',
+                            ), Response::HTTP_OK);
+             }
+
+            if ($user->getConfirmationToken()!=$token) {
+                          return new JsonResponse(array(
+                            'error' => '302',
+                            'message'=>'No matching user account found with info provided',
+                            ), Response::HTTP_OK);
+             }
+
+        $encoder_service = $this->get('security.encoder_factory');
+        $encoder = $encoder_service->getEncoder($user);
+        $encoded_pass = $encoder->encodePassword($password, $user->getSalt());
+        $user->setConfirmationToken("");
+        $user->setPassword($encoded_pass);
+    
+        $userManager = $this->get('fos_user.user_manager');
+        $userManager->updateUser($user);
+           
+           
+            return new JsonResponse(array(
+                            'message'=>"Your password has been reset",
+                            'username'=>$user->getUsername(),
+                            'email'=>$user->getEmail(),
+                            ), Response::HTTP_OK);
+
+        }
 
 }
