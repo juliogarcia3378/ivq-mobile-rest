@@ -57,7 +57,15 @@ class Profile
      */
     private $user;
 
-  
+    /**
+     * @var \AppBundle\Entity\Address
+     *
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Address",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=true)
+     * })
+     */
+      private $address;
     /**
      * Get id
      *
@@ -187,6 +195,29 @@ class Profile
         return $this->user;
     }
 
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Group
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 
 
     public function __construct()

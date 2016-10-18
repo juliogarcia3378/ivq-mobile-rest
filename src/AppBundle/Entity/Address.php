@@ -24,7 +24,7 @@ class Address
 
     /**
      * @var string
-     * @ORM\Column(name="name", type="text", nullable=false)
+     * @ORM\Column(name="name", type="text", nullable=true)
      */
     private $address;
 
@@ -46,7 +46,7 @@ class Address
 
     /**
      * @var integer
-     * @ORM\Column(name="zip", type="integer",  nullable=false)
+     * @ORM\Column(name="zip", type="integer",  nullable=true)
      * @Assert\NotBlank(message="Required field")
      */
     private $zip;
@@ -61,6 +61,13 @@ class Address
      */
     private $groups;
 
+    /**
+     * @var \MyGroups
+     *
+     * @ORM\OneToOne(targetEntity="Profile",mappedBy="address")
+     */
+    private $profile;
+
   
     /**
      * Get id
@@ -72,13 +79,7 @@ class Address
         return $this->id;
     }
 
-     /**
-     * Set MyGroups
-     *
-     * @param AppBundle\Entity\MyGroups $group
-     * @return group
-     */
-    
+
 
     /**
      * Get group
@@ -89,7 +90,15 @@ class Address
     {
         return $this->groups;
     }
- 
+     /**
+     * Get group
+     *
+     * @return AppBundle\Entity\Profile
+     */
+    public function getProfile()
+    {
+        return $this->profile;
+    }
 
     /**
      * Set code

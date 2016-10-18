@@ -64,10 +64,10 @@ class Profile extends \AppBundle\Entity\Profile implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'name', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'lastname', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'phone', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'avatar', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'user'];
+            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'name', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'lastname', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'phone', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'avatar', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'user', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'address'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'name', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'lastname', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'phone', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'avatar', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'user'];
+        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'name', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'lastname', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'phone', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'avatar', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'user', '' . "\0" . 'AppBundle\\Entity\\Profile' . "\0" . 'address'];
     }
 
     /**
@@ -296,6 +296,28 @@ class Profile extends \AppBundle\Entity\Profile implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUser', []);
 
         return parent::getUser();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAddress($address)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAddress', [$address]);
+
+        return parent::setAddress($address);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAddress()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAddress', []);
+
+        return parent::getAddress();
     }
 
     /**

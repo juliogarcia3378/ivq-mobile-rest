@@ -21,20 +21,20 @@ class __TwigTemplate_72521d9105f5743fcbec204d8e9bbcca46da891bff35fd44bddaef187d7
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_4acc85a00675e6bfb647bfb889a630aa510ff012a149b208b1ebaca363ec4bff = $this->env->getExtension("native_profiler");
-        $__internal_4acc85a00675e6bfb647bfb889a630aa510ff012a149b208b1ebaca363ec4bff->enter($__internal_4acc85a00675e6bfb647bfb889a630aa510ff012a149b208b1ebaca363ec4bff_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "NelmioApiDocBundle::resources.html.twig"));
+        $__internal_97eafd9f551dc5c365bf0a66affaf9410eaed3b9f9dc0eda7f1443e332a935aa = $this->env->getExtension("native_profiler");
+        $__internal_97eafd9f551dc5c365bf0a66affaf9410eaed3b9f9dc0eda7f1443e332a935aa->enter($__internal_97eafd9f551dc5c365bf0a66affaf9410eaed3b9f9dc0eda7f1443e332a935aa_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "NelmioApiDocBundle::resources.html.twig"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_4acc85a00675e6bfb647bfb889a630aa510ff012a149b208b1ebaca363ec4bff->leave($__internal_4acc85a00675e6bfb647bfb889a630aa510ff012a149b208b1ebaca363ec4bff_prof);
+        $__internal_97eafd9f551dc5c365bf0a66affaf9410eaed3b9f9dc0eda7f1443e332a935aa->leave($__internal_97eafd9f551dc5c365bf0a66affaf9410eaed3b9f9dc0eda7f1443e332a935aa_prof);
 
     }
 
     // line 3
     public function block_content($context, array $blocks = array())
     {
-        $__internal_e02b064fe5684cee93538e7637cdae4be58c9db83d2d6c3deb7a28f67684d98c = $this->env->getExtension("native_profiler");
-        $__internal_e02b064fe5684cee93538e7637cdae4be58c9db83d2d6c3deb7a28f67684d98c->enter($__internal_e02b064fe5684cee93538e7637cdae4be58c9db83d2d6c3deb7a28f67684d98c_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_df106df8cb96682b9d3bab14bb7503c5de9aeec2f52e2a31b3b4942c3896145c = $this->env->getExtension("native_profiler");
+        $__internal_df106df8cb96682b9d3bab14bb7503c5de9aeec2f52e2a31b3b4942c3896145c->enter($__internal_df106df8cb96682b9d3bab14bb7503c5de9aeec2f52e2a31b3b4942c3896145c_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
         // line 4
         echo "    <div id=\"summary\">
@@ -221,7 +221,7 @@ $context["resource"] != "others")) {
         unset($context['_seq'], $context['_iterated'], $context['section'], $context['sections'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
         
-        $__internal_e02b064fe5684cee93538e7637cdae4be58c9db83d2d6c3deb7a28f67684d98c->leave($__internal_e02b064fe5684cee93538e7637cdae4be58c9db83d2d6c3deb7a28f67684d98c_prof);
+        $__internal_df106df8cb96682b9d3bab14bb7503c5de9aeec2f52e2a31b3b4942c3896145c->leave($__internal_df106df8cb96682b9d3bab14bb7503c5de9aeec2f52e2a31b3b4942c3896145c_prof);
 
     }
 

@@ -117,16 +117,30 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             }
             not_index:
 
-            // profile
-            if ($pathinfo === '/ivq/profile') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_profile;
-                }
+            if (0 === strpos($pathinfo, '/ivq/profile')) {
+                // profile
+                if ($pathinfo === '/ivq/profile') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_profile;
+                    }
 
-                return array (  '_controller' => 'ApiBundle\\Controller\\ProfileController::profileAction',  '_format' => 'json',  '_route' => 'profile',);
+                    return array (  '_controller' => 'ApiBundle\\Controller\\ProfileController::profileAction',  '_format' => 'json',  '_route' => 'profile',);
+                }
+                not_profile:
+
+                // update
+                if ($pathinfo === '/ivq/profile/update') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_update;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\ProfileController::updateAction',  '_format' => 'json',  '_route' => 'update',);
+                }
+                not_update:
+
             }
-            not_profile:
 
         }
 
@@ -176,7 +190,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             not_forgot_password:
 
             // reset_password
-            if ($pathinfo === '/app/user/find') {
+            if ($pathinfo === '/app/password/reset') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                     $allow = array_merge($allow, array('GET', 'HEAD'));
                     goto not_reset_password;
@@ -185,6 +199,28 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array (  '_controller' => 'AppBundle\\Controller\\SecurityController::resetPasswordAction',  '_format' => 'json',  '_route' => 'reset_password',);
             }
             not_reset_password:
+
+            // country
+            if ($pathinfo === '/app/country/list') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_country;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\StateController::countryAction',  '_format' => 'json',  '_route' => 'country',);
+            }
+            not_country:
+
+            // state
+            if ($pathinfo === '/app/state/list') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_state;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\StateController::stateAction',  '_format' => 'json',  '_route' => 'state',);
+            }
+            not_state:
 
         }
 

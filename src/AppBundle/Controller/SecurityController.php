@@ -331,8 +331,8 @@ class SecurityController extends FOSRestController
         }
 
      /**
-     * @Route("/user/find")
-     * @Rest\Get("/user/find")
+     * @Route("/password/reset")
+     * @Rest\Get("/password/reset")
      * @ApiDoc(
      *  section = "Reset password",
      *  description=" (Step 2) Reset password using the token and mobile number",
