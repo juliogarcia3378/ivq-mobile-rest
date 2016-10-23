@@ -75,7 +75,7 @@ class ProfileController extends FOSRestController
      *  description="Update current user's profile",
      *  requirements={
      *      {"name"="name", "dataType"="string", "require"=false, "description"="name"},
-     *      {"name"="last_name", "dataType"="string", "require"=false, "description"="lastName"},
+     *      {"name"="lastname", "dataType"="string", "require"=false, "description"="last name"},
      *      {"name"="avatar", "dataType"="string", "require"=false, "description"="avatar"},
      *      {"name"="city", "dataType"="string", "require"=true, "description"="city"},
      *      {"name"="state", "dataType"="numeric", "require"=true, "description"="numeric value for State *       list call"},

@@ -4732,7 +4732,7 @@ class appDevDebugProjectContainer extends Container
      */
     protected function getSecurity_Authentication_ManagerService()
     {
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider(new \FOS\UserBundle\Security\UserProvider($this->get('fos_user.user_manager')), $this->get('fos_oauth_server.server'), $this->get('security.user_checker.api'))), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider($this->get('fos_user.user_manager'), $this->get('fos_oauth_server.server'), $this->get('security.user_checker.api'))), true);
 
         $instance->setEventDispatcher($this->get('debug.event_dispatcher'));
 

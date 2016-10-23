@@ -145,6 +145,28 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         if (0 === strpos($pathinfo, '/app')) {
+            // list_event
+            if ($pathinfo === '/app/event/list') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_list_event;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\EventsController::listEventAction',  '_format' => 'json',  '_route' => 'list_event',);
+            }
+            not_list_event:
+
+            // list_groups
+            if ($pathinfo === '/app/group/list') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_list_groups;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\GroupController::listGroupsAction',  '_format' => 'json',  '_route' => 'list_groups',);
+            }
+            not_list_groups:
+
             // register_consumer
             if ($pathinfo === '/app/register') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {

@@ -53,12 +53,7 @@ class User extends BaseUser
      */
     protected  $token;
 
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sessionid", type="string", nullable=true)
-     */
+ 
     
     /**
      * Get id

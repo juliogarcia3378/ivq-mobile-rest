@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="coupon")
- * @ORM\Entity(repositoryClass="App\Repository\CouponRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CouponRepository")
  */
 class Coupon
 {
@@ -20,39 +20,44 @@ class Coupon
      * @ORM\SequenceGenerator(sequenceName="coupon_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="code", type="text",  nullable=false)
+     */
+    private $code;
 
     /**
      * @var string
-     * @ORM\Column(name="information", type="text",  nullable=false)
-     * @Assert\Email
-     * @Assert\NotBlank(message="Email required field")
+     * @ORM\Column(name="name", type="text",  nullable=false)
+     * @Assert\NotBlank(message="Name required ")
+     */
+    private $name;
+
+    /**
+     * @var string
+     * @ORM\Column(name="information", type="text",  nullable=true)
      */
     private $information;
 
 
 
-            /**
-     * @var string
-     * @ORM\Column(name="expires_at", type="datetime",  nullable=false)
-     * @Assert\Email
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="expires_at", type="date",  nullable=true)
      * @Assert\NotBlank(message="Date required field")
      */
     private $expires_at;
 
-
-        /**
+    /**
      * @var string
-     * @ORM\Column(name="qr", type="string", length=250, nullable=false)
-     * @Assert\Email
-     * @Assert\NotBlank(message="QR field required")
+     * @ORM\Column(name="barcode", type="text",  nullable=true)
      */
-    private $qr;
+    private $barcode;
 
         /**
      * @var string
-     * @ORM\Column(name="logo", type="string", length=250, nullable=false)
-     * @Assert\Email
-     * @Assert\NotBlank(message="Logo field required")
+     * @ORM\Column(name="logo", type="text", nullable=true)
      */
     private $logo;
 
@@ -78,30 +83,77 @@ class Coupon
         return $this->id;
     }
 
-
-
-    /**
+  /**
      * Set qr
      *
-     * @param string $qr
+     * @param text $name
      *
      * @return Coupon
      */
-    public function setQR($qr)
+    public function setName($name)
     {
-        $this->qr = $qr;
+        $this->name = $name;
     
         return $this;
     }
 
     /**
-     * Get qr
+     * Get Name
      *
      * @return string
      */
-    public function getQR()
+    public function getName()
     {
-        return $this->qr;
+        return $this->name;
+    }
+
+      /**
+     * Set qr
+     *
+     * @param text $code
+     *
+     * @return Coupon
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    
+        return $this;
+    }
+
+    /**
+     * Get Name
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+
+    /**
+     * Set qr
+     *
+     * @param text $barcode
+     *
+     * @return Coupon
+     */
+    public function setBarcode($barcode)
+    {
+        $this->barcode = $barcode;
+    
+        return $this;
+    }
+
+    /**
+     * Get barcode
+     *
+     * @return string
+     */
+    public function getBarcode()
+    {
+        return $this->barcode;
     }
 
 
@@ -134,7 +186,7 @@ class Coupon
 
     public function setGroups(\AppBundle\Entity\MyGroups $groups = null)
     {
-        $this->group = $groups;
+        $this->groups = $groups;
 
         return $this;
     }
@@ -172,27 +224,27 @@ class Coupon
         return $this->logo;
     }
 
-
-        /**
-     * Set foto
+  
+    /**
+     * Set datetime
      *
      * @param string $updated_at
-     * @return Event
+     * @return \DateTime  
      */
-    public function setUpdatedAt($updated_at)
+    public function setExpiresAt($expires_at)
     {
-        $this->updated_at = $updated_at;
+        $this->expires_at = $expires_at;
 
         return $this;
     }
 
     /**
-     * Get foto
+     * Get datetime
      *
-     * @return string 
+     * @return \DateTime  
      */
-    public function getUpdatedAt()
+    public function getExpiresAt()
     {
-        return $this->updated_at;
+        return $this->expires_at;
     }
 }

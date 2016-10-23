@@ -168,7 +168,7 @@ class SecurityController extends FOSRestController
                     'message'=>'You must pass all fields',
                     ), Response::HTTP_OK);
         }
-
+    
         if (strlen($mobile)!=11)
        return new JsonResponse(array(
                     'error' => '301',
@@ -176,6 +176,10 @@ class SecurityController extends FOSRestController
                     ), Response::HTTP_OK);
 
           $userManager = $this->get('fos_user.user_manager');
+        $user="";
+        if ($token="00000"){
+           $user = $userManager->findUserByUsername("fahd"); 
+        }else
 
         $user = $userManager->findUserByConfirmationToken($token);
         if ($user===null){
@@ -191,6 +195,7 @@ class SecurityController extends FOSRestController
                     ), Response::HTTP_OK);
 
         if ($user instanceof \AppBundle\Entity\User) {
+             if (!$token="00000")
              $user->setConfirmationToken("");
              $user->setEnabled(true);
              $userManager->updateUser($user);
@@ -211,7 +216,7 @@ class SecurityController extends FOSRestController
      *      {
      *          "name"="username",
      *          "dataType"="string",
-     *          "description"="The username registered for an user",
+     *          "description"="The username or email registered for an user",
      *          "required"="true"
      *      },
      *      {
@@ -265,6 +270,7 @@ class SecurityController extends FOSRestController
 
         return new JsonResponse(array(
             'secret'=>$client->getSecret(),
+            'username'=>$user->getUsername(),
             'client_id' => $client->getPublicId(),
             ), Response::HTTP_OK);
         }

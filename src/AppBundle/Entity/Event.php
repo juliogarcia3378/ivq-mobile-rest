@@ -75,7 +75,7 @@ class Event
 
     /**
      * @var string
-     * @ORM\Column(name="website", type="string", length=250, nullable=false)
+     * @ORM\Column(name="website", type="string", length=250, nullable=true)
      * @Assert\Email
      * @Assert\NotBlank(message="Website field required")
      */
@@ -83,8 +83,7 @@ class Event
 
         /**
      * @var string
-     * @ORM\Column(name="logo", type="string", length=250, nullable=false)
-     * @Assert\Email
+     * @ORM\Column(name="logo", type="text",  nullable=false)
      * @Assert\NotBlank(message="Logo field required")
      */
     private $logo;

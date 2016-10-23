@@ -37,7 +37,7 @@ class Profile
 
     /**
      * @var integer
-     * @ORM\Column(name="phone", type="string", length=12, nullable=true)
+     * @ORM\Column(name="phone", type="string", length=12, nullable=false)
      * @Assert\NotBlank(message="Phone field Required ")
      */
     private $phone;

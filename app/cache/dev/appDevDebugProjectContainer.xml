@@ -2073,11 +2073,7 @@
       <argument type="collection">
         <argument type="service">
           <service class="FOS\OAuthServerBundle\Security\Authentication\Provider\OAuthProvider" public="false">
-            <argument type="service">
-              <service class="FOS\UserBundle\Security\UserProvider" public="false">
-                <argument type="service" id="fos_user.user_manager"/>
-              </service>
-            </argument>
+            <argument type="service" id="fos_user.user_manager"/>
             <argument type="service" id="fos_oauth_server.server"/>
             <argument type="service" id="security.user_checker.api"/>
           </service>

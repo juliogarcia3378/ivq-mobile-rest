@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Table(name="groups")
- * @ORM\Entity(repositoryClass="\AppBundle\Repository\GroupsRepository")
+ * @ORM\Entity(repositoryClass="\AppBundle\Repository\GroupRepository")
  */
 class MyGroups
 {
