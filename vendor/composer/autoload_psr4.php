@@ -32,6 +32,7 @@ return array(
     'Negotiation\\' => array($vendorDir . '/willdurand/negotiation/src/Negotiation'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Incenteev\\ParameterHandler\\' => array($vendorDir . '/incenteev/composer-parameter-handler'),
+    'HWI\\Bundle\\OAuthBundle\\' => array($vendorDir . '/hwi/oauth-bundle'),
     'FOS\\RestBundle\\' => array($vendorDir . '/friendsofsymfony/rest-bundle'),
     'FOS\\OAuthServerBundle\\' => array($vendorDir . '/friendsofsymfony/oauth-server-bundle'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),

@@ -49,7 +49,14 @@ class ProfileController extends FOSRestController
 	    	{
 	            return new JsonResponse(array("msg"=>'ok',
 	            							   "role"=>'ROLE_MEMBER',
-	            							   "userId"=>$user->getId()
+	            							   "userId"=>$user->getId(),
+                                                'profile'=>array(
+                                                    'name'=>$profile->getName(),
+                                                    'lastname'=>$profile->getLastname(),
+                                                    'city'=>$profile->getAddress()->getCity(),
+                                                    'state'=>$profile->getAddress()->getState()->getName(),
+                                                    'avatar'=>$profile->getAvatar()
+                                                                )
 	            							 )
 	            						);
 	        }
@@ -57,8 +64,11 @@ class ProfileController extends FOSRestController
             {
                 return new JsonResponse(array("msg"=>'ok',
                                                "role"=>'ROLE_MEMBER',
-                                               "userId"=>$user->getId()
-                                             )
+                                               "userId"=>$user->getId(),
+                                              'profile'=>array(
+                                                    'name'=>$profile->getName(),
+                                                    'avatar'=>$profile->getAvatar()
+                                             ))
                                         );
             }
             return new JsonResponse(array( "userId"=>$user->getId()

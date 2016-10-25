@@ -53,7 +53,7 @@ class User extends BaseUser
      */
     protected  $token;
 
- 
+
     
     /**
      * Get id

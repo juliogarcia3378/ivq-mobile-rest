@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new ApiBundle\ApiBundle(),
             new Vresh\TwilioBundle\VreshTwilioBundle(),
             new Core\ComunBundle\ComunBundle(),
+          //  new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

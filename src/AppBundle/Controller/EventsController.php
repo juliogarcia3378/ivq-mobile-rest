@@ -21,15 +21,28 @@ class EventsController extends FOSRestController
      * @Route("/event/list")
      * @Rest\Get("/event/list")
      * @ApiDoc(
-     *  section = "sdfsdf",
-     *  description="Return the list of groups by filters provided",
+     *  section = "Events",
+     *  description="Return the events by group provided",
+     *  requirements={
+     *      {
+     *          "name"="group",
+     *          "dataType"="string",
+     *          "description"=" Search the events by group_id"
+     *      }
+     *              }
      * )
      */
       public function listEventAction()
         {
+         $request = $this->getRequest();
+         $group = $request->get('group',NULL);
+
             $em = $this->getDoctrine()->getEntityManager();
-            $events = $em->getRepository("AppBundle:Event")->createQueryBuilder('c')
-               ->select('c')
+            $events = $em->getRepository("AppBundle:Event")->createQueryBuilder('a')
+            ->join('a.groups', 'g')
+            ->where('g.id = :group')
+            ->setParameter('group', $group)
+               ->select('a')
                ->getQuery()
                ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
             return new JsonResponse(array( "events"=>$events));
