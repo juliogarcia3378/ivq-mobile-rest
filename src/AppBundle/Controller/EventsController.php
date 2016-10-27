@@ -36,19 +36,39 @@ class EventsController extends FOSRestController
         {
          $request = $this->getRequest();
          $group = $request->get('group',NULL);
+         $array["group"]=$group;
 
-            $em = $this->getDoctrine()->getEntityManager();
-            $events = $em->getRepository("AppBundle:Event")->createQueryBuilder('a')
-            ->join('a.groups', 'g')
-            ->where('g.id = :group')
-            ->setParameter('group', $group)
-               ->select('a')
-               ->getQuery()
-               ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-            return new JsonResponse(array( "events"=>$events));
+         $em = $this->getDoctrine()->getEntityManager();
+         $events = $em->getRepository("AppBundle:Event")->byGroup($array);
+         return new JsonResponse(array( "events"=>$events));
         }
 
-        
+     /**
+     * @Route("/event/detail")
+     * @Rest\Get("/event/detail")
+     * @ApiDoc(
+     *  section = "Events",
+     *  description="Return the event by id provided",
+     *  requirements={
+     *      {
+     *          "name"="event_id",
+     *          "dataType"="string",
+     *          "description"=" Search the event by event_id"
+     *      }
+     *              }
+     * )
+     */
+      public function detailsEventAction()
+        {
+         $request = $this->getRequest();
+         $_event = $request->get('event_id',NULL);
+         $array["event"]=$_event;
+
+         $em = $this->getDoctrine()->getEntityManager();
+         $event = $em->getRepository("AppBundle:Event")->byId($array);
+         return new JsonResponse(array( "event"=>$event));
+        }
+
 
 
      
