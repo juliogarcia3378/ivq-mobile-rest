@@ -195,7 +195,8 @@ class SecurityController extends FOSRestController
                     ), Response::HTTP_OK);
 
         if ($user instanceof \AppBundle\Entity\User) {
-             if (!$token="00000")
+
+             if ($token!="00000")
              $user->setConfirmationToken("");
              $user->setEnabled(true);
              $userManager->updateUser($user);

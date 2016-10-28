@@ -47,17 +47,21 @@ class ProfileController extends FOSRestController
 	        }
 	        if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) 
 	    	{
-	            return new JsonResponse(array("msg"=>'ok',
-	            							   "role"=>'ROLE_MEMBER',
-	            							   "userId"=>$user->getId(),
-                                                'profile'=>array(
-                                                    'name'=>$profile->getName(),
-                                                    'lastname'=>$profile->getLastname(),
-                                                    'city'=>$profile->getAddress()->getCity(),
-                                                    'state'=>$profile->getAddress()->getState()->getName(),
-                                                    'avatar'=>$profile->getAvatar()
-                                                                )
-	            							 )
+                $response =array();
+                $response['msg']='ok';
+                $response['role']='ROLE_MEMBER';
+                $response['userId']=$user->getId();
+                $response['profile']['name']=$profile->getName();
+                $response['profile']['lastname']=$profile->getLastname();
+                $response['profile']['avatar']=$profile->getAvatar();
+                if ($profile->getAddress()!=null){
+                $response['profile']['city']=$profile->getAddress()->getCity();
+                $response['profile']['state']=$profile->getAddress()->getState()->getName();
+                }
+
+
+	            return new JsonResponse($response
+        
 	            						);
 	        }
                         if ($this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
