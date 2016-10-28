@@ -57,6 +57,10 @@ class ProfileController extends FOSRestController
                 if ($profile->getAddress()!=null){
                 $response['profile']['city']=$profile->getAddress()->getCity();
                 $response['profile']['state']=$profile->getAddress()->getState()->getName();
+                }else
+                {
+                $response['profile']['city']="";
+                $response['profile']['state']="";
                 }
 
 
