@@ -160,7 +160,7 @@ class SecurityController extends FOSRestController
         $request = $this->getRequest();
         $token = $request->get('token',NULL);
         $mobile = $request->get('mobile',NULL);
-        
+
 
         if (!isset($token) || !isset($mobile)){
               return new JsonResponse(array(
@@ -177,7 +177,7 @@ class SecurityController extends FOSRestController
 
           $userManager = $this->get('fos_user.user_manager');
         $user="";
-        if ($token="00000"){
+        if ($token=="00000"){
            $user = $userManager->findUserByUsername("fahd"); 
         }else
 
