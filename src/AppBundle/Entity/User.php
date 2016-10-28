@@ -39,6 +39,14 @@ class User extends BaseUser
      */
     private $profile;
 
+
+   /**
+     * @var \invalidAttempts
+     *
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\InvalidAttempts",mappedBy="user",cascade={"persist","remove"})
+     */
+    private $invalidAttempts;
+
     /**
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Member",mappedBy="user",cascade={"persist","remove"})
@@ -196,6 +204,31 @@ class User extends BaseUser
     public function getProfile()
     {
         return $this->profile;
+    }
+
+         /**
+     * @return null
+     */
+    public function setInvalidAttempts(\AppBundle\Entity\InvalidAttempts $invalidAttempts)
+    {
+        return $this->invalidAttempts=$invalidAttempts;
+    }
+             /**
+     * @return null
+     */
+    public function removeInvalidAttempts()
+    {
+         unset($this->invalidAttempts);
+    }
+
+    /**
+     * Get profesor
+     *
+     * @return \AppBundle\Entity\InvalidAttempts $invalidAttempts
+     */
+    public function getInvalidAttempts()
+    {
+        return $this->invalidAttempts;
     }
 
 

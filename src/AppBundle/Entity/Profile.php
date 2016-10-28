@@ -48,6 +48,11 @@ class Profile
      */
     private $avatar;
 
+    /**
+     * @var string
+     * @ORM\Column(name="thumbnail", type="text", nullable=true)
+     */
+    private $thumbnail;
 
 
     /**
@@ -217,6 +222,30 @@ class Profile
     public function getAddress()
     {
         return $this->address;
+    }
+
+        /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Group
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
     }
 
 

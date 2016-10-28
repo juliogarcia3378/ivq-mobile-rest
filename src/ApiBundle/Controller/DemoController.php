@@ -16,8 +16,10 @@ class DemoController extends FOSRestController
     public function getDemosAction()
     {
 
-        $data = array("hello" => "world");
-        $view = $this->view($data);
-        return $this->handleView($view);
+        $em = $this->getDoctrine()->getEntityManager();
+                     $array = array();
+                     $array["group"]=1;
+                     $members = $em->getRepository("AppBundle:Member")->listMembersByGroup($array);
+                     return new JsonResponse(array( "members"=>$members));
     }
 }

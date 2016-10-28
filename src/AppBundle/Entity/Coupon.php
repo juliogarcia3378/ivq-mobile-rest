@@ -65,7 +65,7 @@ class Coupon
     /**
      * @var \AppBundle\Entity\Groups
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MyGroups",inversedBy="event")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Groups",inversedBy="event")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="groups", referencedColumnName="id")
      * })
@@ -184,7 +184,7 @@ class Coupon
 
 
 
-    public function setGroups(\AppBundle\Entity\MyGroups $groups = null)
+    public function setGroups(\AppBundle\Entity\Groups $groups = null)
     {
         $this->groups = $groups;
 
@@ -194,7 +194,7 @@ class Coupon
     /**
      * Get groups
      *
-     * @return \AppBundle\Entity\MyGroups
+     * @return \AppBundle\Entity\Groups
      */
     public function getGroups()
     {

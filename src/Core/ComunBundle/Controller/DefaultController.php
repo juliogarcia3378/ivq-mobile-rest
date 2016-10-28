@@ -12,7 +12,7 @@ class DefaultController extends BaseController
 
      $em = $this->getDoctrine()->getEntityManager();
 
-     $groups = $em->getRepository('IVQAdminBundle:MyGroups')->findAll();
+     $groups = $em->getRepository('IVQAdminBundle:Groups')->findAll();
      $admins = $em->getRepository('MySecurityBundle:Users')->listAllAdmin();
 
         $foto = null;

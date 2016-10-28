@@ -55,14 +55,14 @@ class Address
 
   
     /**
-     * @var \MyGroups
+     * @var \Groups
      *
-     * @ORM\OneToOne(targetEntity="MyGroups",mappedBy="address")
+     * @ORM\OneToOne(targetEntity="Groups",mappedBy="address")
      */
     private $groups;
 
     /**
-     * @var \MyGroups
+     * @var \Groups
      *
      * @ORM\OneToOne(targetEntity="Profile",mappedBy="address")
      */
@@ -84,7 +84,7 @@ class Address
     /**
      * Get group
      *
-     * @return AppBundle\Entity\MyGroups
+     * @return AppBundle\Entity\Groups
      */
     public function getGroup()
     {

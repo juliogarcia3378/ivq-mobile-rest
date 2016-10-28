@@ -23,13 +23,13 @@ class Member
 
 
    /**
-     * @var \AppBundle\Entity\MyGroups
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MyGroups",inversedBy="member")
+     * @var \AppBundle\Entity\Groups
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Groups",inversedBy="member")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="group", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="groups", referencedColumnName="id")
      * })
      */
-       private $group;
+       private $groups;
 
   
  /**
@@ -57,23 +57,23 @@ class Member
     /**
      * Get group
      *
-     * @return \AppBundle\Entity\MyGroups
+     * @return \AppBundle\Entity\Groups
      */
-    public function getGroup()
+    public function getGroups()
     {
-        return $this->group;
+        return $this->groups;
     }
  
          /**
      * Set State
      *
-     * @param \AppBundle\Entity\MyGroups $group
+     * @param \AppBundle\Entity\Groups $group
      *
      * @return Groups
      */
-    public function setGroup(\AppBundle\Entity\MyGroups $group = null)
+    public function setGroups(\AppBundle\Entity\Groups $group = null)
     {
-        $this->group = $group;
+        $this->groups = $group;
 
         return $this;
     }
@@ -91,7 +91,7 @@ class Member
          /**
      * Set User
      *
-     * @param \AppBundle\Entity\Users $use
+     * @param \AppBundle\Entity\User $user
      *
      * @return Groups
      */
@@ -103,12 +103,6 @@ class Member
     }
 
     
-
-    public function __construct()
-    {
-    }
-
-
 
 
     public function __toString(){

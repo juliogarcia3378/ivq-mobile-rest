@@ -14,10 +14,69 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Core\ComunBundle\Util\Util;
 use AppBundle\Entity\Profile;
+use AppBundle\Entity\InvalidAttempts;
 
 class SecurityController extends FOSRestController
 {
 
+
+/**
+     * @Route("/token/reset")
+     * @Rest\Get("/token/reset")
+     * @ApiDoc(
+     *  section = "Resend token",
+     *  description=" (Step 1) Resend the token for the user",
+     *  requirements={
+     *      {
+     *          "name"="mobile",
+     *          "dataType"="string",
+     *          "description"="Mobile number for the current account (11 digits)"
+     *      },
+     *  },
+     * )
+     */
+     public function resetTokenAction()
+    {
+        $request = $this->getRequest();
+        $mobile = $request->get('mobile',NULL);
+
+        if (strlen($mobile)!=11)
+       return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'The mobile provided is not a valid number',
+                    ), Response::HTTP_OK);
+
+       $userManager = $this->get('fos_user.user_manager');
+       $em = $this->getDoctrine()->getEntityManager();
+       $user= $em->getRepository("AppBundle:User")->findUserByMobile(array('mobile'=>$mobile));
+       if (count($user)>0)
+        {
+            $random =Util::randomize(6);
+            $user=$user[0];
+            $user->setConfirmationToken($random);
+            $em->persist($user);
+            $em->flush();
+
+            $mobile = "+".$mobile;
+            $twilio = $this->get('twilio.api');
+            $message = $twilio->account->messages->sendMessage(
+          '+17865817808 ', // From a Twilio number in your account
+          $mobile, // Text any number
+          "Hello Your confirmation token for IVQ Mobile is ".$random."  !"
+        );
+
+            $otherInstance = $twilio->createInstance('BBBB', 'CCCCC');
+
+        return new JsonResponse(array(
+             'message'=>'A confirmation token has been sent at the number provided',
+            ), Response::HTTP_OK);
+        } else {
+             return new JsonResponse(array(
+             'message'=>'Unable to find a user with the number provided',
+            ), Response::HTTP_OK);
+        }
+       
+    }
      /**
      * @Route("/register")
      * @Rest\Get("/register")
@@ -114,6 +173,13 @@ class SecurityController extends FOSRestController
         $profile->setAvatar("");
         $profile->setPhone($mobile);
         $user->setProfile($profile);
+
+        $invalid = new InvalidAttempts();
+        $invalid->setLogin(0);
+        $invalid->setRegistration(0);
+        $invalid->setUser($user);
+
+        $user->setInvalidAttempts($invalid);
         $userManager->updateUser($user);
         
         
@@ -160,7 +226,7 @@ class SecurityController extends FOSRestController
         $request = $this->getRequest();
         $token = $request->get('token',NULL);
         $mobile = $request->get('mobile',NULL);
-
+        $em = $this->getDoctrine()->getEntityManager();
 
         if (!isset($token) || !isset($mobile)){
               return new JsonResponse(array(
@@ -175,30 +241,55 @@ class SecurityController extends FOSRestController
                     'message'=>'The mobile provided is not a valid number',
                     ), Response::HTTP_OK);
 
-          $userManager = $this->get('fos_user.user_manager');
+        $userManager = $this->get('fos_user.user_manager');
         $user="";
         if ($token=="00000"){
            $user = $userManager->findUserByUsername("fahd"); 
         }else
+       $user= $em->getRepository("AppBundle:User")->findUserByMobile(array('mobile'=>$mobile));
+        if (count($user)==0)
+            return new JsonResponse(array(
+                            'error' => '301',
+                            'message'=>'This mobile is not registered',
+                            ), Response::HTTP_OK);
 
-        $user = $userManager->findUserByConfirmationToken($token);
-        if ($user===null){
+        $user=$user[0];
+        if ($user->isEnabled()){
+             return new JsonResponse(array(
+                            'message'=>'This user is enabled',
+                            ), Response::HTTP_OK);
+        }
+        if ($user->getConfirmationToken()!==$token){
+            $invalidAttempts = $user->getInvalidAttempts();
+            if ($invalidAttempts->getRegistration()+1>=3)
+            {
+                 $em->remove($user);
+                 $em->flush();
+                return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'For security reasons your account will be deleted',
+                    ),Response::HTTP_OK);  
+            } else
+            {
+                $invalidAttempts->setRegistration($invalidAttempts->getRegistration()+1);
+                $em->persist($invalidAttempts);
+                $em->flush();
                  return new JsonResponse(array(
                     'error' => '301',
-                    'message'=>'This is not a valid confirmation token',
-                    ),Response::HTTP_OK);  
-        }
-        if ($user->getProfile()->getPhone()!=$mobile)
-            return new JsonResponse(array(
-                    'error' => '301',
                     'message'=>'The mobile and the confirmation token provided dont match',
-                    ), Response::HTTP_OK);
+                    ),Response::HTTP_OK);  
+            } }
+
 
         if ($user instanceof \AppBundle\Entity\User) {
 
              if ($token!="00000")
              $user->setConfirmationToken("");
              $user->setEnabled(true);
+             $invalidAttempts = $user->getInvalidAttempts();
+             $em->remove($invalidAttempts);
+             $em->flush();
+             $user->removeInvalidAttempts();
              $userManager->updateUser($user);
         }
 
@@ -243,9 +334,9 @@ class SecurityController extends FOSRestController
         }
         
         $um = $this->get('fos_user.user_manager');
-
         $user = $um->findUserByUsernameOrEmail($username);
         if (!$user instanceof \AppBundle\Entity\User) {
+
                           return new JsonResponse(array(
                             'error' => '302',
                             'message'=>'No matching user account found with info provided',
@@ -255,15 +346,39 @@ class SecurityController extends FOSRestController
         $encoder_service = $this->get('security.encoder_factory');
         $encoder = $encoder_service->getEncoder($user);
         $encoded_pass = $encoder->encodePassword($password, $user->getSalt());
-
+           $em = $this->getDoctrine()->getEntityManager();
         if ($encoded_pass != $user->getPassword()) {
+                  if (!$user->isEnabled())
+                   {
+                     $invalidAttempts = $user->getInvalidAttempts();
+                        if ($invalidAttempts->getLogin()+1>=3)
+                        {
+                             $em->remove($user);
+                             $em->flush();
+                            return new JsonResponse(array(
+                                'error' => '301',
+                                'message'=>'For security reasons your account will be deleted',
+                                ),Response::HTTP_OK);  
+                        } else{
+                             $invalidAttempts->setLogin($invalidAttempts->getLogin()+1);
+                             $em->persist($invalidAttempts);
+                             $em->flush();   
+                        }
+                    }
+
                         return new JsonResponse(array(
                             'error' => '301',
                              'message'=>'No matching user account found with info provided',
                             ), Response::HTTP_OK);
         }
-         
-        if ($user->isEnabled()){
+          if (!$user->isEnabled()){
+           
+               return new JsonResponse(array(
+                'error' => '301',
+                'message'=>'You need to enable your account',
+                 ), Response::HTTP_OK); 
+          }
+       
             $clientManager = $this->get('fos_oauth_server.client_manager.default');
             $client = $clientManager->createClient();
             $client->setAllowedGrantTypes(array('password'));
@@ -274,13 +389,10 @@ class SecurityController extends FOSRestController
             'username'=>$user->getUsername(),
             'client_id' => $client->getPublicId(),
             ), Response::HTTP_OK);
-        }
-        else {
-            return new JsonResponse(array(
-                'error' => '301',
-                'message'=>'You need to enable your account',
-                 ), Response::HTTP_OK); 
-        }
+        
+      
+            
+        
     }
 
      /**

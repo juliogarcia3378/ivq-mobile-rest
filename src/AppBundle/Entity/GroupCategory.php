@@ -33,7 +33,7 @@ class GroupCategory
     /**
     * @var \Group
      *
-     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\MyGroups", mappedBy="category", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\Groups", mappedBy="category", cascade={"persist","remove"})
      */
     private $groups;
 
@@ -82,7 +82,7 @@ class GroupCategory
     }
 
  
-    public function addGroup(\AppBundle\Entity\MyGroups $group)
+    public function addGroup(\AppBundle\Entity\Groups $group)
     {
         $this->groups[] = $group;
     
@@ -90,7 +90,7 @@ class GroupCategory
     }
 
     
-    public function removeGroup(\AppBundle\Entity\MyGroups $group)
+    public function removeGroup(\AppBundle\Entity\Groups $group)
     {
         $this->groups->removeElement($group);
     }

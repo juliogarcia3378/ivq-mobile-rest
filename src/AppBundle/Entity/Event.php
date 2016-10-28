@@ -91,7 +91,7 @@ class Event
     /**
      * @var \AppBundle\Entity\Groups
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MyGroups",inversedBy="event")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Groups",inversedBy="event")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="groups", referencedColumnName="id")
      * })
@@ -240,7 +240,7 @@ class Event
      *
      * @return Groups
      */
-    public function setGroups(\AppBundle\Entity\MyGroups $groups = null)
+    public function setGroups(\AppBundle\Entity\Groups $groups = null)
     {
         $this->group = $groups;
 
