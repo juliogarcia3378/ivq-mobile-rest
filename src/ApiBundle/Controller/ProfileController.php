@@ -83,8 +83,78 @@ class ProfileController extends FOSRestController
                                          )
                                    );
         }
+      
 
+     /**
+     * @Route("/profile/following")
+     * @Rest\Get("/profile/following")
+     * @ApiDoc(
+     *  section = "Profile",
+     *  description="Get the another members I am following",
+     *  requirements={
+     *              }
+     * )
+     */
+      public function getFollowingAction(){
 
+     if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+                $user = $this->get('security.context')->getToken()->getUser();
+               $following = array();
+               $members= $user->getFollower();
+               foreach ($members as $key => $member) {
+                    $aux["id"]=$member->getFollowing()->getId();
+                    $aux["name"]=$member->getFollowing()->getProfile()->getName();
+                    $aux["lastname"]=$member->getFollowing()->getProfile()->getLastName();
+                  //      $aux["avatar"]=$member->getFollowing()->getProfile()->getAvatar();
+                    $following["following"][]=$aux;
+
+                    
+               }
+                $following["total"]=count($members);
+            return new JsonResponse(array(
+                                    'response'=>$following,
+                                    ), Response::HTTP_OK);
+            }
+            return new JsonResponse(array(
+                                    'error' => '301',
+                                    'message'=>"You haven't permissions for this requirement" ,
+                                    ), Response::HTTP_OK);
+      }
+     
+    /**
+     * @Route("/profile/followers")
+     * @Rest\Get("/profile/followers")
+     * @ApiDoc(
+     *  section = "Profile",
+     *  description="Get my followers",
+     *  requirements={
+     *              }
+     * )
+     */
+      public function getFollowerAction(){
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+                $user = $this->get('security.context')->getToken()->getUser();
+               $followers = array();
+               $members= $user->getFollowing();
+               foreach ($members as $key => $member) {
+                    $aux["id"]=$member->getFollower()->getId();
+                    $aux["name"]=$member->getFollower()->getProfile()->getName();
+                    $aux["lastname"]=$member->getFollower()->getProfile()->getLastName();
+                    $aux["avatar"]=$member->getFollower()->getProfile()->getAvatar();
+                    $followers[]=$aux;
+                    
+               }
+            return new JsonResponse(array(
+                                    'response'=>$followers,
+                                    ), Response::HTTP_OK);
+            }
+            return new JsonResponse(array(
+                                    'error' => '301',
+                                    'message'=>"You haven't permissions for this requirement" ,
+                                    ), Response::HTTP_OK);
+      }
+      
+    
      /**
      * @Route("/profile/update")
      * @Rest\Get("/profile/update")
@@ -185,4 +255,6 @@ class ProfileController extends FOSRestController
                                          )
                                    );
         }
+
+
  }

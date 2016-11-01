@@ -30,6 +30,27 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 	return $array;
 	 }
 
+	     public function viewProfileMember($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+    $em = $this->getEntityManager();
+ 	$qb = $em->createQueryBuilder();
+	 	$qb->select('e')
+	   ->from('AppBundle:Member', 'e')
+	   ->join('e.groups', 'g')
+         ->where('g.id = :group')
+         ->setParameter('group', $filters["group"]);
+	 	$response= $qb->getQuery()->getResult();
+             $array = array();
+	 	foreach ($response as $key => $member) {
+	 		$aux["id"]= $member->getUser()->getId();
+	 		$aux["idMember"]= $member->getId();
+	 		$aux["name"]= $member->getUser()->getProfile()->getName();
+	 		$aux["lastname"]= $member->getUser()->getProfile()->getLastname();
+	 		$aux["avatar"]= $member->getUser()->getProfile()->getAvatar();
+	 		$array[]=$aux;
+	 	}
+	 	return $array;
+	 }
+
 	 public function joinGroup($user,$group_id){
         $em = $this->getEntityManager();
 	 	$group = $em->getRepository("AppBundle:Groups")->find($group_id);

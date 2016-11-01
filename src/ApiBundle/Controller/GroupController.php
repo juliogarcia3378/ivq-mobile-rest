@@ -127,9 +127,6 @@ class GroupController extends FOSRestController
             }
              return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group"));
          
-
-
-
          
         }
 

@@ -53,6 +53,18 @@ class User extends BaseUser
      */
     private $member;
 
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Follow",mappedBy="following",cascade={"persist","remove"})
+     */
+    private $following;
+
+       /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Follow",mappedBy="follower",cascade={"persist","remove"})
+     */
+    private $follower;
+
 
       /**
      * @var string
@@ -171,7 +183,9 @@ class User extends BaseUser
         $this->expired = false;
         $this->roles = array();
         $this->credentialsExpired = false;
-         $this->member = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->member = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->following = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
 
     }
 
@@ -265,5 +279,69 @@ class User extends BaseUser
         return $this->member;
     }
 
+     /**
+     * Add Following
+     *
+     * @param \AppBundle\Entity\Follow $Following
+     * @return Follow
+     */
+    public function addFollowing(\AppBundle\Entity\Follow $follow)
+    {
+        $this->following[] = $following;
+    
+        return $this;
+    }
+
+     /**
+     * Remove following
+     *
+     * @param \AppBundle\Entity\Follow $following
+     */
+    public function removeFollowing(\AppBundle\Entity\Follow $following)
+    {
+        $this->following->removeElement($following);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFollowing()
+    {
+        return $this->following;
+    }
+    /**
+     * Add Follow
+     *
+     * @param \AppBundle\Entity\Follow $follower
+     * @return Follow
+     */
+    public function addFollower(\AppBundle\Entity\Follow $follower)
+    {
+        $this->follower[] = $follower;
+    
+        return $this;
+    }
+
+     /**
+     * Remove Follower
+     *
+     * @param \AppBundle\Entity\Follower $follower
+     */
+    public function removeFollower(\AppBundle\Entity\Follow $follower)
+    {
+        $this->follower->removeElement($follower);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFollower()
+    {
+        return $this->follower;
+    }
 
 }

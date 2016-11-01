@@ -26,7 +26,7 @@ class RefreshToken extends BaseRefreshToken
     protected $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
-     */
+    * @ORM\ManyToOne(targetEntity="User",cascade={"persist", "remove"})
+   */
     protected $user;
 }

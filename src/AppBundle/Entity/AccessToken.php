@@ -24,8 +24,10 @@ class AccessToken extends BaseAccessToken
      */
     protected $client;
 
+
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User",cascade={"persist", "remove"})
+
      */
     protected $user;
 }
