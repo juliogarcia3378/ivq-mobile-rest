@@ -6,11 +6,13 @@ use Core\ComunBundle\Util\ResultType;
 use Core\ComunBundle\Util\Util;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Member;
+use Core\ComunBundle\Util\UtilRepository2;
 
 class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 {
    
     public function listMembersByGroup($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+    
     $em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('e')
@@ -18,13 +20,21 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	   ->join('e.groups', 'g')
          ->where('g.id = :group')
          ->setParameter('group', $filters["group"]);
+          if (isset($filters["start"]) && isset($filters["limit"])){
+          
+         $qb->setFirstResult($filters["start"])
+       		  ->setMaxResults($filters["limit"]);
+			}
+
 	 	$response= $qb->getQuery()->getResult();
+	 	UtilRepository2::getSession()->set("total", count($response));
              $array = array();
 	 	foreach ($response as $key => $member) {
 	 		$aux["id"]= $member->getUser()->getId();
 	 		$aux["name"]= $member->getUser()->getProfile()->getName();
 	 		$aux["lastname"]= $member->getUser()->getProfile()->getLastname();
-	 		//$aux["avatar"]= $member->getUser()->getProfile()->getAvatar();
+	 		$aux["idMember"]= $member->getId();
+	 		$aux["avatar"]= $member->getUser()->getProfile()->getAvatar();
 	 		$array[]=$aux;
 	 	}
 	 	return $array;

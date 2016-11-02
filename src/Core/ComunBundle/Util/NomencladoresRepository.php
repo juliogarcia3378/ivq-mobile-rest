@@ -7,6 +7,7 @@
 namespace Core\ComunBundle\Util;
 
 use Doctrine\ORM\QueryBuilder;
+use Core\ComunBundle\Util\UtilRepository2;
 
 /**
  * @author Franlin Rivero Garcia <frrivero@uci.cu>

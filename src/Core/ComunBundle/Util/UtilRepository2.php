@@ -553,8 +553,9 @@ class UtilRepository2 {
             }
         }
 
-        if(array_key_exists('start', $filters) && array_key_exists('limit', $filters) && $filters['start']!= null && $filters['limit']!=null &&UtilRepository2Config::$paginate != false)
+        if(array_key_exists('start', $filters) && array_key_exists('limit', $filters) && $filters['start']!= null && $filters['limit']!=null )
         {
+           
             $total = UtilRepository2::getTotalResult($qb, $class);
             $start = $filters['start'];
             $limit = $filters['limit'];
@@ -576,18 +577,26 @@ class UtilRepository2 {
         }
         elseif(  UtilRepository2Config::$paginate!=false)
         {
-            $start = UtilRepository2::getContainer()->get('request')->get('iDisplayStart');
-            $size = UtilRepository2::getContainer()->get('request')->get('iDisplayLength');
+            $start = UtilRepository2::getContainer()->get('request')->get('start');
+            $size = UtilRepository2::getContainer()->get('request')->get('limit');
+            if ($size==NULL){
+                $size=10;
+            }
+           if ($start==NULL){
+                $start=0;
+            }
+
             if($start !== null && $size !== null) {
                 $total = UtilRepository2::getTotalResult($qb, $class);
                 $size = $size == -1 ? $total : $size;
 
                 if ($start != null && $size != null) {
-
-                    UtilRepository2::getSession()->set("total", $total);
+                    UtilRepository2::getSession()->set("start", $start);
+                    UtilRepository2::getSession()->set("limit", $size);
                     $qb->setFirstResult($start);
                     $qb->setMaxResults($size);
                 }
+                 UtilRepository2::getSession()->set("total", $total);
             }
 
         }
@@ -770,6 +779,17 @@ class UtilRepository2 {
 
         }
         return UtilRepository2::doQueryResult($query, $resultType);
+    }
+
+    public static function paginate(){
+            $pagination["start"]=UtilRepository2::getSession()->get("start");
+            $pagination["limit"]=UtilRepository2::getSession()->get("limit");
+            $pagination["total"]=UtilRepository2::getSession()->get("total");
+
+            UtilRepository2::getSession()->set("start",null);
+            UtilRepository2::getSession()->set("limit",null);
+
+            return $pagination;
     }
 }
 

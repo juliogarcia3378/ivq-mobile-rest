@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use Core\ComunBundle\Util\UtilRepository2;
+
 
 
 class GroupController extends FOSRestController
@@ -47,7 +49,7 @@ class GroupController extends FOSRestController
                 $member = $em->getRepository("AppBundle:Groups")->isMember($array);
                  if ($member==true)
                  {
-                    return new JsonResponse(array( "message"=>"You are currently joined this group"));  
+                    return new JsonResponse(array( "message"=>"You are currently a member in this group."));  
                  }
                    else
                  {
@@ -55,7 +57,7 @@ class GroupController extends FOSRestController
                  }
 
          }
-          return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group"));
+          return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group."));
            
         }
 
@@ -105,6 +107,10 @@ class GroupController extends FOSRestController
         {
          $request = $this->getRequest();
          $group = $request->get('group',NULL);
+            if ($group==NULL)
+                 {
+                    return new JsonResponse(array( "message"=>"The group ID is not valid."));  
+                 }
            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
               
@@ -112,20 +118,32 @@ class GroupController extends FOSRestController
                 $array["user"]=$user->getId();
                 $em = $this->getDoctrine()->getEntityManager();
                 $member = $em->getRepository("AppBundle:Groups")->isMember($array);
+
                  if ($member==false)
                  {
-                    return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group"));  
+                    return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group."));  
                  }
                    else
                  {
                      $array = array();
                      $array["group"]=$group;
+
+                      $start = UtilRepository2::getContainer()->get('request')->get('start');
+                      $size = UtilRepository2::getContainer()->get('request')->get('limit');
+                      UtilRepository2::getSession()->set("start", $start);
+                      UtilRepository2::getSession()->set("limit", $size);
+                      $array["start"]=$start;
+                      $array["limit"]=$size;
+
                      $members = $em->getRepository("AppBundle:Member")->listMembersByGroup($array);
-                     return new JsonResponse(array( "members"=>$members));
+                     $pagination= UtilRepository2::paginate();
+
+                    return new JsonResponse(array("pagination"=>$pagination,"members"=>$members));
+
                  }
 
             }
-             return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group"));
+             return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group."));
          
          
         }

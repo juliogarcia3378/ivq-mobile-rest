@@ -28,6 +28,16 @@ class EventsController extends FOSRestController
      *          "name"="group",
      *          "dataType"="string",
      *          "description"=" Search the events by group_id"
+     *      },
+     *      {
+     *          "name"="start",
+     *          "dataType"="string",
+     *          "description"=" First Element requested"
+     *      },
+     *      {
+     *          "name"="limit",
+     *          "dataType"="string",
+     *          "description"="Total of elements requested"
      *      }
      *              }
      * )
@@ -39,8 +49,14 @@ class EventsController extends FOSRestController
          $array["group"]=$group;
 
          $em = $this->getDoctrine()->getEntityManager();
-         $events = $em->getRepository("AppBundle:Event")->byGroup($array);
-         return new JsonResponse(array( "events"=>$events));
+         $array["start"]=$this->getRequest()->get("start");
+         $array["limit"]=$this->getRequest()->get("limit");
+        $events = $em->getRepository("AppBundle:Event")->byGroup($array);
+        $pagination["start"]=$this->getRequest()->get("start");
+        $pagination["limit"]=$this->getRequest()->get("limit");
+        $pagination["elements"]=count($events);
+
+         return new JsonResponse(array('pagination'=>$pagination, "events"=>$events));
         }
 
      /**

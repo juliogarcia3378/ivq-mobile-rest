@@ -17,8 +17,12 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	   ->from('AppBundle:Event', 'e')
 	   ->join('e.groups', 'g')
          ->where('g.id = :group')
-         ->setParameter('group', $array["group"])
-	     ->orderBy('e.name', 'ASC');
+         ->setParameter('group', $array["group"]);
+         if (isset($array["start"]) && isset($array["limit"])){
+         $qb->setFirstResult($array["start"])
+         ->setMaxResults($array["limit"]);
+			}
+	     $qb->orderBy('e.name', 'ASC');
 	 	$response= $qb->getQuery()->getResult();
              $array = array();
 	 	foreach ($response as $key => $event) {
