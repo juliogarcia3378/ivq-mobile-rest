@@ -73,7 +73,12 @@ class User extends BaseUser
      */
     protected  $token;
 
-
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="linkedinID", type="string", nullable=true)
+     */
+    protected  $linkedinID;
     
     /**
      * Get id
@@ -200,7 +205,23 @@ class User extends BaseUser
         return $this->groups;
     }
 
+     /**
+     * @return null
+     */
+    public function setLinkedinID($linkedinID)
+    {
+        return $this->linkedinID=$linkedinID;
+    }
+    
 
+    /**
+     * Get profesor
+     *
+     */
+    public function getLinkedinID()
+    {
+        return $this->linkedinID;
+    }
      /**
      * @return null
      */

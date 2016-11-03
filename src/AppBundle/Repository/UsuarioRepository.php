@@ -75,4 +75,12 @@ class UsuarioRepository extends \Core\ComunBundle\Util\NomencladoresRepository
          return $this->filterQB($qb, $filters, ResultType::ObjectType);
      }
 
+     public function findUserByLinkedinID($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+         $qb = $this->getQB();
+        $qb->join('user.profile', 'profile');
+         $qb->andWhere('user.linkedinID = :linkedinID')->setParameter('linkedinID', $filters['linkedinID']);
+         unset($filters['linkedinID']);
+         return $this->filterQB($qb, $filters, ResultType::ObjectType);
+     }
+
 }
