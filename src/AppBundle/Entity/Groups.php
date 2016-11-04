@@ -88,12 +88,19 @@ class Groups
      */
     private $category;
 
-        /**
+     /**
      * @var \Event
      *
      * @ORM\OneToMany(targetEntity="\AppBundle\Entity\Event", mappedBy="groups", cascade={"persist","remove"})
      */
         private $event;
+
+     /**
+     * @var \Broadcast
+     *
+     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\Broadcast", mappedBy="groups", cascade={"persist","remove"})
+     */
+        private $broadcast;
 
      /**
      * @var \member
@@ -460,6 +467,38 @@ class Groups
     public function getEvent()
     {
         return $this->event;
+    }
+     /**
+     * Add Broadcast
+     *
+     * @param \AppBundle\Entity\Broadcast $broadcast
+     * @return broadcast
+     */
+    public function addBroadcast(\AppBundle\Entity\Broadcast $broadcast)
+    {
+        $this->broadcast[] = $broadcast;
+    
+        return $this;
+    }
+
+     /**
+     * Remove Broadcast
+     *
+     * @param \AppBundle\Entity\Broadcast $broadcast
+     */
+    public function removeBroadcast(\AppBundle\Entity\Broadcast $broadcast)
+    {
+        $this->member->removeElement($broadcast);
+    }
+
+    /**
+     * Get broadcast
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBroadcast()
+    {
+        return $this->broadcast;
     }
 
      /**

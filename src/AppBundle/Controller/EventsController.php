@@ -86,6 +86,6 @@ class EventsController extends FOSRestController
         }
 
 
-
+    
      
  }

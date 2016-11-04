@@ -14,6 +14,7 @@ class DemoController extends FOSRestController
 {
 
       /**
+    * @param Request $request
      * @Route("/testing")
      * @Rest\Get("/testing")
      * @ApiDoc(
@@ -23,16 +24,28 @@ class DemoController extends FOSRestController
      */
     public function getDemosAction()
     {
-
-        $em = $this->getDoctrine()->getEntityManager();
-                     $array = array();
-                     $array["group"]=1;
-                     $members = $em->getRepository("AppBundle:User")->find(41)->getFollower();
-                     $following = $em->getRepository("AppBundle:User")->find(41)->getFollowing();
-                     echo "<pre>";
-                      var_dump(count($following));
-                     var_dump(count($members));die;
-
-                     return new JsonResponse(array( "members"=>$members));
-    }
+         if($_SERVER['REQUEST_METHOD']=='POST'){
+         //Getting actual file name
+         $name = $_FILES['photo']['name'];
+         
+         //Getting temporary file name stored in php tmp folder 
+         $tmp_name = $_FILES['photo']['tmp_name'];
+         
+         //Path to store files on server
+         $path = 'uploads/';
+         
+         //checking file available or not 
+         if(!empty($name)){
+         //Moving file to temporary location to upload path 
+         move_uploaded_file($tmp_name,$path.$name);
+         
+         //Displaying success message 
+         echo "Upload successfully";
+         }else{
+         //If file not selected displaying a message to choose a file 
+         echo "Please choose a file";
+         }
+            }
+             return new JsonResponse(array( "message"=>"You haven't permissions for view this broadcast."));
+        }
 }

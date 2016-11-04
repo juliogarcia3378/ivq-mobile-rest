@@ -28,7 +28,7 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 	foreach ($response as $key => $event) {
 	 		$aux["id"]= $event->getId();
 	 		$aux["name"]= $event->getName();
-	 		$aux["price"]= $event->getPrice();
+	 		$aux["ticket"]= $event->getTicketURL();
 	 		$aux["information"]= $event->getInformation();
 	 		$aux["date"]= $event->getDate();
 	 		$aux["updated_at"]= $event->getUpdatedAt();

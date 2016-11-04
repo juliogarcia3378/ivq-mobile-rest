@@ -10,7 +10,6 @@ app:
 
 
 acme_api_demos:
-    type: rest
     resource: ApiBundle\Controller\DemoController
 
     

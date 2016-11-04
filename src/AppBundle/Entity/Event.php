@@ -43,7 +43,14 @@ class Event
 
    /**
      * @var string
-     * @ORM\Column(name="price", type="float",  nullable=false)
+     * @ORM\Column(name="ticket_url", type="text",  nullable=true)
+     * @Assert\NotBlank(message="Required field")
+     */
+    private $ticket_url;
+
+       /**
+     * @var string
+     * @ORM\Column(name="price", type="text",  nullable=true)
      * @Assert\NotBlank(message="Required field")
      */
     private $price;
@@ -81,7 +88,7 @@ class Event
      */
     private $website;
 
-        /**
+    /**
      * @var string
      * @ORM\Column(name="logo", type="text",  nullable=false)
      * @Assert\NotBlank(message="Logo field required")
@@ -166,9 +173,9 @@ class Event
      *
      * @return Event
      */
-    public function setPrice($price)
+    public function setTicketURL($ticketURL)
     {
-        $this->price = $price;
+        $this->ticket_url = $ticketURL;
     
         return $this;
     }
@@ -178,9 +185,9 @@ class Event
      *
      * @return string
      */
-    public function getPrice()
+    public function getTicketURL()
     {
-        return $this->price;
+        return $this->ticket_url;
     }
 
     /**
