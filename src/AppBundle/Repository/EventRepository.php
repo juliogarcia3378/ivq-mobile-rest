@@ -28,12 +28,13 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 	foreach ($response as $key => $event) {
 	 		$aux["id"]= $event->getId();
 	 		$aux["name"]= $event->getName();
+	 	    $aux["paid_event"]= $event->getPaidevent();
+	 		if ($aux["paid_event"]!=false)
 	 		$aux["ticket"]= $event->getTicketURL();
 	 		$aux["information"]= $event->getInformation();
 	 		$aux["date"]= $event->getDate();
 	 		$aux["updated_at"]= $event->getUpdatedAt();
 	 		$aux["website"]= $event->getWebsite();
-	 		$aux["logo"]= $event->getLogo();
 	 		$aux["logo"]= $event->getLogo();
 	 		$aux["address"]=$event->getAddress()->getDescription();
 	 		$array[]=$aux;
@@ -55,12 +56,13 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 
 	 		$aux["id"]= $event->getId();
 	 		$aux["name"]= $event->getName();
-	 		$aux["price"]= $event->getPrice();
 	 		$aux["information"]= $event->getInformation();
+	 		$aux["paid_event"]= $event->getPaidevent();
+	 		if ($aux["paid_event"]!=false)
+	 			$aux["ticket"]= $event->getTicketURL();
 	 		$aux["date"]= $event->getDate();
 	 		$aux["updated_at"]= $event->getUpdatedAt();
 	 		$aux["website"]= $event->getWebsite();
-	 		$aux["logo"]= $event->getLogo();
 	 		$aux["logo"]= $event->getLogo();
 	 		$aux["address"]=$event->getAddress()->getDescription();
 	 	return $aux;

@@ -28,9 +28,9 @@ class Address
      */
     private $address;
 
-        /**
+    /**
      * @var string
-     * @ORM\Column(name="city", type="text", nullable=false)
+     * @ORM\Column(name="city", type="string", length=50, nullable=false)
      */
     private $city;
 

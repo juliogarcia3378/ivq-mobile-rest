@@ -38,6 +38,13 @@ class Broadcast
      */
     private $title;
 
+        /**
+     * @var string
+     * @ORM\Column(name="format", type="string", length=250, nullable=false)
+     * @Assert\NotBlank(message="Name field required")
+     */
+    private $format;
+
     /**
      * @var string
      * @ORM\Column(name="url", type="string", length=250, nullable=false)
@@ -72,6 +79,30 @@ class Broadcast
     }
 
      
+       /**
+     * Get format
+     *
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+        /**
+     * Set title
+     *
+     * @param string $format
+     *
+     * @return Group
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+    
+        return $this;
+    }
+
 
     /**
      * Set title

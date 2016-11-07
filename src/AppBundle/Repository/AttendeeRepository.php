@@ -7,6 +7,7 @@ use Core\ComunBundle\Util\Util;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Attendee;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Core\ComunBundle\Util\UtilRepository2;
 
 class AttendeeRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 {

@@ -28,7 +28,19 @@ class Event
      * @Assert\NotBlank(message="Required field")
      */
     private $name;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="paid_event", type="boolean", nullable=false)
+     */
+    private $paid_event;
 
+    /**
+     * @var string
+     * @ORM\Column(name="finish", type="datetime",  nullable=true)
+     * @Assert\NotBlank(message="Date required field")
+     */
+    private $finish_date;
 
       /**
      * @var \Address
@@ -48,12 +60,7 @@ class Event
      */
     private $ticket_url;
 
-       /**
-     * @var string
-     * @ORM\Column(name="price", type="text",  nullable=true)
-     * @Assert\NotBlank(message="Required field")
-     */
-    private $price;
+     
 
     /**
      * @var string
@@ -139,6 +146,31 @@ class Event
     {
         return $this->name;
     }
+
+        /**
+     * Set paid_event
+     *
+     * @param string $paid_event
+     *
+     * @return Group
+     */
+    public function setPaidevent($paid)
+    {
+        $this->paid_event = $paid;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getPaidevent()
+    {
+        return $this->paid_event;
+    }
+
 
     /**
      * Set address
