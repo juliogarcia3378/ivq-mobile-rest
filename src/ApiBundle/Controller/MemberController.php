@@ -153,7 +153,8 @@ class MemberController extends FOSRestController
                                     'message'=>"You aren't following this member.",
                                     ), Response::HTTP_OK);
                 }else{
-                    $em->remove($following);
+
+                    $em->remove($em->getRepository("AppBundle:Follow")->getFollower($array)[0]);
                     $em->flush();
 
                     return new JsonResponse(array(
