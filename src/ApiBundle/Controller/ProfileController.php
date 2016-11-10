@@ -165,7 +165,7 @@ class ProfileController extends FOSRestController
          * @param ParamFetcher $paramFetcher
          * @param Request $request
           * @Route("/profile/update")
-          * @Rest\POST("/profile/update")
+          * @Rest\Post("/profile/update")
          * @ApiDoc(
          *  section = "Profile",
          *      resource = true,
@@ -185,10 +185,31 @@ class ProfileController extends FOSRestController
          *
          * @return View
          */
-
          
       public function updateAction()
+
         {
+
+  // $uploaddir = '/var/www/html/IVQRest/web/uploads/profile';
+   // $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
+
+   // echo "<p>";
+
+    //if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile)) {
+    //  echo "File is valid, and was successfully uploaded.\n";
+    //} else {
+   //    echo "Upload failed";
+   // }
+
+   // echo "</p>";
+   // echo '<pre>';
+   // echo 'Here is some more debugging info:';
+   // print_r($_FILES);
+   // print "</pre>";
+
+
+
+///
             $request = $this->getRequest();
             $name= $request->get('name');
             $lastname= $request->get('lastname');
@@ -251,14 +272,34 @@ class ProfileController extends FOSRestController
 
                         }
                 }
-                $avatar = $_FILES['avatar']['name'];
+
+  
+      
+
+$avatar = $_FILES["avatar"]["name"];              
                  if ($avatar!=null){
                              if($_SERVER['REQUEST_METHOD']=='POST'){
-                                 $profileDirectory =$this->getParameter('profile_directory');
-                                 if(!empty($avatar)){
-                                 $new_name = date('YmdHis').$avatar;
-                                 move_uploaded_file($avatar,$profileDirectory.'/'.$new_name);
-                                 $avatar= $this->getRequest()->getUriForPath("/uploads/profile/".$new_name);
+                              if(!empty($avatar)){
+              $uploaddir = '/var/www/html/IVQRest/web/uploads/profile/';
+    $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
+
+    echo "<p>";
+
+    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile)) {
+      echo "File is valid, and was successfully uploaded.\n";
+    } else {
+       echo "Upload failed";
+    }
+
+    echo "</p>";
+    echo '<pre>';
+    echo 'Here is some more debugging info:';
+    print_r($_FILES);
+    print "</pre>";
+
+
+
+$avatar= $this->getRequest()->getUriForPath('/uploads/profile/'.$_FILES['avatar']['name']);
                                  $avatar = str_replace("/app.php", "", $avatar);
                                  $avatar = str_replace("/app_dev.php", "", $avatar);
                                  $profile->setAvatar($avatar);
