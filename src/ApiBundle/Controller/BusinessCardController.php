@@ -279,13 +279,29 @@ class BusinessCardController extends FOSRestController
                 $bc->setName($name);
                 $bc->setLastname($lastname); 
                 $bc->setTitle($title);
-                $bc->setCategory($em->getRepository("AppBundle:GroupCategory")->find($category));
+                $category =$em->getRepository("AppBundle:GroupCategory")->find($category);
+                if ($category==null){
+                     return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'The category is not valid',
+                        ), Response::HTTP_OK);
+                }
+                $bc->setCategory($category);
                 $bc->setLogo($path = $this->uploadPicture("logo",$this->getParameter('business_card_directory')));
                 $bc->setPicture($path = $this->uploadPicture("picture",$this->getParameter('business_card_directory')));
                 $new_address = new Address();
                 $new_address->setAddress($address);
                 $new_address->setZip($zip);
-                $new_address->setState($em->getRepository("AppBundle:State")->find($state));
+
+                $state = $em->getRepository("AppBundle:State")->find($state);
+                if ($state==null){
+                     return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'The state is not valid',
+                        ), Response::HTTP_OK);
+                }
+
+                $new_address->setState($state);
                 $new_address->setCity($city);
 
 
