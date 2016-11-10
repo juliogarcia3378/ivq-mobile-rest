@@ -30,6 +30,11 @@ class Groups
      * @Assert\NotBlank(message="Required field")
      */
      private $name;
+     /**
+     * @var string
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+     private $active;
 
      /**
      * @var string
@@ -122,7 +127,13 @@ class Groups
     */
     private $file;
 
-    
+    /**
+     * @var \Groups
+     *
+     * @ORM\OneToOne(targetEntity="PrivateGroup",mappedBy="groups", cascade={"persist","remove"})
+     */
+     
+     private $privateGroup;
     /**
      * Constructor
      */

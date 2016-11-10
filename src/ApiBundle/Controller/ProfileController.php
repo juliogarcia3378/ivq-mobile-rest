@@ -16,6 +16,9 @@ use AppBundle\Entity\Profile;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\State;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Request\Request as MyRequest;
 
 class ProfileController extends FOSRestController
 {
@@ -155,21 +158,35 @@ class ProfileController extends FOSRestController
       }
       
     
-     /**
-     * @Route("/profile/update")
-     * @Rest\Get("/profile/update")
-     * @ApiDoc(
-     *  section = "Profile",
-     *  description="Update current user's profile",
-     *  requirements={
-     *      {"name"="name", "dataType"="string", "require"=false, "description"="name"},
-     *      {"name"="lastname", "dataType"="string", "require"=false, "description"="last name"},
-     *      {"name"="avatar", "dataType"="string", "require"=false, "description"="avatar"},
-     *      {"name"="city", "dataType"="string", "require"=true, "description"="city"},
-     *      {"name"="state", "dataType"="numeric", "require"=true, "description"="numeric value for State *       list call"},
-     *              }
-     * )
-     */
+     
+             /**
+         * Set and upload avatar for reps.
+         *
+         * @param ParamFetcher $paramFetcher
+         * @param Request $request
+          * @Route("/profile/update")
+          * @Rest\POST("/profile/update")
+         * @ApiDoc(
+         *  section = "Profile",
+         *      resource = true,
+         *      https = true,
+         *      description = "Set and upload avatar for reps.",
+         *      statusCodes = {
+         *          200 = "Returned when successful",
+         *          400 = "Returned when errors"
+         *      }
+         * )
+         *
+        *@RequestParam(name="avatar", nullable=false, description="The avatar file")
+        *@RequestParam(name="name", nullable=false, description="name")
+        *@RequestParam(name="lastname", nullable=false, description="last name")
+        *@RequestParam(name="city", nullable=false, description="city")
+        *@RequestParam(name="state", nullable=false, description="state id") 
+         *
+         * @return View
+         */
+
+         
       public function updateAction()
         {
             $request = $this->getRequest();
@@ -177,7 +194,6 @@ class ProfileController extends FOSRestController
             $lastname= $request->get('lastname');
             $city= $request->get('city');
             $state= $request->get('state');
-            $avatar= $request->get('avatar');
 
             $em = $this->getDoctrine()->getEntityManager();
 
@@ -235,8 +251,24 @@ class ProfileController extends FOSRestController
 
                         }
                 }
-                 if ($avatar!=null)
-                    $profile->setAvatar($avatar);
+                $avatar = $_FILES['avatar']['name'];
+                 if ($avatar!=null){
+                             if($_SERVER['REQUEST_METHOD']=='POST'){
+                                 $profileDirectory =$this->getParameter('profile_directory');
+                                 if(!empty($avatar)){
+                                 $new_name = date('YmdHis').$avatar;
+                                 move_uploaded_file($avatar,$profileDirectory.'/'.$new_name);
+                                 $avatar= $this->getRequest()->getUriForPath("/uploads/profile/".$new_name);
+                                 $avatar = str_replace("/app.php", "", $avatar);
+                                 $avatar = str_replace("/app_dev.php", "", $avatar);
+                                 $profile->setAvatar($avatar);
+                                 }
+                                }
+                        
+                   
+
+                 }
+                   
                  if ($name!=null)
                     $profile->setName($name);
                  if ($lastname!=null)

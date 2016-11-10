@@ -103,6 +103,13 @@ class Event
     private $logo;
 
     /**
+     * @var string
+     * @ORM\Column(name="price", type="text",  nullable=false)
+     * @Assert\NotBlank(message="Price field required")
+     */
+    private $price;
+
+    /**
      * @var \AppBundle\Entity\Groups
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Groups",inversedBy="event")
@@ -146,6 +153,31 @@ class Event
     {
         return $this->name;
     }
+
+        /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Group
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
 
         /**
      * Set paid_event

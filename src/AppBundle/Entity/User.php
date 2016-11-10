@@ -39,6 +39,12 @@ class User extends BaseUser
      */
     private $profile;
 
+       /**
+     * @var \Advertiser
+     *
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Advertiser",mappedBy="user",cascade={"persist","remove"})
+     */
+    private $advertiser;
 
    /**
      * @var \invalidAttempts
@@ -64,6 +70,12 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Follow",mappedBy="follower",cascade={"persist","remove"})
      */
     private $follower;
+
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BusinessCard",mappedBy="user",cascade={"persist","remove"})
+     */
+    private $businesscard;
 
 
       /**
@@ -122,6 +134,8 @@ class User extends BaseUser
             return true;
         return false;
     }
+
+
     public function onlyProfe()
     {
         $user = $this;
@@ -191,6 +205,8 @@ class User extends BaseUser
         $this->member = new \Doctrine\Common\Collections\ArrayCollection();
         $this->following = new \Doctrine\Common\Collections\ArrayCollection();
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->businesscard = new \Doctrine\Common\Collections\ArrayCollection();
+
 
     }
 
@@ -239,6 +255,22 @@ class User extends BaseUser
     public function getProfile()
     {
         return $this->profile;
+    }
+
+      public function setAdvertiser(\AppBundle\Entity\Advertiser $advertiser)
+    {
+        return $this->advertiser=$advertiser;
+    }
+    
+
+    /**
+     * Get profesor
+     *
+     * @return \AppBundle\Entity\Advertiser 
+     */
+    public function getAdvertiser()
+    {
+        return $this->advertiser;
     }
 
          /**
@@ -363,6 +395,39 @@ class User extends BaseUser
     public function getFollower()
     {
         return $this->follower;
+    }
+
+        /**
+     * Add BusinessCard
+     *
+     * @param \AppBundle\Entity\BusinessCard $businesscard
+     * @return Follow
+     */
+    public function addBusinessCard(\AppBundle\Entity\BusinessCard $businesscard)
+    {
+        $this->businesscard[] = $businesscard;
+    
+        return $this;
+    }
+
+     /**
+     * Remove BusinessCard
+     *
+     * @param \AppBundle\Entity\BusinessCard $businesscard
+     */
+    public function removeBusinessCard(\AppBundle\Entity\BusinessCard $businesscard)
+    {
+        $this->businesscard->removeElement($businesscard);
+    }
+
+    /**
+     * Get BusinessCard
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBusinessCard()
+    {
+        return $this->businesscard;
     }
 
 }

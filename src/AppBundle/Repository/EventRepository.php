@@ -36,6 +36,7 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 		$aux["updated_at"]= $event->getUpdatedAt();
 	 		$aux["website"]= $event->getWebsite();
 	 		$aux["logo"]= $event->getLogo();
+	 		$aux["price"]= $event->getPrice();
 	 		$aux["address"]=$event->getAddress()->getDescription();
 	 		$array[]=$aux;
 	 	}
