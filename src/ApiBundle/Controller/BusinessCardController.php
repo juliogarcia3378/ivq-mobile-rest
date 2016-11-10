@@ -16,6 +16,10 @@ use AppBundle\Entity\Profile;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\State;
+use AppBundle\Entity\BusinessCard;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Request\Request as MyRequest;
 
 class BusinessCardController extends FOSRestController
 {
@@ -155,6 +159,163 @@ class BusinessCardController extends FOSRestController
                                    );
         }
     
+    
+       /**
+     * @Route("/business-card/new")
+     * @Rest\Get("/business-card/new")
+     * @ApiDoc(
+     *  section = "Business Card",
+     *  description="Return the business card id",
+     * )
+     */
+      public function newBusinessCardAction()
+        {
+            $user = $this->get('security.context')->getToken()->getUser();
+            $request = $this->getRequest();
+            $id = $request->get('id',NULL);
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
+             $this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
+            {
+                $em = $this->getDoctrine()->getManager();
+
+                $bc = new BusinessCard();
+                $bc->setFinished(0);
+                $bc->setUser($user);
+                $em->persist($bc);
+                $em->flush();
+           
+                return new JsonResponse(array("id"=>$bc->getId()));
+            }
+
+            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
+                                   );
+        }
+
+
+             /**
+         * Set and upload avatar for reps.
+         *
+         * @param ParamFetcher $paramFetcher
+         * @param Request $request
+          * @Route("/business-card/create")
+          * @Rest\Post("/business-card/create")
+         * @ApiDoc(
+         *  section = "Business Card",
+         *      resource = true,
+         *      https = true,
+         *      description = "Create the business card.",
+
+         * )
+         *
+        *@RequestParam(name="id", nullable=false, description="id for business card created")
+        *@RequestParam(name="name", nullable=false, description="name")
+        *@RequestParam(name="lastname", nullable=false, description="last name")
+        *@RequestParam(name="title", nullable=false, description="title")
+        *@RequestParam(name="category", nullable=false, description="Category")
+        *@RequestParam(name="address", nullable=false, description="address")
+        *@RequestParam(name="city", nullable=false, description="city")
+        *@RequestParam(name="state", nullable=false, description="state id") 
+        *@RequestParam(name="phone", nullable=false, description="phone")
+        *@RequestParam(name="email", nullable=false, description="email")
+        *@RequestParam(name="zip", nullable=false, description="zip")
+        *@RequestParam(name="fax", nullable=true, description="fax")
+        *@RequestParam(name="website", nullable=true, description="Website")
+        *@RequestParam(name="notes", nullable=true, description="Notes")
+        *@RequestParam(name="about", nullable=true, description="About")
+        *@RequestParam(name="logo", nullable=false, description="Logo")
+        *@RequestParam(name="picture", nullable=false, description="Picture")
+         *
+         * @return View
+         */
+         
+      public function createBusinessCardAction()
+
+        {
+          
+ 
+            $request = $this->getRequest();
+            $id= $request->get('id');
+
+            $name= $request->get('name');
+            $lastname= $request->get('lastname');
+            $title= $request->get('title');
+
+            $category= $request->get('category');
+
+            $address= $request->get('address');
+            $city= $request->get('city');
+            $state= $request->get('state');
+
+            $phone= $request->get('phone');
+            $email= $request->get('email');
+
+            $zip= $request->get('zip');
+            $fax= $request->get('fax');
+
+            $website= $request->get('website');
+            $notes= $request->get('notes');
+
+            $about= $request->get('about');
+            $logo= $request->get('logo');
+
+            $em = $this->getDoctrine()->getManager();
+
+            if (!isset($name) || !isset($lastname) || !isset($category) 
+                || !isset($phone) || !isset($email)  || !isset($state) || !isset($city)){
+                  return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'Some mandatory fields are empty',
+                        ), Response::HTTP_OK);
+             }
+            $bc = $em->getRepository("AppBundle:BusinessCard")->find($id);
+            if ($bc==null){
+                 return new JsonResponse(array(
+                        'error' => '301',
+                        'message'=>'The id provided is not valid',
+                        ), Response::HTTP_OK);
+            }
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+                $user = $this->get('security.context')->getToken()->getUser();
+                $bc->setName($name);
+                $bc->setLastname($lastname); 
+                $bc->setTitle($title);
+                $bc->setCategory($em->getRepository("AppBundle:GroupCategory")->find($category));
+                $bc->setLogo($path = $this->uploadPicture("logo",$this->getParameter('business_card_directory')));
+                $bc->setPicture($path = $this->uploadPicture("picture",$this->getParameter('business_card_directory')));
+                $new_address = new Address();
+                $new_address->setAddress($address);
+                $new_address->setZip($zip);
+                $new_address->setState($em->getRepository("AppBundle:State")->find($state));
+                $new_address->setCity($city);
+
+
+                $bc->setAddress($new_address);
+                $bc->setPhone($phone);
+                $bc->setEmail($email);
+                $bc->setFax($fax);
+                $bc->setWebsite($website);
+                $bc->setNotes($notes);
+                $bc->setAbout($about);
+                $bc->setFinished(true);
+
+                $em->persist($bc);
+                $em->flush();
+
+               return new JsonResponse(array("message"=>'Business Card created',
+                                               "id"=>$bc->getId(),
+                                             )
+                                        );
+
+
+            }
+
+            
+
+            
+            return new JsonResponse(array( "error"=>"You dont have permissions to change this user"
+                                         )
+                                   );
+        }
 
 
  }

@@ -22,6 +22,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 abstract class FOSRestController extends Controller
 {
     use ControllerTrait;
+     
+    protected function uploadPicture($index, $uploaddir){
+     $file = date('Ymdhhmmss').$_FILES[$index]["name"];              
+        if ($file!=null){
+                if($_SERVER['REQUEST_METHOD']=='POST'){
+
+            $base = $this->getParameter('base_directory');
+          
+            $path = $base.$uploaddir . basename($file);
+            move_uploaded_file($_FILES[$index]['tmp_name'], $path);
+
+
+            $file= $this->getRequest()->getUriForPath($uploaddir.$file);
+                                         $file = str_replace("/app.php", "", $file);
+                                         $file = str_replace("/app_dev.php", "", $file);
+                                         return $file;
+                            }
+                 }
+                 return null;
+    }
 
     /**
      * Get the ViewHandler.

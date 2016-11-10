@@ -276,38 +276,21 @@ class ProfileController extends FOSRestController
   
       
 
-$avatar = $_FILES["avatar"]["name"];              
-                 if ($avatar!=null){
-                             if($_SERVER['REQUEST_METHOD']=='POST'){
-                              if(!empty($avatar)){
-              $uploaddir = '/var/www/html/IVQRest/web/uploads/profile/';
-    $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
+             $avatar = $_FILES["avatar"]["name"];              
+                         if ($avatar!=null){
+                                     if($_SERVER['REQUEST_METHOD']=='POST'){
+                      $uploaddir = '/var/www/html/IVQRest/web/uploads/profile/';
+            $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
 
-    echo "<p>";
-
-    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile)) {
-      echo "File is valid, and was successfully uploaded.\n";
-    } else {
-       echo "Upload failed";
-    }
-
-    echo "</p>";
-    echo '<pre>';
-    echo 'Here is some more debugging info:';
-    print_r($_FILES);
-    print "</pre>";
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile);
 
 
 
-$avatar= $this->getRequest()->getUriForPath('/uploads/profile/'.$_FILES['avatar']['name']);
-                                 $avatar = str_replace("/app.php", "", $avatar);
-                                 $avatar = str_replace("/app_dev.php", "", $avatar);
-                                 $profile->setAvatar($avatar);
-                                 }
-                                }
-                        
-                   
-
+            $avatar= $this->getRequest()->getUriForPath('/uploads/profile/'.$_FILES['avatar']['name']);
+                                         $avatar = str_replace("/app.php", "", $avatar);
+                                         $avatar = str_replace("/app_dev.php", "", $avatar);
+                                         $profile->setAvatar($avatar);
+                            }
                  }
                    
                  if ($name!=null)

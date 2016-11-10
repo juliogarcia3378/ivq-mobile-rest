@@ -24,7 +24,7 @@ class BusinessCard
 
     /**
      * @var string
-     * @ORM\Column(name="title", type="string", length=250, nullable=false)
+     * @ORM\Column(name="title", type="string", length=250, nullable=true)
      * @Assert\NotBlank(message="Name field required")
      */
     private $title;
@@ -49,7 +49,7 @@ class BusinessCard
      *
      * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Address",cascade={"persist", "remove"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=true)
      * })
      */
       private $address;
@@ -58,7 +58,7 @@ class BusinessCard
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="user")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=true)
      * })
      */
        private $user;
@@ -74,7 +74,7 @@ class BusinessCard
 
     /**
      * @var integer
-     * @ORM\Column(name="phone", type="string", length=12, nullable=false)
+     * @ORM\Column(name="phone", type="string", length=12, nullable=true)
      * @Assert\NotBlank(message="Phone field Required ")
      */
     private $phone;
@@ -127,7 +127,12 @@ class BusinessCard
      */
     private $picture;
 
-
+    
+    /**
+     * @var string
+     * @ORM\Column(name="finished", type="boolean", nullable=false)
+     */
+    private $finished;
   
     /**
      * Get id
@@ -163,6 +168,32 @@ class BusinessCard
     {
         return $this->name;
     }
+
+           /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Group
+     */
+    public function setFinished($finished)
+    {
+        $this->finished = $finished;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getFinished()
+    {
+        return $this->finished;
+    }
+    
+
     
            /**
      * Set name

@@ -48,4 +48,23 @@ class DemoController extends FOSRestController
             }
              return new JsonResponse(array( "message"=>"You haven't permissions for view this broadcast."));
         }
+
+
+
+        /* $avatar = $_FILES["avatar"]["name"];              
+                         if ($avatar!=null){
+                                     if($_SERVER['REQUEST_METHOD']=='POST'){
+                      $uploaddir = '/var/www/html/IVQRest/web/uploads/profile/';
+            $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
+
+            move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile);
+
+
+
+            $avatar= $this->getRequest()->getUriForPath('/uploads/profile/'.$_FILES['avatar']['name']);
+                                         $avatar = str_replace("/app.php", "", $avatar);
+                                         $avatar = str_replace("/app_dev.php", "", $avatar);
+                                         $profile->setAvatar($avatar);
+                            }
+                 }*/
 }
