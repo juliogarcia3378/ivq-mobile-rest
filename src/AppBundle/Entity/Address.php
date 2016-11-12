@@ -201,6 +201,10 @@ class Address
         return $this->getAddress();
     }
 
+        public function getCityAndState(){
+        return $this->getCity().", ".$this->getState()->getCode();
+    }
+
         public function getDescription(){
             if ($this->getCity()!='')
 

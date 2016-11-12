@@ -71,6 +71,18 @@ class User extends BaseUser
      */
     private $follower;
 
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteGroup",mappedBy="favourite_group",cascade={"persist","remove"})
+     */
+    private $favourite_group;
+
+        /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteGroup",mappedBy="favourite_member",cascade={"persist","remove"})
+     */
+    private $favourite_member;
+
      /**
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\BusinessCard",mappedBy="user",cascade={"persist","remove"})
@@ -428,6 +440,72 @@ class User extends BaseUser
     public function getBusinessCard()
     {
         return $this->businesscard;
+    }
+
+        /**
+     * Add FavouriteGroup
+     *
+     * @param \AppBundle\Entity\FavouriteGroup $fg
+     * @return FavouriteGroup
+     */
+    public function addFavouriteGroup(\AppBundle\Entity\FavouriteGroup $favourite_group)
+    {
+        $this->favourite_group[] = $favourite_group;
+    
+        return $this;
+    }
+
+     /**
+     * Remove FavouriteGroup
+     *
+     * @param \AppBundle\Entity\FavouriteGroup $fg
+     */
+    public function removeFavouriteGroup(\AppBundle\Entity\FavouriteGroup $favourite_group)
+    {
+        $this->favourite_group->removeElement($favourite_group);
+    }
+
+    /**
+     * Get FavouriteGroup
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFavouriteGroup()
+    {
+        return $this->favourite_group;
+    }
+
+     /**
+     * Add FavouriteGroup
+     *
+     * @param \AppBundle\Entity\FavouriteMember $fg
+     * @return FavouriteMember
+     */
+    public function addFavouriteMember(\AppBundle\Entity\FavouriteMember $favourite_member)
+    {
+        $this->favourite_member[] = $favourite_member;
+    
+        return $this;
+    }
+
+     /**
+     * Remove FavouriteGroup
+     *
+     * @param \AppBundle\Entity\FavouriteGroup $fg
+     */
+    public function removeFavouriteMember(\AppBundle\Entity\FavouriteMember $favourite_member)
+    {
+        $this->favourite_member->removeElement($favourite_member);
+    }
+
+    /**
+     * Get FavouriteGroup
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFavouriteMember()
+    {
+        return $this->favourite_member;
     }
 
 }

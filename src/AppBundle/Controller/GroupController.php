@@ -66,4 +66,66 @@ class GroupController extends FOSRestController
             return new JsonResponse(array("pagination"=>$pagination,"groups"=>$array));
         }
 
+
+      /**
+     * @Route("/group/search")
+     * @Rest\Get("/group/search")
+     * @ApiDoc(
+     *  section = "Groups",
+     *  description="Return the list of groups by filters provided",
+     *  requirements={
+     *      {
+     *          "name"="category",
+     *          "dataType"="string",
+     *          "description"="category ID"
+     *      },
+     *      {
+     *          "name"="search",
+     *          "dataType"="string",
+     *          "description"="String value to search"
+     *      },
+     *      {
+     *          "name"="start",
+     *          "dataType"="string",
+     *          "description"="First Element"
+     *      },
+     *      {
+     *          "name"="limit",
+     *          "dataType"="string",
+     *          "description"="Total of elements requested"
+     *      }
+     *              }
+     * )
+     */
+      public function searchGroupsAction()
+        {
+$request = $this->getRequest();
+            $em = $this->getDoctrine()->getEntityManager();
+            $search = $request->get('search',NULL);
+            $category = $request->get('category',NULL);
+            $array["search"]=$search;
+            $array["category"]=$category;
+
+            $groups = $em->getRepository("AppBundle:Groups")->search($array);
+             $total = count($em->getRepository("AppBundle:Groups")->findAll());
+              $array = array();
+              $i=0;
+              foreach ($groups as $key => $group) {
+                $aux["id"]=$group->getId();
+                $aux["name"]=$group->getName();
+                $aux["description"]=$group->getDescription();
+                $aux["phone"]=$group->getPhone();
+                $aux["email"]=$group->getEmail();
+                $aux["website"]=$group->getPhone();
+                $aux["logo"]=$group->getLogo();
+                $aux["address"]=$group->getAddress()->getDescription();
+                $aux["category"]=$group->getCategory()->getName();
+                $array[]=$aux;
+             }
+
+
+            $pagination= UtilRepository2::paginate();
+            return new JsonResponse(array("pagination"=>$pagination,"groups"=>$array));
+        }
+
  }

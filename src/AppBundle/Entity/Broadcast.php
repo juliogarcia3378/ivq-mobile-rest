@@ -67,6 +67,12 @@ class Broadcast
      */
     private $date;
 
+        /**
+     * @var string
+     * @ORM\Column(name="status", type="boolean",  nullable=false)
+     */
+    private $status;
+
   
     /**
      * Get id
@@ -199,6 +205,29 @@ class Broadcast
         return $this->url;
     }
       
+    /**
+     * Set URL
+     *
+     * @param string $url
+     * @return Broadcast
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get URL
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
 
 
 }

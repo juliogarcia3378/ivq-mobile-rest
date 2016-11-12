@@ -73,7 +73,6 @@ class Event
         /**
      * @var string
      * @ORM\Column(name="date", type="datetime",  nullable=false)
-     * @Assert\Email
      * @Assert\NotBlank(message="Date required field")
      */
     private $date;

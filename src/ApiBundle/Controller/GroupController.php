@@ -148,5 +148,78 @@ class GroupController extends FOSRestController
          
         }
 
+        /**
+     * @Route("/my-groups")
+     * @Rest\Get("/my-groups")
+     * @ApiDoc(
+     *  section = "Groups",
+     *  description="Return My Groups",
+     * )
+     */
+      public function listMyGroupAction()
+        {
+         $request = $this->getRequest();
+        
+           if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+                $user = $this->get('security.context')->getToken()->getUser();
+              
+                     $members = $user->getMembers();
+                     $response = array();
+                     foreach ($members as $key => $member) {
+                        $array['id']=$member->getGroups()->getAddress()->getId();
+                        $array['category']=$member->getGroups()->getCategory()->getName();
+                        $array['logo']=$member->getGroups()->getLogo();
+                        $array['address']=$member->getGroups()->getAddress()->getCityAndState();
+                         $response[]=$array;
+                     }
+                    return new JsonResponse(array("groups"=>$response));
+                 }
+             return new JsonResponse(array( "message"=>"You aren't a valid user."));
+        }
+
+            /**
+     * @Route("/group/view")
+     * @Rest\Get("/group/view")
+     * @ApiDoc(
+     *  section = "Groups",
+     *  description="View Group",
+        *  requirements={
+     *      {
+     *          "name"="group",
+     *          "dataType"="string",
+     *          "description"=" View group"
+     *      }
+     }
+     * )
+     */
+      public function viewGroupAction()
+        {
+         $request = $this->getRequest();
+        $group = $request->get('group',NULL);
+            if ($group==NULL)
+                 {
+                    return new JsonResponse(array( "message"=>"The group ID is not valid."));  
+                 }
+           if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+                
+              
+                $em = $this->getDoctrine()->getEntityManager();
+                 $group = $em->getRepository("AppBundle:Groups")->find($group);
+
+                     $response = array();
+                        $array['id']=$group->getId();
+                        $array['category']=$group->getCategory()->getName();
+                        $array['address']=$group->getAddress()->getAddress();
+                        $array['city']=$group->getAddress()->getCity();
+                        $array['state']=$group->getAddress()->getState()->getName();
+                        $array['logo']=$group->getLogo();
+                        $array['phone']=$group->getPhone();
+                        $array['information']=$group->getDescription();
+                         $response[]=$array;
+                    return new JsonResponse(array("groups"=>$response));
+                 }
+             return new JsonResponse(array( "message"=>"You aren't a valid user."));
+        }
+
      
  }
