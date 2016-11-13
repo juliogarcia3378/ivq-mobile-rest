@@ -464,7 +464,7 @@ class BusinessCard
      *
      * @return Groups
      */
-    public function setCategory(\AppBundle\Entity\GroupCategory $category = null)
+    public function setCategory(\AppBundle\Entity\GroupCategory $category)
     {
         $this->category = $category;
 

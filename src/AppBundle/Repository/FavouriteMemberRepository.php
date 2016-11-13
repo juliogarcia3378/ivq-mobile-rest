@@ -17,24 +17,25 @@ class FavouriteMemberRepository extends \Core\ComunBundle\Util\NomencladoresRepo
  	$em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('f')
-	     ->from('AppBundle:FavouriteGroup', 'f')
+	     ->from('AppBundle:FavouriteMember', 'f')
 	     ->join('f.user', 'u')
-          ->join('f.groups', 'g')
+          ->join('f.member', 'g')
+          ->join('g.user', 'us')
+          ->join('us.profile', 'p')
          ->where('u.id = :user')
          ->setParameter('user', $array["user"]);
          if (isset($array["start"]) && isset($array["limit"])){
          $qb->setFirstResult($array["start"])
          ->setMaxResults($array["limit"]);
 			}
-	     $qb->orderBy('g.name', 'ASC');
+	     $qb->orderBy('p.name', 'ASC');
 	 	$response= $qb->getQuery()->getResult();
              $array = array();
-	 	foreach ($response as $key => $favourite_group) {
-            $aux["id"]= $favourite_group->getGroups()->getId();
-	 		$aux["name"]= $favourite_group->getGroups()->getName();
-            $aux["logo"]= $favourite_group->getGroups()->getLogo();
-	 		$aux["category"]= $favourite_group->getGroups()->getCategory()->getName();
-	 		$aux["address"]= $favourite_group->getGroups()->getAddress()->getCityAndState();
+	 	foreach ($response as $key => $favourite_member) {
+            $aux["id"]= $favourite_member->getMember()->getId();
+	 		$aux["name"]= $favourite_member->getMember()->getUser()->getProfile()->getFullName();
+            $aux["logo"]= $favourite_member->getMember()->getUser()->getProfile()->getAvatar();
+	 		$aux["address"]= $favourite_member->getMember()->getUser()->getProfile()->getAddress()->getCityAndState();
 	 		$array[]=$aux;
 	 	}
 	 	return $array;
