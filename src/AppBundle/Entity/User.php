@@ -89,6 +89,12 @@ class User extends BaseUser
      */
     private $businesscard;
 
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Media",mappedBy="user",cascade={"persist","remove"})
+     */
+    private $media;
+
 
       /**
      * @var string
@@ -218,6 +224,7 @@ class User extends BaseUser
         $this->following = new \Doctrine\Common\Collections\ArrayCollection();
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
         $this->businesscard = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
 
 
     }
@@ -506,6 +513,40 @@ class User extends BaseUser
     public function getFavouriteMember()
     {
         return $this->favourite_member;
+    }
+
+     /**
+     * Add Media
+     *
+     * @param \AppBundle\Entity\Media $media
+     * @return Media
+     */
+    public function addMedia(\AppBundle\Entity\Media $media)
+    {
+        $media->setUser($this);
+        $this->media[] = $media;
+    
+        return $this;
+    }
+
+     /**
+     * Remove Media
+     *
+     * @param \AppBundle\Entity\Media $media
+     */
+    public function removeMedia(\AppBundle\Entity\Media $media)
+    {
+        $this->media->removeElement($media);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 
 }

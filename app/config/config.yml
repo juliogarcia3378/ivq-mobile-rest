@@ -12,6 +12,7 @@ parameters:
     #base_directory: '/var/www/html/IVQRest/web'
     profile_directory: 'uploads/profile/'
     business_card_directory: '/uploads/businessCard/'
+    media_directory: '/uploads/media/'
 
 
 framework:
