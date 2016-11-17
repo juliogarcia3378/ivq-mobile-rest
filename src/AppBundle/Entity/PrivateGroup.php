@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * PrivateGroup
  *
- * @ORM\Table(name="privateroup")
+ * @ORM\Table(name="private_group")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PrivateGroupRepository")
  */
 class PrivateGroup
@@ -37,7 +37,7 @@ class PrivateGroup
      *
      * @ORM\OneToOne(targetEntity="Groups")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="group", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="groups", referencedColumnName="id",nullable=false)
      * })
      */
     private $groups;

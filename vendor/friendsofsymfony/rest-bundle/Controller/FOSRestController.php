@@ -22,6 +22,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 abstract class FOSRestController extends Controller
 {
     use ControllerTrait;
+
+    protected function sortFunction( $a, $b ) {
+    return strtotime($a["date"]) - strtotime($b["date"]);
+}
      
     protected function uploadPicture($index, $uploaddir){
         $array = explode(".", $_FILES[$index]["name"]);

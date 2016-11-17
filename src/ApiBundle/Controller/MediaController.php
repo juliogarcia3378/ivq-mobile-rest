@@ -17,6 +17,7 @@ use AppBundle\Entity\Address;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\State;
 use AppBundle\Entity\Media;
+use AppBundle\Entity\MediaEvent;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\Request as MyRequest;
@@ -43,7 +44,8 @@ class MediaController extends FOSRestController
                 $response =array();
                 $response['msg']='ok';
                 $response['userId']=$user->getId();
-
+                $response["video"]='';
+                $response["picture"]='';
                 foreach ($media as $key => $media) {
                     $arr = array();
 
@@ -178,5 +180,91 @@ class MediaController extends FOSRestController
                                          )
                                    );
         }
+
+
+
+             /**
+         * Set and upload media for reps.
+         *
+         * @param ParamFetcher $paramFetcher
+         * @param Request $request
+          * @Route("/events/media/add")
+          * @Rest\Post("/events/media/add")
+         * @ApiDoc(
+         *  section = "Events",
+         *      resource = true,
+         *      https = true,
+         *      description = "Upload media.",
+         *      statusCodes = {
+         *          200 = "Returned when successful",
+         *          400 = "Returned when errors"
+         *      }
+         * )
+         *
+        *@RequestParam(name="media", nullable=false, description="The media file")
+        *@RequestParam(name="comment", nullable=false, description="Comments")
+        *@RequestParam(name="event", nullable=false, description="Event ID")
+         *
+         * @return View
+         */
+         
+      public function addMediaToEventAction()
+
+        {
+             $em = $this->getDoctrine()->getEntityManager();
+            $request = $this->getRequest();
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+                $user = $this->get('security.context')->getToken()->getUser();
+                $profile = $user->getProfile();
+                if (count($_FILES)==0){
+                     return new JsonResponse(array("error"=>'Error uploading the file'));
+                }
+                  $event = $request->get('event');
+                  if ($event==null){
+                     return new JsonResponse(array("error"=>'This event is not valid'));
+                  }
+                  $event= $em->getRepository('AppBundle:Event')->find($event);
+                  if ($event==null){
+                     return new JsonResponse(array("error"=>'This event is not valid'));
+                  }
+
+                    $mymedia = new Media();
+                    $mymedia->setURL($this->uploadFile("media",$this->getParameter('media_directory')));
+                                            if (($_FILES["media"]["type"] == "video/mp4")
+                                            || ($_FILES["media"]["type"] == "video/mpeg")
+                                            || ($_FILES["media"]["type"] == "audio/wmv")
+                                            || ($_FILES["media"]["type"] == "video/x-ms-wmv"))
+                                                $mymedia->setFormat("video");
+
+                                            if (($_FILES["media"]["type"] == "image/pjpeg")
+                                            || ($_FILES["media"]["type"] == "image/gif")
+                                            || ($_FILES["media"]["type"] == "image/png")
+                                            || ($_FILES["media"]["type"] == "image/jpeg"))  
+                                                $mymedia->setFormat("picture");
+                                         $user->addMedia($mymedia);
+           
+            $em->persist($mymedia);
+      
+            $mediaEvent = new MediaEvent();
+            $mediaEvent->setMedia($mymedia);
+            $mediaEvent->setEvent($event);
+                $comment = $request->get('comment');
+                  if ($comment!=null){
+                     $mediaEvent->setComment($comment);
+                  }
+
+            $em->persist($mediaEvent);
+            $em->flush();
+
+                return new JsonResponse(array("msg"=>'Media added',
+                                             )
+                                        );
+            }
+            
+            return new JsonResponse(array( "error"=>"You dont have permissions upload media"
+                                         )
+                                   );
+        }
+
 
  }

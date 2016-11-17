@@ -96,6 +96,20 @@ class User extends BaseUser
     private $media;
 
 
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment",mappedBy="user",cascade={"persist","remove"})
+     */
+    private $comment;
+
+        /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeMedia",mappedBy="user",cascade={"persist","remove"})
+     */
+    private $likeMedia;
+
+
+
       /**
      * @var string
      *
@@ -225,6 +239,8 @@ class User extends BaseUser
         $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
         $this->businesscard = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comment = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->likeMedia = new \Doctrine\Common\Collections\ArrayCollection();
 
 
     }
@@ -548,5 +564,74 @@ class User extends BaseUser
     {
         return $this->media;
     }
+
+
+     /**
+     * Add Media
+     *
+     * @param \AppBundle\Entity\Comment $media
+     * @return Media
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comment[] = $comment;
+    
+        return $this;
+    }
+
+     /**
+     * Remove Media
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $media)
+    {
+        $this->comment->removeElement($comment);
+    }
+
+    /**
+     * Get comment
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+         /**
+     * Add Media
+     *
+     * @param \AppBundle\Entity\LikeMedia $like
+     * @return Media
+     */
+    public function addLikeMedia(\AppBundle\Entity\LikeMedia $like_)
+    {
+        $like->setUser($this);
+        $this->likeMedia[] = $like_;
+    
+        return $this;
+    }
+
+     /**
+     * Remove Media
+     *
+     * @param \AppBundle\Entity\LikeMedia $like_
+     */
+    public function removeLikeMedia(\AppBundle\Entity\LikeMedia $like_)
+    {
+        $this->likeMedia->removeElement($like_);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLikeMedia()
+    {
+        return $this->likeMedia;
+    }
+
 
 }

@@ -85,6 +85,48 @@ class EventsController extends FOSRestController
          return new JsonResponse(array( "event"=>$event));
         }
 
+     /**
+     * @Route("/event/media/list")
+     * @Rest\Get("/event/media/list")
+     * @ApiDoc(
+     *  section = "Events",
+     *  description="Return the events by group provided",
+     *  requirements={
+     *      {
+     *          "name"="event",
+     *          "dataType"="string",
+     *          "description"=" Search the events by event_id"
+     *      },
+     *      {
+     *          "name"="start",
+     *          "dataType"="string",
+     *          "description"=" First Element requested"
+     *      },
+     *      {
+     *          "name"="limit",
+     *          "dataType"="string",
+     *          "description"="Total of elements requested"
+     *      }
+     *              }
+     * )
+     */
+      public function listMediaByEventAction()
+        {
+         $request = $this->getRequest();
+         $event = $request->get('event',NULL);
+         $array["event"]=$event;
+
+         $em = $this->getDoctrine()->getEntityManager();
+         $array["start"]=$this->getRequest()->get("start");
+         $array["limit"]=$this->getRequest()->get("limit");
+        $media = $em->getRepository("AppBundle:MediaEvent")->byEvent($array);
+        $pagination["start"]=$this->getRequest()->get("start");
+        $pagination["limit"]=$this->getRequest()->get("limit");
+        $pagination["elements"]=count($media);
+
+         return new JsonResponse(array('pagination'=>$pagination, "media"=>$media));
+        }
+
 
     
      

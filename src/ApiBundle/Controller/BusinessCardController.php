@@ -47,8 +47,13 @@ class BusinessCardController extends FOSRestController
                 $response =array();
 
                   foreach ($businessCards as $key => $bc) {
-                     $response['id']=$bc->getId();
-                   
+                    if ($bc->getFinished()==true){
+                     $bcard['id']=$bc->getId();
+                     $bcard['name']=$bc->getName(). " ". $bc->getLastname();
+                     $bcard['picture']=$bc->getPicture();
+                     $bcard['logo']=$bc->getLogo();
+                     $bcard['category']=$bc->getCategory()->getName();
+                     $response[]=$bcard;}
                   }
            
 	            return new JsonResponse(array("response"=>$response));
@@ -90,11 +95,17 @@ class BusinessCardController extends FOSRestController
                  {
                     return new JsonResponse(array( "message"=>"This is a invalid user."));  
                  }
-                $businessCards = $user->getBusinessCard();
+                $businessCards = $anotherUser->getBusinessCard();
                 $response =array();
 
                   foreach ($businessCards as $key => $bc) {
-                     $response['id']=$bc->getId();
+                    if ($bc->getFinished()==true){
+                     $bcard['id']=$bc->getId();
+                     $bcard['name']=$bc->getName(). " ". $bc->getLastname();
+                     $bcard['picture']=$bc->getPicture();
+                     $bcard['logo']=$bc->getLogo();
+                     $bcard['category']=$bc->getCategory()->getName();
+                     $response[]=$bcard;}
                   }
            
                 return new JsonResponse(array("response"=>$response));
@@ -133,6 +144,12 @@ class BusinessCardController extends FOSRestController
                 $em = $this->getDoctrine()->getEntityManager();
 
                 $bc = $em->getRepository("AppBundle:BusinessCard")->find($id);
+                if ($bc==null){
+                     return new JsonResponse(array( "message"=>"Invalid Business Card. "));
+                }
+                if ($bc->getFinished()==false){
+                     return new JsonResponse(array( "message"=>"Invalid Business Card. "));
+                }
                 $response =array();
 
                      $response['id']=$bc->getId();

@@ -38,7 +38,7 @@ class Broadcast
      */
     private $title;
 
-        /**
+    /**
      * @var string
      * @ORM\Column(name="format", type="string", length=250, nullable=false)
      * @Assert\NotBlank(message="Name field required")

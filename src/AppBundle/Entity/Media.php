@@ -46,8 +46,20 @@ class Media
      */
     private $url;
 
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MediaEvent",mappedBy="media",cascade={"persist","remove"})
+     */
+    private $mediaEvent;
 
 
+
+  public function __construct()
+    {
+        $this->mediaEvent = new \Doctrine\Common\Collections\ArrayCollection();
+
+
+    }
 
 
 
@@ -139,6 +151,38 @@ class Media
 
     public function __toString(){
         return $this->getUser()->getId();
+    }
+
+     /**
+     * Add Media
+     *
+     * @param \AppBundle\Entity\MediaEvent $media
+     * @return Media
+     */
+    public function addMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
+    {
+        $this->mediaEvent[] = $mediaEvent;
+        return $this;
+    }
+
+     /**
+     * Remove Media
+     *
+     * @param \AppBundle\Entity\MediaEvent $mediaEvent
+     */
+    public function removeMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
+    {
+        $this->mediaEvent->removeElement($mediaEvent);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMediaEvent()
+    {
+        return $this->mediaEvent;
     }
 
       

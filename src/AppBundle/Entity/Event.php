@@ -118,6 +118,21 @@ class Event
      */
     private $groups;
 
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MediaEvent",mappedBy="event",cascade={"persist","remove"})
+     */
+    private $mediaEvent;
+
+
+
+  public function __construct()
+    {
+        $this->mediaEvent = new \Doctrine\Common\Collections\ArrayCollection();
+
+
+    }
+
 
     /**
      * Get id
@@ -396,5 +411,37 @@ class Event
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+     /**
+     * Add MediaEvent
+     *
+     * @param \AppBundle\Entity\MediaEvent $media
+     * @return MediaEvent
+     */
+    public function addMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
+    {
+        $this->mediaEvent[] = $mediaEvent;
+        return $this;
+    }
+
+     /**
+     * Remove MediaEvent
+     *
+     * @param \AppBundle\Entity\MediaEvent $mediaEvent
+     */
+    public function removeMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
+    {
+        $this->mediaEvent->removeElement($mediaEvent);
+    }
+
+    /**
+     * Get MediaEvent
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMediaEvent()
+    {
+        return $this->mediaEvent;
     }
 }
