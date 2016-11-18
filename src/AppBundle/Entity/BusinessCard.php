@@ -133,6 +133,56 @@ class BusinessCard
      * @ORM\Column(name="finished", type="boolean", nullable=false)
      */
     private $finished;
+
+           /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BusinessCardMedia",mappedBy="businessCardMedia",cascade={"persist","remove"})
+     */
+    private $businessCardMedia;
+
+        /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->businessCardMedia = new \Doctrine\Common\Collections\ArrayCollection();
+
+
+    }
+
+         /**
+     * Add Media
+     *
+     * @param \AppBundle\Entity\BusinessCardMedia $like
+     * @return Media
+     */
+    public function addBusinessCardMedia(\AppBundle\Entity\BusinessCardMedia $media)
+    {
+        $media->setBusinessCard($this);
+        $this->businessCardMedia[] = $media;
+    
+        return $this;
+    }
+
+     /**
+     * Remove Media
+     *
+     * @param \AppBundle\Entity\BusinessCardMedia $like_
+     */
+    public function removeBusinessCardMedia(\AppBundle\Entity\BusinessCardMedia $like_)
+    {
+        $this->businessCardMedia->removeElement($like_);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBusinessCardMedia()
+    {
+        return $this->businessCardMedia;
+    }
   
     /**
      * Get id

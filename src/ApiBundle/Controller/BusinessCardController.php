@@ -17,6 +17,7 @@ use AppBundle\Entity\Address;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\State;
 use AppBundle\Entity\BusinessCard;
+use AppBundle\Entity\BusinessCardMedia;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\Request as MyRequest;
@@ -352,6 +353,81 @@ class BusinessCardController extends FOSRestController
                                          )
                                    );
         }
+
+
+             /**
+         * Set and upload media for reps.
+         *
+         * @param ParamFetcher $paramFetcher
+         * @param Request $request
+          * @Route("/business-card/media/add")
+          * @Rest\Post("/business-card/media/add")
+         * @ApiDoc(
+         *  section = "Business Card",
+         *      resource = true,
+         *      https = true,
+         *      description = "Upload media.",
+         *      statusCodes = {
+         *          200 = "Returned when successful",
+         *          400 = "Returned when errors"
+         *      }
+         * )
+         *
+        *@RequestParam(name="media", nullable=false, description="The media file")
+        *@RequestParam(name="id", nullable=false, description="The business card id")
+         *
+         * @return View
+         */
+         
+      public function addMediaToBusinessCardAction()
+
+        {
+            $request = $this->getRequest();
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+                $user = $this->get('security.context')->getToken()->getUser();
+                if (count($_FILES)==0){
+                     return new JsonResponse(array("error"=>'Error uploading the file'));
+                }
+                    $id= $request->get('id');
+                     $em = $this->getDoctrine()->getManager();
+
+                      $bc = $em->getRepository("AppBundle:BusinessCard")->find($id);
+                            if ($bc==null){
+                                 return new JsonResponse(array(
+                                        'error' => '301',
+                                        'message'=>'The id provided is not valid',
+                                        ), Response::HTTP_OK);
+                            }
+
+                    $mybcmedia = new BusinessCardMedia();
+                    $mybcmedia->setURL($this->uploadFile("media",$this->getParameter('media_directory')));
+                                            if (($_FILES["media"]["type"] == "video/mp4")
+                                            || ($_FILES["media"]["type"] == "video/mpeg")
+                                            || ($_FILES["media"]["type"] == "audio/wmv")
+                                            || ($_FILES["media"]["type"] == "video/x-ms-wmv"))
+                                                $mybcmedia->setFormat("video");
+
+                                            if (($_FILES["media"]["type"] == "image/pjpeg")
+                                            || ($_FILES["media"]["type"] == "image/gif")
+                                            || ($_FILES["media"]["type"] == "image/png")
+                                            || ($_FILES["media"]["type"] == "image/jpeg"))  
+                                                $mybcmedia->setFormat("picture");
+
+                                         $bc->addBusinessCardMedia($mybcmedia);
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($bc);
+            $em->flush();
+
+                return new JsonResponse(array("msg"=>'Media added',
+                                             )
+                                        );
+            }
+            
+            return new JsonResponse(array( "error"=>"You dont have permissions upload media"
+                                         )
+                                   );
+        }
+
 
 
  }
