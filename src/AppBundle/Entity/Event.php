@@ -31,7 +31,7 @@ class Event
     
     /**
      * @var string
-     * @ORM\Column(name="paid_event", type="boolean", nullable=false)
+     * @ORM\Column(name="paid_event", type="boolean", nullable=true)
      */
     private $paid_event;
 

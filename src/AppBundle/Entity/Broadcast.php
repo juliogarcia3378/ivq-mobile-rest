@@ -33,10 +33,10 @@ class Broadcast
 
     /**
      * @var string
-     * @ORM\Column(name="title", type="string", length=250, nullable=false)
+     * @ORM\Column(name="name", type="string", length=250, nullable=false)
      * @Assert\NotBlank(message="Name field required")
      */
-    private $title;
+    private $name;
 
     /**
      * @var string
@@ -45,12 +45,7 @@ class Broadcast
      */
     private $format;
 
-    /**
-     * @var string
-     * @ORM\Column(name="url", type="string", length=250, nullable=false)
-     * @Assert\NotBlank(message="URL field required")
-     */
-    private $url;
+
 
     /**
      * @var string
@@ -73,6 +68,28 @@ class Broadcast
      */
     private $status;
 
+          /**
+     * @var AppBundle\Entity\Advertiser
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Advertiser",inversedBy="broadcast")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="advertiser", referencedColumnName="id",nullable=true)
+     * })
+     */
+       private $advertiser;
+       
+        /**
+     * @var AppBundle\Entity\BroadcastType
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BroadcastType",inversedBy="broadcast")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="broadcastType", referencedColumnName="id",nullable=true)
+     * })
+     */
+       private $broadcastType;
+
+       /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    public $path;
   
     /**
      * Get id
@@ -117,9 +134,9 @@ class Broadcast
      *
      * @return Group
      */
-    public function setTitle($title)
+    public function setName($title)
     {
-        $this->title = $title;
+        $this->name = $title;
     
         return $this;
     }
@@ -129,9 +146,9 @@ class Broadcast
      *
      * @return string
      */
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 
         /**
@@ -226,6 +243,54 @@ class Broadcast
     public function getStatus()
     {
         return $this->status;
+    }
+
+                /**
+     * Get group
+     *
+     * @return \Core\MySecurityBundle\Entity\BroadcastType
+     */
+    public function getBroadcastType()
+    {
+        return $this->broadcastType;
+    }
+ 
+         /**
+     * Set User
+     *
+     * @param \AppBundle\Entity\BroadcastType $user
+     *
+     * @return User
+     */
+    public function setBroadcastType(\AppBundle\Entity\BroadcastType $broadcastType = null)
+    {
+        $this->broadcastType = $broadcastType;
+
+        return $this;
+    }
+    
+                /**
+     * Get advertiser
+     *
+     * @return \AppBundle\Entity\Advertiser
+     */
+    public function getAdvertiser()
+    {
+        return $this->advertiser;
+    }
+ 
+         /**
+     * Set advertiser
+     *
+     * @param \AppBundle\Entity\Advertiser $advertiser
+     *
+     * @return advertiser
+     */
+    public function setAdvertiser(\AppBundle\Entity\Advertiser $advertiser = null)
+    {
+        $this->advertiser = $advertiser;
+
+        return $this;
     }
 
 

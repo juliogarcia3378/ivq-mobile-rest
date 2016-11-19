@@ -44,17 +44,53 @@ class Advertiser
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\PrivateGroup",mappedBy="privateGroup",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Groups",mappedBy="groups",cascade={"persist","remove"})
      */
-    private $privateGroup;
+    private $groups;
 
 
+
+       
+        /**
+     * @var AppBundle\Entity\Broadcast
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Broadcast",inversedBy="broadcast")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="broadcastType", referencedColumnName="id",nullable=true)
+     * })
+     */
+       private $broadcastType;
+
+
+              /**
+     * Get group
+     *
+     * @return \AppBundle\Entity\BroadcastType
+     */
+    public function getBroadcastType()
+    {
+        return $this->broadcastType;
+    }
+ 
+         /**
+     * Set User
+     *
+     * @param \AppBundle\Entity\BroadcastType $user
+     *
+     * @return User
+     */
+    public function setBroadcastType(\AppBundle\Entity\BroadcastType $broadcastType = null)
+    {
+        $this->broadcastType = $broadcastType;
+
+        return $this;
+    }
+    
        /**
      * Constructor
      */
     public function __construct()
     {
-        $this->privateGroup = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
 
     }
   
@@ -116,7 +152,29 @@ class Advertiser
 
         return $this;
     }
+            /**
+     * Get User
+     *
+     * @return \AppBundle\Entity\Groups
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+ 
+         /**
+     * Set User
+     *
+     * @param \AppBundle\Entity\Groups $category
+     *
+     * @return User
+     */
+    public function setGroups(\AppBundle\Entity\Groups $groups = null)
+    {
+        $this->groups = $groups;
 
+        return $this;
+    }
     
 
 
@@ -126,38 +184,6 @@ class Advertiser
      
 
 
-    /**
-     * Add privateGroup
-     *
-     * @param \AppBundle\Entity\PrivateGroup $privateGroup
-     * @return privateGroup
-     */
-    public function addPrivateGroup(\AppBundle\Entity\PrivateGroup $privateGroup)
-    {
-        $this->privateGroup[] = $privateGroup;
-    
-        return $this;
-    }
-
-     /**
-     * Remove Member
-     *
-     * @param \AppBundle\Entity\PrivateGroup $privateGroup
-     */
-    public function removePrivateGroup(\AppBundle\Entity\PrivateGroup $privateGroup)
-    {
-        $this->privateGroup->removeElement($privateGroup);
-    }
-
-    /**
-     * Get Member
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPrivateGroup()
-    {
-        return $this->privateGroup;
-    }
       
 
 

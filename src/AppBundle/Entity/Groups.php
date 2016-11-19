@@ -127,13 +127,16 @@ class Groups
     */
     private $file;
 
-    /**
-     * @var \Groups
-     *
-     * @ORM\OneToOne(targetEntity="PrivateGroup",mappedBy="groups", cascade={"persist","remove"})
+
+
+   /**
+     * @var \AppBundle\Entity\Advertiser
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Advertiser",inversedBy="groups")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="advertiser", referencedColumnName="id")
+     * })
      */
-     
-     private $privateGroup;
+       private $advertiser;
     /**
      * Constructor
      */
@@ -543,5 +546,29 @@ class Groups
     public function getCoupon()
     {
         return $this->coupon;
+    }
+
+        /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\Advertiser
+     */
+    public function getAdvertiser()
+    {
+        return $this->advertiser;
+    }
+
+        /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\Advertiser $category
+     *
+     * @return Groups
+     */
+    public function setAdvertiser(\AppBundle\Entity\Advertiser $advertiser = null)
+    {
+        $this->advertiser = $advertiser;
+
+        return $this;
     }
 }
