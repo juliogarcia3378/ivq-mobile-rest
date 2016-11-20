@@ -29,9 +29,9 @@ class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
              $array = array();
 	 	foreach ($response as $key => $broadcast) {
 	 		$aux["id"]= $broadcast->getId();
-	 		$aux["title"]= $broadcast->getTitle();
+	 		$aux["title"]= $broadcast->getName();
 	 		$aux["description"]= $broadcast->getDescription();
-	 		$aux["url"]= $broadcast->getURL();
+	 		$aux["url"]= $broadcast->getPath();
 	 		$aux["date"]= $broadcast->getDate();
 	 		$array[]=$aux;
 	 	}

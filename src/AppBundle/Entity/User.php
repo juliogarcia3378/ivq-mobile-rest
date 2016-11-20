@@ -73,13 +73,13 @@ class User extends BaseUser
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteGroup",mappedBy="favourite_group",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteGroup",mappedBy="user",cascade={"persist","remove"})
      */
     private $favourite_group;
 
         /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteGroup",mappedBy="favourite_member",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteMember",mappedBy="user",cascade={"persist","remove"})
      */
     private $favourite_member;
 

@@ -217,6 +217,7 @@ class BusinessCardController extends FOSRestController
          * @param Request $request
           * @Route("/business-card/create")
           * @Rest\Post("/business-card/create")
+
          * @ApiDoc(
          *  section = "Business Card",
          *      resource = true,
@@ -275,6 +276,7 @@ class BusinessCardController extends FOSRestController
 
             $about= $request->get('about');
             $logo= $request->get('logo');
+
 
             $em = $this->getDoctrine()->getManager();
 

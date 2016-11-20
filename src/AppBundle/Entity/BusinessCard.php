@@ -62,6 +62,7 @@ class BusinessCard
      * })
      */
        private $user;
+       
          /**
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\GroupCategory",inversedBy="category")

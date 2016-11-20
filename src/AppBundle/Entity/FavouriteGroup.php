@@ -25,12 +25,14 @@ class FavouriteGroup
 
      /**
      * @var AppBundle\Entity\User
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="favourite_group")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=false)
      * })
      */
        private $user;
+       
+
          /**
      * @var \AppBundle\Entity\Member
      * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Groups",inversedBy="groups")

@@ -50,40 +50,6 @@ class Advertiser
 
 
 
-       
-        /**
-     * @var AppBundle\Entity\Broadcast
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Broadcast",inversedBy="broadcast")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="broadcastType", referencedColumnName="id",nullable=true)
-     * })
-     */
-       private $broadcastType;
-
-
-              /**
-     * Get group
-     *
-     * @return \AppBundle\Entity\BroadcastType
-     */
-    public function getBroadcastType()
-    {
-        return $this->broadcastType;
-    }
- 
-         /**
-     * Set User
-     *
-     * @param \AppBundle\Entity\BroadcastType $user
-     *
-     * @return User
-     */
-    public function setBroadcastType(\AppBundle\Entity\BroadcastType $broadcastType = null)
-    {
-        $this->broadcastType = $broadcastType;
-
-        return $this;
-    }
     
        /**
      * Constructor

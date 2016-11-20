@@ -211,7 +211,15 @@ class Broadcast
 
         return $this;
     }
-
+    /**
+     * Get URL
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
     /**
      * Get URL
      *
@@ -219,7 +227,7 @@ class Broadcast
      */
     public function getURL()
     {
-        return $this->url;
+        return $this->path;
     }
       
     /**

@@ -25,7 +25,7 @@ class FavouriteMember
 
      /**
      * @var AppBundle\Entity\User
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="favourite_member")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=false)
      * })

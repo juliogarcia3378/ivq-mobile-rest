@@ -279,7 +279,8 @@ class ProfileController extends FOSRestController
              $avatar = $_FILES["avatar"]["name"];              
                          if ($avatar!=null){
                                      if($_SERVER['REQUEST_METHOD']=='POST'){
-                      $uploaddir = '/var/www/html/IVQRest/web/uploads/profile/';
+                        $uploaddir = '/Applications/XAMPP/htdocs/ivq-rest/web/uploads/profile/';
+                      #$uploaddir = '/var/www/html/IVQRest/web/uploads/profile/';
             $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
 
             move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile);

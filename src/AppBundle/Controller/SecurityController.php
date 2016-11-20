@@ -335,6 +335,7 @@ class SecurityController extends FOSRestController
         
         $um = $this->get('fos_user.user_manager');
         $user = $um->findUserByUsernameOrEmail($username);
+        
         if (!$user instanceof \AppBundle\Entity\User) {
 
                           return new JsonResponse(array(

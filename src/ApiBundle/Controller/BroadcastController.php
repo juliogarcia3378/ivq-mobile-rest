@@ -134,7 +134,7 @@ class BroadcastController extends FOSRestController
                     $array["id"]  =$broadcast->getId();
                     $array["url"] =$broadcast->getURL();
                     $array["date"]=$broadcast->getDate();
-                    $array["title"]  =$broadcast->getTitle();
+                    $array["title"]  =$broadcast->getName();
                     $array["description"]  =$broadcast->getDescription();
 
                     return new JsonResponse(array("broadcast"=>$array));
