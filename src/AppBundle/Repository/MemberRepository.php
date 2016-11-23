@@ -29,14 +29,17 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 	$response= $qb->getQuery()->getResult();
 	 	UtilRepository2::getSession()->set("total", count($response));
              $array = array();
+             
 	 	foreach ($response as $key => $member) {
 	 		$aux["id"]= $member->getUser()->getId();
 	 		$aux["name"]= $member->getUser()->getProfile()->getName();
+	 		$aux["followers"]= count($member->getUser()->getFollowing());
 	 		$aux["lastname"]= $member->getUser()->getProfile()->getLastname();
 	 		$aux["idMember"]= $member->getId();
 	 		$aux["avatar"]= $member->getUser()->getProfile()->getAvatar();
 	 		$array[]=$aux;
 	 	}
+	 	
 	 	return $array;
 	 }
 

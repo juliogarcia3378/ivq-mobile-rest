@@ -169,6 +169,26 @@ class BusinessCardController extends FOSRestController
                      $response['about']=$bc->getAbout();
                      $response['logo']=$bc->getLogo();
                      $response['picture']=$bc->getPicture();
+                      $medias=$bc->getBusinessCardMedia();
+
+                            $format["video"]=array();
+                            $format["picture"]=array();
+
+                          foreach ($medias as $key => $media) {
+                              $arr = array();
+
+                              $arr['id']=$media->getId();
+                              $arr['url']=$media->getURL();
+                                if ($media->getFormat()=='video'){
+                                  $format["video"][]=$arr;
+                                }
+                                if ($media->getFormat()=='picture'){
+                                  $format["picture"][]=$arr;
+
+                                  }
+
+                                  $response["media"]=$format;
+                                }
            
                 return new JsonResponse(array("response"=>$response));
             }

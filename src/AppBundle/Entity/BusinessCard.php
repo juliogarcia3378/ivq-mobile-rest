@@ -137,7 +137,7 @@ class BusinessCard
 
            /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BusinessCardMedia",mappedBy="businessCardMedia",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BusinessCardMedia",mappedBy="businessCard",cascade={"persist","remove"})
      */
     private $businessCardMedia;
 

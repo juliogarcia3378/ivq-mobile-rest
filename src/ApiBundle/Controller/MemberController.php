@@ -19,7 +19,116 @@ use AppBundle\Entity\Follow;
 class MemberController extends FOSRestController
 {
 
+ 
+    /**
+     * @Route("/member/profile")
+     * @Rest\Get("/member/profile")
+     * @ApiDoc(
+     *  section = "Member",
+     *  description="Member Profile",
+     *  requirements={
+     *      {
+     *          "name"="idMember",
+     *          "dataType"="string",
+     *          "description"="idMember for /ivq/group/members api call "
+     *      },
+     *  },
+     * )
+     */
+      public function memberProfileAction(){
+       $request = $this->getRequest();
+       $idMember = $request->get('idMember',NULL);
+       if ($idMember=='')
+       {
+         return new JsonResponse(array(
+                                    'error'=>"The member ID is null.",
+                                    ), Response::HTTP_OK);
+       }
+         $em = $this->getDoctrine()->getEntityManager();
+         $member = $em->getRepository("AppBundle:Member")->find($idMember);
+            
+                if ($member==null)
+              {
+               return new JsonResponse(array(
+                                    'error'=>"This is not a valid member.",
+                                    ), Response::HTTP_OK);
+              }
 
+
+                     $response = array();
+
+                        $response['id']=$member->getId();
+                    
+                        if ($member->getUser()->getProfile()!=null){
+                        $response['avatar']=$member->getUser()->getProfile()->getAvatar();
+                        $response['logo']=$member->getGroups()->getLogo();
+                        $response['address']=$member->getUser()->getProfile()->getAddress()->getCityAndState();
+                        $response['name']=$member->getUser()->getProfile()->getFullName();
+                         
+
+
+                        $followers = $member->getUser()->getFollowing();
+                        foreach ($followers as $key => $follower) {
+                          $aux["id"]=$follower->getFollower()->getId();
+                          $aux["avatar"]=$follower->getFollower()->getProfile()->getAvatar();
+                          $aux["name"]=$follower->getFollower()->getProfile()->getFullName();
+                        $response["followers"][]=$aux;
+                        }
+
+
+                        $bcs = $member->getUser()->getBusinessCard();
+                        foreach ($bcs as $key => $bc) {
+                          $aux=array();
+                          $aux["id"]=$bc->getId();
+                          $aux["logo"]=$bc->getLogo();
+                          $aux["title"]=$bc->getTitle();
+                          $aux["name"]=$bc->getName();
+                          $aux["lastname"]=$bc->getLastname();
+                          $aux["fax"]=$bc->getFax();
+                          $aux["phone"]=$bc->getPhone();
+                          $aux["picture"]=$bc->getPicture();
+                          $aux["category"]=$bc->getCategory()->getName();
+
+                          if ($bc->getAddress()!=null)
+                          $aux["address"]=$bc->getAddress()->getCityAndState();
+                          else
+                            $aux["address"]="";
+                          $medias=$bc->getBusinessCardMedia();
+
+                            $format["video"]=array();
+                            $format["picture"]=array();
+
+                          foreach ($medias as $key => $media) {
+                              $arr = array();
+
+                              $arr['id']=$media->getId();
+                              $arr['url']=$media->getURL();
+                                if ($media->getFormat()=='video'){
+                                  $format["video"][]=$arr;
+                                }
+                                if ($media->getFormat()=='picture'){
+                                  $format["picture"][]=$arr;
+
+                                  }
+
+                                  $aux["media"]=$format;
+                                }
+
+
+
+                          $response["businessCard"][]=$aux;
+                        }
+                        
+
+                        }
+                       
+                       //  $response[]=$array;
+                    return new JsonResponse(array("profile"=>$response));
+
+
+
+         
+      }
 
    
     /**
