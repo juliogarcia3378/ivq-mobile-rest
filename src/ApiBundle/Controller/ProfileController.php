@@ -54,22 +54,21 @@ class ProfileController extends FOSRestController
                 $response['msg']='ok';
                 $response['role']='ROLE_MEMBER';
                 $response['userId']=$user->getId();
-                $response['profile']['name']=$profile->getName();
-                $response['profile']['lastname']=$profile->getLastname();
-                $response['profile']['avatar']=$profile->getAvatar();
-                if ($profile->getAddress()!=null){
-                $response['profile']['city']=$profile->getAddress()->getCity();
-                $response['profile']['state']=$profile->getAddress()->getState()->getName();
-                }else
-                {
-                $response['profile']['city']="";
-                $response['profile']['state']="";
+                if ($profile!=null){
+                    $response['profile']['name']=$profile->getName();
+                    $response['profile']['lastname']=$profile->getLastname();
+                    $response['profile']['avatar']=$profile->getAvatar();
+                    if ($profile->getAddress()!=null){
+                    $response['profile']['city']=$profile->getAddress()->getCity();
+                    $response['profile']['state']=$profile->getAddress()->getState()->getName();
+                    }else
+                    {
+                    $response['profile']['city']="";
+                    $response['profile']['state']="";
+                    }
                 }
 
-
-	            return new JsonResponse($response
-        
-	            						);
+	            return new JsonResponse($response);
 	        }
                         if ($this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
             {
@@ -106,6 +105,7 @@ class ProfileController extends FOSRestController
                $members= $user->getFollower();
                foreach ($members as $key => $member) {
                     $aux["id"]=$member->getFollowing()->getId();
+                    $aux["idMember"]=$member->getId();
                     $aux["name"]=$member->getFollowing()->getProfile()->getName();
                     $aux["lastname"]=$member->getFollowing()->getProfile()->getLastName();
                   //      $aux["avatar"]=$member->getFollowing()->getProfile()->getAvatar();
@@ -141,6 +141,7 @@ class ProfileController extends FOSRestController
                $members= $user->getFollowing();
                foreach ($members as $key => $member) {
                     $aux["id"]=$member->getFollower()->getId();
+                    $aux["idMember"]=$member->getId();
                     $aux["name"]=$member->getFollower()->getProfile()->getName();
                     $aux["lastname"]=$member->getFollower()->getProfile()->getLastName();
                     $aux["avatar"]=$member->getFollower()->getProfile()->getAvatar();
@@ -182,6 +183,7 @@ class ProfileController extends FOSRestController
         *@RequestParam(name="lastname", nullable=false, description="last name")
         *@RequestParam(name="city", nullable=false, description="city")
         *@RequestParam(name="state", nullable=false, description="state id") 
+        *@RequestParam(name="phone", nullable=false, description="phone number") 
          *
          * @return View
          */
@@ -190,31 +192,13 @@ class ProfileController extends FOSRestController
 
         {
 
-  // $uploaddir = '/var/www/html/IVQRest/web/uploads/profile';
-   // $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
-
-   // echo "<p>";
-
-    //if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile)) {
-    //  echo "File is valid, and was successfully uploaded.\n";
-    //} else {
-   //    echo "Upload failed";
-   // }
-
-   // echo "</p>";
-   // echo '<pre>';
-   // echo 'Here is some more debugging info:';
-   // print_r($_FILES);
-   // print "</pre>";
-
-
-
-///
+ 
             $request = $this->getRequest();
             $name= $request->get('name');
             $lastname= $request->get('lastname');
             $city= $request->get('city');
             $state= $request->get('state');
+            $phone= $request->get('phone');
 
             $em = $this->getDoctrine()->getEntityManager();
 
@@ -228,6 +212,12 @@ class ProfileController extends FOSRestController
             if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
                 $profile = $user->getProfile();
+                  if ($profile==null)
+                    {
+                    $profile = new Profile();
+                    $profile->setPhone($phone);
+                    $user->setProfile($profile);
+                    }
 
                 if ($profile->getAddress()==null){
                     $address = new Address();
@@ -275,8 +265,8 @@ class ProfileController extends FOSRestController
 
   
       
-
-             $avatar = $_FILES["avatar"]["name"];              
+                      if (isset($_FILES["avatar"])){
+                     $avatar = $_FILES["avatar"]["name"];              
                          if ($avatar!=null){
                                      if($_SERVER['REQUEST_METHOD']=='POST'){
                         $uploaddir = '/Applications/XAMPP/htdocs/ivq-rest/web/uploads/profile/';
@@ -293,6 +283,7 @@ class ProfileController extends FOSRestController
                                          $profile->setAvatar($avatar);
                             }
                  }
+             }
                    
                  if ($name!=null)
                     $profile->setName($name);

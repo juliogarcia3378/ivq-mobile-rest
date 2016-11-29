@@ -138,7 +138,7 @@ class GroupController extends FOSRestController
                      $members = $em->getRepository("AppBundle:Member")->listMembersByGroup($array);
                      $pagination= UtilRepository2::paginate();
 
-                    return new JsonResponse(array("pagination"=>$pagination,"groups"=>$members));
+                    return new JsonResponse(array("pagination"=>$pagination,"members"=>$members));
 
                  }
 
@@ -209,7 +209,7 @@ class GroupController extends FOSRestController
 
                      $response = array();
                         $array['id']=$group->getId();
-                         $array['name']=$group()->getName();
+                         $array['name']=$group->getName();
                         $array['category']=$group->getCategory()->getName();
                         $array['address']=$group->getAddress()->getAddress();
                         $array['city']=$group->getAddress()->getCity();

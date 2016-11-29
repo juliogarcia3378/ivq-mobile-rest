@@ -78,6 +78,9 @@ class MemberController extends FOSRestController
 
                         $bcs = $member->getUser()->getBusinessCard();
                         foreach ($bcs as $key => $bc) {
+                           if ($bc->getFinished()==false){
+                            continue;
+                           }
                           $aux=array();
                           $aux["id"]=$bc->getId();
                           $aux["logo"]=$bc->getLogo();

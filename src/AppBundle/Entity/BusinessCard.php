@@ -87,6 +87,14 @@ class BusinessCard
      */
     private $email;
 
+
+    /**
+     * @var string
+     * @ORM\Column(name="company", type="string", length=50,  nullable=true)
+     * @Assert\NotBlank(message="Company field required")
+     */
+    private $company;
+
         /**
      * @var string
      * @ORM\Column(name="fax", type="string", length=50,  nullable=true)

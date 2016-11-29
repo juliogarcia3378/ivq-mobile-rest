@@ -37,6 +37,13 @@ class GroupCategory
      */
     private $groups;
 
+  /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Advertiser",mappedBy="category",cascade={"persist","remove"})
+     */
+    private $advertiser;
+
+
   
 
     /**
@@ -45,6 +52,7 @@ class GroupCategory
     public function __construct()
     {
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+         $this->advertiser = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

@@ -166,6 +166,7 @@ class BusinessCardController extends FOSRestController
                      $response['fax']=$bc->getFax();
                      $response['website']=$bc->getWebsite();
                      $response['notes']=$bc->getNotes();
+                     $response['company']=$bc->getCompany();
                      $response['about']=$bc->getAbout();
                      $response['logo']=$bc->getLogo();
                      $response['picture']=$bc->getPicture();
@@ -263,6 +264,7 @@ class BusinessCardController extends FOSRestController
         *@RequestParam(name="about", nullable=true, description="About")
         *@RequestParam(name="logo", nullable=false, description="Logo")
         *@RequestParam(name="picture", nullable=false, description="Picture")
+        *@RequestParam(name="company", nullable=false, description="Company")
          *
          * @return View
          */
@@ -296,6 +298,7 @@ class BusinessCardController extends FOSRestController
 
             $about= $request->get('about');
             $logo= $request->get('logo');
+            $company= $request->get('company');
 
 
             $em = $this->getDoctrine()->getManager();
@@ -319,6 +322,7 @@ class BusinessCardController extends FOSRestController
                 $bc->setName($name);
                 $bc->setLastname($lastname); 
                 $bc->setTitle($title);
+                $bc->setCompany($company);
                 
                 $category =$em->getRepository("AppBundle:GroupCategory")->find($category);
                

@@ -32,7 +32,7 @@ class User extends BaseUser
           /**
      * @var \Profile
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Profile",cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Profile", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="profile", referencedColumnName="id",nullable=true)
      * })
@@ -42,72 +42,84 @@ class User extends BaseUser
        /**
      * @var \Advertiser
      *
-     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Advertiser",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Advertiser", orphanRemoval=true, mappedBy="user",cascade={"persist","remove"})
      */
     private $advertiser;
 
    /**
      * @var \invalidAttempts
      *
-     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\InvalidAttempts",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\InvalidAttempts", orphanRemoval=true, mappedBy="user",cascade={"persist","remove"})
      */
     private $invalidAttempts;
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Member",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Member",mappedBy="user", orphanRemoval=true, cascade={"persist","remove"})
      */
     private $member;
 
      /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Follow",mappedBy="following",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Follow",mappedBy="following", orphanRemoval=true, cascade={"persist","remove"})
      */
     private $following;
 
        /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Follow",mappedBy="follower",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Follow",mappedBy="follower", orphanRemoval=true, cascade={"persist","remove"})
      */
     private $follower;
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteGroup",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteGroup",mappedBy="user", orphanRemoval=true, cascade={"persist","remove"})
      */
     private $favourite_group;
 
         /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteMember",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FavouriteMember",mappedBy="user", orphanRemoval=true, cascade={"persist","remove"})
      */
     private $favourite_member;
 
      /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BusinessCard",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BusinessCard",mappedBy="user", orphanRemoval=true, cascade={"persist","remove"})
      */
     private $businesscard;
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Media",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Media",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $media;
 
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $comment;
 
         /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeMedia",mappedBy="user",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeMedia",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $likeMedia;
 
+
+        /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Attendee",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $attendee;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AccessToken",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $accessToken;
 
 
       /**
@@ -241,6 +253,7 @@ class User extends BaseUser
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comment = new \Doctrine\Common\Collections\ArrayCollection();
         $this->likeMedia = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->attendee = new \Doctrine\Common\Collections\ArrayCollection();
 
 
     }

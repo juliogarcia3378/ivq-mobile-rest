@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Rol
  *
- * @ORM\Table(name="advertiser")
+ * @ORM\Table(name="_advertiser")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdvertiserRepository")
  */
 class Advertiser
@@ -32,10 +32,13 @@ class Advertiser
        private $user;
 
   
+
+
+
       /**
      * @var \Address
      *
-     * @ORM\OneToOne(targetEntity="GroupCategory")
+     * @ORM\ManyToOne(targetEntity="GroupCategory",inversedBy="advertiser" )
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="category", referencedColumnName="id",nullable=false)
      * })
