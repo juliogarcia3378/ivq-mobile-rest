@@ -28,8 +28,10 @@ abstract class FOSRestController extends Controller
 }
      
     protected function uploadPicture($index, $uploaddir){
+        
         $array = explode(".", $_FILES[$index]["name"]);
-     $file = date('Ymdhhmmss').".".$array[1];              
+       
+     $file = date('Ymdhhmmss').$array[0].".".$array[1]; 
         if ($file!=null){
                 if($_SERVER['REQUEST_METHOD']=='POST'){
             $base = $this->getParameter('base_directory');

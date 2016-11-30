@@ -228,6 +228,30 @@ class BusinessCard
         return $this->name;
     }
 
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Group
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
            /**
      * Set name
      *

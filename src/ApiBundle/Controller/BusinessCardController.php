@@ -166,7 +166,7 @@ class BusinessCardController extends FOSRestController
                      $response['fax']=$bc->getFax();
                      $response['website']=$bc->getWebsite();
                      $response['notes']=$bc->getNotes();
-                     $response['company']=$bc->getCompany();
+                    // $response['company']=$bc->getCompany();
                      $response['about']=$bc->getAbout();
                      $response['logo']=$bc->getLogo();
                      $response['picture']=$bc->getPicture();
@@ -332,7 +332,6 @@ class BusinessCardController extends FOSRestController
                         'message'=>'The category is not valid',
                         ), Response::HTTP_OK);
                 }
-                 //var_dump($category->getId());die;
                 $bc->setCategory($category);
                 $bc->setLogo($this->uploadPicture("logo",$this->getParameter('business_card_directory')));
                 $bc->setPicture($this->uploadPicture("picture",$this->getParameter('business_card_directory')));
