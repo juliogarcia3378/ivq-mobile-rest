@@ -166,7 +166,7 @@ class BusinessCardController extends FOSRestController
                      $response['fax']=$bc->getFax();
                      $response['website']=$bc->getWebsite();
                      $response['notes']=$bc->getNotes();
-                    // $response['company']=$bc->getCompany();
+                     $response['company']=$bc->getCompany();
                      $response['about']=$bc->getAbout();
                      $response['logo']=$bc->getLogo();
                      $response['picture']=$bc->getPicture();
