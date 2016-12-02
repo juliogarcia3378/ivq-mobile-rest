@@ -40,7 +40,7 @@ class Advertiser
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\GroupCategory",inversedBy="advertiser" )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="_category", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="category", referencedColumnName="id")
      * })
      */
     private $category;

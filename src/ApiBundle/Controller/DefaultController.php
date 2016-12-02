@@ -13,17 +13,27 @@ use FOS\RestBundle\Controller\FOSRestController;
 class DefaultController extends FOSRestController
 {
 
-    public function indexAction()
+    public function indexAction($id)
     {
-    	$user = $this->get('security.context')->getToken()->getUser();
-    	if ($this->get('security.context')->isGranted('ROLE_ADMIN') === FALSE) {
-    		$view = $this->view(array(
-            'user' => 'usser'), Response::HTTP_OK);
-        return $view;
-        }
+            $em = $this->getDoctrine()->getManager();
+            $bc = $em->getRepository("AppBundle:BusinessCard")->find($id);
+                     $response['name']=$bc->getUser()->getProfile()->getFullname();
+                     $response['avatar']=$bc->getUser()->getProfile()->getAvatar();
+                     $response['title']=$bc->getTitle();
+                     $response['category']=$bc->getCategory()->getName();
+                     $response["address"]=$bc->getAddress()->getDescription();
+                     $response['phone']=$bc->getPhone();
+                     $response['email']=$bc->getEmail();
+                     $response['fax']=$bc->getFax();
+                     $response['website']=$bc->getWebsite();
+                     $response['notes']=$bc->getNotes();
+                     $response['company']=$bc->getCompany();
+                     $response['about']=$bc->getAbout();
+                     $response['logo']=$bc->getLogo();
+                     $response['picture']=$bc->getPicture();
 
-$view = $this->view(array(
-            'user' => 'ussdfsder'), Response::HTTP_OK);
-        return $view;
+
+    		  return $this->render("@Api/Default/index.html.twig",$response);
     }
+
 }

@@ -20,3 +20,6 @@ NelmioApiDocBundle:
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
 
+my-business-card:
+    pattern:  /business-card/generate/{id}
+    defaults: { _controller: ApiBundle:Default:index }

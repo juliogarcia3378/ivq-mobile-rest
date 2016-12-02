@@ -94,6 +94,13 @@ class Event
      */
     private $website;
 
+    
+        /**
+     * @var string
+     * @ORM\Column(name="thumbnail", type="text", nullable=true)
+     */
+    private $thumbnail;
+
     /**
      * @var string
      * @ORM\Column(name="logo", type="text",  nullable=false)

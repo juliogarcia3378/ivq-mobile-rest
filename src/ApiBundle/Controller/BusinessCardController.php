@@ -23,7 +23,51 @@ use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\Request as MyRequest;
 
 class BusinessCardController extends FOSRestController
-{
+{ 
+        /**
+    * @param Request $request
+     * @Route("/business-card/generate")
+     * @Rest\Get("/business-card/generate")
+     * @ApiDoc(
+     *  section = "Business Card",
+     *  description="*** Generate my business card ",
+            *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="string",
+     *          "description"="Generate the business card provided"
+     *      }
+           }
+     * )
+     */
+    public function getMyBusinessCardAction()
+    {
+        if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
+             $this->get('security.context')->isGranted('ROLE_ADMIN')  === TRUE) 
+            {
+              
+            }
+              else return new JsonResponse(array( "error"=>"You arent a valid user"));
+            $request = $this->getRequest();
+            $id = $request->get('id',NULL);
+        $knp = $this->container->get('knp_snappy.image');
+        $knp->getInternalGenerator()->setTimeout(1000);
+        $pageUrl = $this->generateUrl('my-business-card', array('id'=>$id), true);
+        //var_dump($pageUrl);die;
+        $name=uniqid().'.png';
+        $url = 'uploads/share/'.$name;
+        $knp->generate($pageUrl, $url );
+
+        $base = $this->getParameter('base_directory');
+        $path = $base;
+
+       $file= $this->getRequest()->getUriForPath("/".$url);
+        $file = str_replace("/app.php", "", $file);
+        $file = str_replace("/app_dev.php", "", $file);
+
+     return new JsonResponse(array( "img"=>$file));
+        }
+
 
 
      /**
