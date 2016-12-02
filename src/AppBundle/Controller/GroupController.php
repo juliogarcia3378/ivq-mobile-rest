@@ -65,6 +65,61 @@ class GroupController extends FOSRestController
             $pagination= UtilRepository2::paginate();
             return new JsonResponse(array("pagination"=>$pagination,"groups"=>$array));
         }
+       
+
+     /**
+     * @Route("/nearby")
+     * @Rest\Get("/nearby")
+     * @ApiDoc(
+     *  section = "Groups",
+     *  description="Return Nearby Groups",
+      *  requirements={
+         *      {
+     *          "name"="start",
+     *          "dataType"="string",
+     *          "description"="First Element"
+     *      },
+     *      {
+     *          "name"="limit",
+     *          "dataType"="string",
+     *          "description"="Total of elements requested"
+     *      },
+     *      {
+     *          "name"="zip",
+     *          "dataType"="string",
+     *          "description"=" Search the groups by zip code provided"
+     *      }
+     *              }
+     * )
+     */
+      public function listNearbyGroupsAction()
+        {
+           $request = $this->getRequest();
+            $em = $this->getDoctrine()->getEntityManager();
+            $zip = $request->get('zip',NULL);
+            $array["zip"]=$zip;
+
+            $groups = $em->getRepository("AppBundle:Groups")->searchNearby($array);
+             $total = count($groups);
+              $array = array();
+              $i=0;
+              foreach ($groups as $key => $group) {
+                $aux["id"]=$group->getId();
+                $aux["name"]=$group->getName();
+                $aux["description"]=$group->getDescription();
+                $aux["phone"]=$group->getPhone();
+                $aux["email"]=$group->getEmail();
+                $aux["website"]=$group->getPhone();
+                $aux["logo"]=$group->getLogo();
+                $aux["address"]=$group->getAddress()->getDescription();
+                $aux["category"]=$group->getCategory()->getName();
+                $array[]=$aux;
+             }
+              
+
+            $pagination= UtilRepository2::paginate();
+            return new JsonResponse(array("pagination"=>$pagination,"groups"=>$array));
+        }
 
 
       /**
@@ -99,7 +154,7 @@ class GroupController extends FOSRestController
      */
       public function searchGroupsAction()
         {
-$request = $this->getRequest();
+            $request = $this->getRequest();
             $em = $this->getDoctrine()->getEntityManager();
             $search = $request->get('search',NULL);
             $category = $request->get('category',NULL);

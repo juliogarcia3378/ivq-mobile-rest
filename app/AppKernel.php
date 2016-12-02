@@ -24,6 +24,8 @@ class AppKernel extends Kernel
             new ApiBundle\ApiBundle(),
             new Vresh\TwilioBundle\VreshTwilioBundle(),
             new Core\ComunBundle\ComunBundle(),
+            new RaulFraile\Bundle\LadybugBundle\RaulFraileLadybugBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
           //  new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         );
 

@@ -6,13 +6,23 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Zippopotamus' => array($vendorDir . '/zippopotamus/zippopotamus/src'),
+    'ZendXml\\' => array($vendorDir . '/zendframework/zendxml/library'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'SensioLabs\\Security' => array($vendorDir . '/sensiolabs/security-checker'),
+    'RaulFraile\\Bundle\\LadybugBundle' => array($vendorDir . '/raulfraile/ladybug-bundle'),
+    'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
     'PhpCollection' => array($vendorDir . '/phpcollection/phpcollection/src'),
     'Nelmio\\ApiDocBundle' => array($vendorDir . '/nelmio/api-doc-bundle'),
     'Michelf' => array($vendorDir . '/michelf/php-markdown'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),
+    'Ladybug\\Theme' => array($vendorDir . '/raulfraile/ladybug-themes', $vendorDir . '/raulfraile/ladybug/data/themes'),
+    'Ladybug\\Plugin\\Symfony2\\' => array($vendorDir . '/raulfraile/ladybug-themes'),
+    'Ladybug\\Plugin\\Extra\\' => array($vendorDir . '/raulfraile/ladybug-themes'),
+    'Ladybug\\Plugin' => array($vendorDir . '/raulfraile/ladybug-plugins', $vendorDir . '/raulfraile/ladybug/data/plugins'),
+    'Ladybug' => array($vendorDir . '/raulfraile/ladybug-installer/src', $vendorDir . '/raulfraile/ladybug/src'),
+    'Knp\\Snappy' => array($vendorDir . '/knplabs/knp-snappy/src'),
     'JsonpCallbackValidator' => array($vendorDir . '/willdurand/jsonp-callback-validator/src'),
     'JMS\\SerializerBundle' => array($vendorDir . '/jms/serializer-bundle'),
     'JMS\\Serializer' => array($vendorDir . '/jms/serializer/src'),
@@ -25,5 +35,6 @@ return array(
     'Doctrine\\Common\\DataFixtures' => array($vendorDir . '/doctrine/data-fixtures/lib'),
     'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
+    'CssEmbed' => array($vendorDir . '/ptachoire/cssembed/src'),
     'Buzz' => array($vendorDir . '/kriswallsmith/buzz/lib'),
 );

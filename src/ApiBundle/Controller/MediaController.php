@@ -21,7 +21,7 @@ use AppBundle\Entity\MediaEvent;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\Request as MyRequest;
-
+use Core\ComunBundle\Enums\EMedia;
 class MediaController extends FOSRestController
 {
 
@@ -46,19 +46,58 @@ class MediaController extends FOSRestController
                 $response['userId']=$user->getId();
                 $response["video"]='';
                 $response["picture"]='';
+
+                //my-media associated
                 foreach ($media as $key => $media) {
                     $arr = array();
-
-                    $arr['id']=$media->getId();
+                    $arr['id']=EMedia::Media."_".$media->getId();
                     $arr['url']=$media->getURL();
-                      if ($media->getFormat()=='video'){
+                      if ($media->getFormat()=='video')
                         $response["video"][]=$arr;
-                      }
-                      if ($media->getFormat()=='picture'){
+                      if ($media->getFormat()=='picture')
                         $response["picture"][]=$arr;
-                      }
-
                 }
+
+                //my-profile
+                if ($user->getProfile()!=null)
+                if ($user->getProfile()->getAvatar()!=null){
+                    $arr = array();
+                    $arr['id']=EMedia::Profile."_".$user->getProfile()->getId();
+                    $arr['url']=$user->getProfile()->getAvatar();
+                        $response["picture"][]=$arr;
+                }
+
+                //media for businness-card
+                 $businessCards = $user->getBusinessCard();
+                //$response =array();
+
+                  foreach ($businessCards as $key => $bc) {
+                    if ($bc->getFinished()==true){
+                    
+                    $arr = array();
+                    $arr['id']=EMedia::BCPicture."_".$bc->getId();
+                    $arr['url']=$bc->getPicture();
+                    $response["picture"][]=$arr;
+
+                    $arr['id']=EMedia::BCLogo."_".$bc->getId();
+                    $arr['url']=$bc->getLogo();
+                    $response["picture"][]=$arr;
+
+                    $medias = $bc->getBusinessCardMedia();
+                      foreach ($medias as $key => $media) {
+                              $arr = array();
+
+                              $arr['id']=EMedia::BCMedia."_".$media->getId();
+                              $arr['url']=$media->getURL();
+                                if ($media->getFormat()=='video')
+                                  $response["video"][]=$arr;
+                                if ($media->getFormat()=='picture')
+                                  $response["picture"][]=$arr;
+
+                                }
+
+                    }
+                  }
                 
 	            return new JsonResponse($response);
 	        }
@@ -110,6 +149,12 @@ class MediaController extends FOSRestController
                     $mymedia->setURL($this->uploadFile("media",$this->getParameter('media_directory')));
                                             if (($_FILES["media"]["type"] == "video/mp4")
                                             || ($_FILES["media"]["type"] == "video/mpeg")
+                                            || ($_FILES["media"]["type"] == "video/webm")
+                                            || ($_FILES["media"]["type"] == "video/x-flv")
+                                            || ($_FILES["media"]["type"] == "video/quicktime")
+                                            || ($_FILES["media"]["type"] == "video/x-m4v")
+                                            || ($_FILES["media"]["type"] == "video/x-matroska")
+                                            || ($_FILES["media"]["type"] == "audio/wmv")
                                             || ($_FILES["media"]["type"] == "audio/wmv")
                                             || ($_FILES["media"]["type"] == "video/x-ms-wmv"))
                                                 $mymedia->setFormat("video");

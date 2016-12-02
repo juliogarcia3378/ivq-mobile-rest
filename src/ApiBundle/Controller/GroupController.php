@@ -178,6 +178,8 @@ class GroupController extends FOSRestController
              return new JsonResponse(array( "message"=>"You aren't a valid user."));
         }
 
+    
+
             /**
      * @Route("/group/view")
      * @Rest\Get("/group/view")

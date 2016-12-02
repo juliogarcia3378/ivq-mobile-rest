@@ -9,6 +9,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\FOSRestController;
+use Zippopotamus\Service\Zippopotamus;
 
 class DemoController extends FOSRestController
 {
@@ -24,29 +25,13 @@ class DemoController extends FOSRestController
      */
     public function getDemosAction()
     {
-         if($_SERVER['REQUEST_METHOD']=='POST'){
-         //Getting actual file name
-         $name = $_FILES['photo']['name'];
-         
-         //Getting temporary file name stored in php tmp folder 
-         $tmp_name = $_FILES['photo']['tmp_name'];
-         
-         //Path to store files on server
-         $path = 'uploads/';
-         
-         //checking file available or not 
-         if(!empty($name)){
-         //Moving file to temporary location to upload path 
-         move_uploaded_file($tmp_name,$path.$name);
-         
-         //Displaying success message 
-         echo "Upload successfully";
-         }else{
-         //If file not selected displaying a message to choose a file 
-         echo "Please choose a file";
-         }
-            }
-             return new JsonResponse(array( "message"=>"You haven't permissions for view this broadcast."));
+
+        $knp = $this->container->get('knp_snappy.image');
+
+        $knp->getInternalGenerator()->setTimeout(1000);
+        $knp->generate('http://www.google.com', 'uploads/share/'.uniqid().'.png');
+
+     return new JsonResponse(array( "img"=>"sdfsdf"));
         }
 
 

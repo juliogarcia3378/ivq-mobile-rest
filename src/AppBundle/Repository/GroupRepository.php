@@ -7,6 +7,7 @@ use Core\ComunBundle\Util\Util;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Core\ComunBundle\Util\UtilRepository2;
+use Zippopotamus\Service\Zippopotamus;
 
 class GroupRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 {
@@ -25,6 +26,53 @@ class GroupRepository extends \Core\ComunBundle\Util\NomencladoresRepository
          return $this->filterQB($qb, $filters, ResultType::ObjectType);
      }
 
+    public function searchNearby($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+        $arrayResult=array();
+         $zip = $filters['zip'];
+            unset($filters['zip']);
+
+         $qb = $this->getQB();
+         $qb->join('groups.address', 'address');
+         $qb->andWhere('address.zip = :zip')->setParameter('zip', $zip);
+
+         $response= $this->filterQB($qb, array(), ResultType::ObjectType);
+             //    var_dump(count($response));die;
+     
+         $arrayResult=array_merge($arrayResult,$response);
+
+      //return $arrayResult;
+       
+        $usa='us';
+        $result =(array)Zippopotamus::nearby($usa, $zip);
+            $areas= Array(); 
+              $nearby = array();
+              $array=(array)$result['nearby'];
+           foreach ($array as $key => $area) {
+            $el = (array)$area;
+             $nearby[$key]=$el['distance'];
+             $array[$key]=$el;
+            //$areas[]=$area['nearby'];
+                  }
+        array_multisort($nearby, SORT_ASC, $array);
+
+        $myarray = (array)$array;
+
+         foreach ($myarray as $key => $value) {
+         $qb = $this->getQB();
+         $qb->join('groups.address', 'address');
+         $qb->andWhere('address.zip = :zip')->setParameter('zip', $value['post code']);
+       //  var_dump($value['post code']);die;
+     
+         $response= $this->filterQB($qb, $filters, ResultType::ObjectType);
+         $arrayResult=array_merge($arrayResult,$response);
+         }
+
+         return $arrayResult;
+         
+     }
+     
+
+    
 
 	public function isMember($filters = array(),$order=null,$resultType=ResultType::ObjectType){
          $qb = $this->getQB();

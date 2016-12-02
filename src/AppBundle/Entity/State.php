@@ -47,6 +47,11 @@ class State
      */
     private $country;
 
+       /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Address",mappedBy="state", orphanRemoval=true, cascade={"persist","remove"})
+     */
+    private $address;
 
   
     /**
@@ -106,9 +111,16 @@ class State
     }
 
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
+        $this->address = new \Doctrine\Common\Collections\ArrayCollection();
+
+
     }
+
         /**
      * Set country
      *
@@ -132,6 +144,15 @@ class State
     {
         return $this->country;
     }
-
+    
+     /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 
 }
