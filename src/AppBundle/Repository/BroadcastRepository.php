@@ -33,6 +33,8 @@ class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 		$aux["description"]= $broadcast->getDescription();
 	 		$aux["url"]= $broadcast->getPath();
 	 		$aux["date"]= $broadcast->getDate();
+	 		if($broadcast->getSurvey()!=null)
+	 		$aux["survey"]= $broadcast->getSurvey()->getId();
 	 		$array[]=$aux;
 	 	}
 	 	return $array;

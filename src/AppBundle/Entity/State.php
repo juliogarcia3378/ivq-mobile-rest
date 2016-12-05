@@ -42,7 +42,7 @@ class State
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Country",inversedBy="state")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="country", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="country", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $country;

@@ -15,23 +15,31 @@ class AttendeeRepository extends \Core\ComunBundle\Util\NomencladoresRepository
  public function byEvent($array)
  {
  	$em = $this->getEntityManager();
+
+      $idGroup = $em->getRepository("AppBundle:Event")->find($array['event'])->getGroups()->getId();
+
  	$qb = $em->createQueryBuilder();
-	 	$qb->select('e')
-	     ->from('AppBundle:Attendee', 'e')
-	     ->join('e.event', 'g')
-	     ->join('e.user', 'u')
-	     ->join('u.profile', 'p')
-         ->where('g.id = :event')
+	 	$qb->select('attendee')
+	     ->from('AppBundle:Attendee', 'attendee')
+	     ->join('attendee.event', 'event')
+	     ->join('attendee.user', 'user')
+         ->join('event.groups', 'group')
+         ->join('user.member', 'member')
+	     ->join('user.profile', 'profile')
+         ->where('event.id = :event')
          ->setParameter('event', $array["event"]);
          if (isset($array["start"]) && isset($array["limit"])){
          $qb->setFirstResult($array["start"])
          ->setMaxResults($array["limit"]);
 			}
-	     $qb->orderBy('p.name', 'ASC');
+	     $qb->orderBy('profile.name', 'ASC');
 	 	$response= $qb->getQuery()->getResult();
              $array = array();
+
+      
 	 	foreach ($response as $key => $attendee) {
-	 		$aux["idUser"]= $attendee->getUser()->getId();
+            $aux["idUser"]= $attendee->getUser()->getId();
+            $aux["idMember"]= $em->getRepository("AppBundle:Groups")->returnMemberID(array('user'=>$aux["idUser"],'group'=>$idGroup));
 	 		$aux["name"]= $attendee->getUser()->getProfile()->getName();
 	 		$aux["lastname"]= $attendee->getUser()->getProfile()->getLastname();
 	 		$aux["avatar"]= $attendee->getUser()->getProfile()->getAvatar();

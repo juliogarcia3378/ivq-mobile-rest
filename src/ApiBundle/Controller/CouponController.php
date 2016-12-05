@@ -127,4 +127,86 @@ class CouponController extends FOSRestController
         }
     
 
+       /**
+     * @Route("/survey/view")
+     * @Rest\Get("/survey/view")
+     * @ApiDoc(
+     *  section = "Coupons and Surveys",
+     *  description="View survey",
+        *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="string",
+     *          "description"="Return the survey by id provided"
+     *      }
+           }
+
+     * )
+     */
+      public function viewSurveyAction()
+        {
+            $user = $this->get('security.context')->getToken()->getUser();
+            $request = $this->getRequest();
+            $id = $request->get('id',NULL);
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
+             $this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
+            {
+                $em = $this->getDoctrine()->getEntityManager();
+
+                $survey = $em->getRepository("AppBundle:Survey")->find($id);
+                if ($survey==null)
+                     return new JsonResponse(array( "error"=>"Invalid Survey. "));
+                if ($survey->getYes() ==null || $survey->getNo()==null)
+                     return new JsonResponse(array( "error"=>"Invalid Survey. "));
+
+                     $array['id']=$survey->getId();
+                     $array['question']=$survey->getQuestion();
+                     $array['type']=$survey->getType()->getId();
+                     $array['_type']=$survey->getType()->getName();
+                     $array['yes']["id"]=$survey->getYes()->getId();
+                     $array['yes']["text"]=$survey->getYes()->getName();
+                     $array['yes']["URL"]=$survey->getYes()->getURL();
+                     $array['no']["id"]=$survey->getNo()->getId();
+                     $array['no']["text"]=$survey->getNo()->getName();
+                     $array['no']["URL"]=$survey->getNo()->getURL();
+                return new JsonResponse(array("response"=>$array));
+            }
+
+            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
+                                   );
+        }
+
+
+    /**
+     * @Route("/survey/vote")
+     * @Rest\Get("/survey/vote")
+     * @ApiDoc(
+     *  section = "Coupons and Surveys",
+     *  description="Vote survey",
+        *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="string",
+     *          "description"="id provided in yes/no question"
+     *      },
+           }
+
+     * )
+     */
+      public function voteSurveyAction()
+        {
+            $user = $this->get('security.context')->getToken()->getUser();
+            $request = $this->getRequest();
+            $id = $request->get('id',NULL);
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
+             $this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
+            {
+                $em = $this->getDoctrine()->getEntityManager();
+
+                return new JsonResponse(array("message"=>"You have been voted"));
+            }
+
+            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
+                                   );
+        }
  }

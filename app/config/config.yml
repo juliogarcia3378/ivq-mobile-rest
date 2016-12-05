@@ -10,7 +10,7 @@ parameters:
     locale: en
     base_directory: '/Applications/XAMPP/htdocs/ivq-rest/web'
     #base_directory: '/var/www/html/IVQRest/web'
-    profile_directory: 'uploads/profile/'
+    profile_directory: '/uploads/profile/'
     business_card_directory: '/uploads/businessCard/'
     media_directory: '/uploads/media/'
 

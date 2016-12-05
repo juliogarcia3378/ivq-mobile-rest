@@ -37,6 +37,7 @@ class ProfileController extends FOSRestController
         {
         	$user = $this->get('security.context')->getToken()->getUser();
             $profile = $user->getProfile();
+            $followers=0;
 	    	if ($this->get('security.context')->isGranted('ROLE_ADMIN')  === TRUE) 
 	    	{
 	            return new JsonResponse(array("msg"=>'ok',
@@ -50,9 +51,17 @@ class ProfileController extends FOSRestController
 	        }
 	        if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) 
 	    	{
+                $memberships=$user->getMembers();
+                foreach ($memberships as $key => $membership) {
+                    foreach ($membership->getFollowing() as $key => $following) {
+                    $followers = $followers + count($following->getFollower());
+                    }
+                }
+                
                 $response =array();
                 $response['msg']='ok';
                 $response['role']='ROLE_MEMBER';
+                $response['total_followers']=$followers;
                 $response['userId']=$user->getId();
                 if ($profile!=null){
                     $response['profile']['name']=$profile->getName();
@@ -67,7 +76,6 @@ class ProfileController extends FOSRestController
                     $response['profile']['state']="";
                     }
                 }
-
 	            return new JsonResponse($response);
 	        }
                         if ($this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
@@ -99,21 +107,21 @@ class ProfileController extends FOSRestController
      */
       public function getFollowingAction(){
 
-     if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
+  if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
                $following = array();
-               $members= $user->getFollower();
-               foreach ($members as $key => $member) {
-                    $aux["id"]=$member->getFollowing()->getId();
-                    $aux["idMember"]=$member->getId();
-                    $aux["name"]=$member->getFollowing()->getProfile()->getName();
-                    $aux["lastname"]=$member->getFollowing()->getProfile()->getLastName();
-                  //      $aux["avatar"]=$member->getFollowing()->getProfile()->getAvatar();
-                    $following["following"][]=$aux;
+               $members= $user->getMembers();
 
+               foreach ($members as $key => $member) {
+               foreach ($member->getFollower() as $key => $follower) {
+                    $aux["idMember"]=$follower->getFollowing()->getId();
+                    $aux["name"]=$follower->getFollowing()->getUser()->getProfile()->getName();
+                    $aux["lastname"]=$follower->getFollowing()->getUser()->getProfile()->getLastName();
+                    $aux["avatar"]=$follower->getFollowing()->getUser()->getProfile()->getAvatar();
+                    $following[]=$aux;
                     
                }
-                $following["total"]=count($members);
+                 }
             return new JsonResponse(array(
                                     'response'=>$following,
                                     ), Response::HTTP_OK);
@@ -138,16 +146,19 @@ class ProfileController extends FOSRestController
             if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
                $followers = array();
-               $members= $user->getFollowing();
+               $members= $user->getMembers();
+
                foreach ($members as $key => $member) {
-                    $aux["id"]=$member->getFollower()->getId();
-                    $aux["idMember"]=$member->getId();
-                    $aux["name"]=$member->getFollower()->getProfile()->getName();
-                    $aux["lastname"]=$member->getFollower()->getProfile()->getLastName();
-                    $aux["avatar"]=$member->getFollower()->getProfile()->getAvatar();
+                  
+               foreach ($member->getFollowing() as $key => $following) {
+                    $aux["idMember"]=$following->getFollower()->getId();
+                    $aux["name"]=$following->getFollower()->getUser()->getProfile()->getName();
+                    $aux["lastname"]=$following->getFollower()->getUser()->getProfile()->getLastName();
+                    $aux["avatar"]=$following->getFollower()->getUser()->getProfile()->getAvatar();
                     $followers[]=$aux;
                     
                }
+                 }
             return new JsonResponse(array(
                                     'response'=>$followers,
                                     ), Response::HTTP_OK);
@@ -266,21 +277,12 @@ class ProfileController extends FOSRestController
   
       
                       if (isset($_FILES["avatar"])){
-                     $avatar = $_FILES["avatar"]["name"];              
+                      $avatar = $_FILES["avatar"]["name"];              
                          if ($avatar!=null){
                                      if($_SERVER['REQUEST_METHOD']=='POST'){
-                        $uploaddir = '/Applications/XAMPP/htdocs/ivq-rest/web/uploads/profile/';
-                      #$uploaddir = '/var/www/html/IVQRest/web/uploads/profile/';
-            $uploadfile = $uploaddir . basename($_FILES['avatar']['name']);
-
-            move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadfile);
-
-
-
-            $avatar= $this->getRequest()->getUriForPath('/uploads/profile/'.$_FILES['avatar']['name']);
-                                         $avatar = str_replace("/app.php", "", $avatar);
-                                         $avatar = str_replace("/app_dev.php", "", $avatar);
-                                         $profile->setAvatar($avatar);
+                        #$uploaddir = '/Applications/XAMPP/htdocs/ivq-rest/web/uploads/profile/';
+                        $avatar = $this->uploadFile("avatar",$this->getParameter('profile_directory'));
+                        $profile->setAvatar($avatar);
                             }
                  }
              }

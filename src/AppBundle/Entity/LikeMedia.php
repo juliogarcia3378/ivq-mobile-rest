@@ -28,7 +28,7 @@ class LikeMedia
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MediaEvent",inversedBy="likeMedia")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="mediaevent", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="mediaevent", referencedColumnName="id",onDelete="CASCADE")
      * })
 
      */
@@ -40,7 +40,7 @@ class LikeMedia
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="like")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id",onDelete="CASCADE")
      * })
      */
        private $user;

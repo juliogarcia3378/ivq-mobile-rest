@@ -27,7 +27,7 @@ class FavouriteGroup
      * @var AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="favourite_group")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=false, onDelete="CASCADE")
      * })
      */
        private $user;
@@ -37,7 +37,7 @@ class FavouriteGroup
      * @var \AppBundle\Entity\Member
      * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Groups",inversedBy="groups")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="groups", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="groups", referencedColumnName="id",nullable=false, onDelete="CASCADE")
      * })
      */
        private $groups;

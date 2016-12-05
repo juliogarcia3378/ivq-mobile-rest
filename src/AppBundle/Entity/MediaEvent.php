@@ -30,7 +30,7 @@ class MediaEvent
      * @var \AppBundle\Entity\Event
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event",inversedBy="mediaEvent")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="event", referencedColumnName="id",onDelete="CASCADE")
      * })
 
      */
@@ -40,7 +40,7 @@ class MediaEvent
      * @var \AppBundle\Entity\Media
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media",inversedBy="mediaEvent")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="media", referencedColumnName="id",onDelete="CASCADE")
      * })
      */
        private $media;

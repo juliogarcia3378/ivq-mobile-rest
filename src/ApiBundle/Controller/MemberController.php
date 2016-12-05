@@ -46,35 +46,31 @@ class MemberController extends FOSRestController
        }
          $em = $this->getDoctrine()->getEntityManager();
          $member = $em->getRepository("AppBundle:Member")->find($idMember);
-            
-                if ($member==null)
+            if ($member==null)
               {
                return new JsonResponse(array(
                                     'error'=>"This is not a valid member.",
                                     ), Response::HTTP_OK);
               }
-
-
                      $response = array();
-
                         $response['id']=$member->getId();
-                    
                         if ($member->getUser()->getProfile()!=null){
                         $response['avatar']=$member->getUser()->getProfile()->getAvatar();
                         $response['logo']=$member->getGroups()->getLogo();
                         $response['address']=$member->getUser()->getProfile()->getAddress()->getCityAndState();
                         $response['name']=$member->getUser()->getProfile()->getFullName();
-                         
-
-
-                        $followers = $member->getUser()->getFollowing();
+                         $groups=$em->getRepository('AppBundle:Groups')->byMemberSubscribed(array('user'=>$member->getUser()->getId()));
+                        $response['groups']=$groups;
+                        $followers = $member->getFollowing();
+                        $response["total_followers"]=count($followers);
                         foreach ($followers as $key => $follower) {
                           $aux["id"]=$follower->getFollower()->getId();
-                          $aux["avatar"]=$follower->getFollower()->getProfile()->getAvatar();
-                          $aux["name"]=$follower->getFollower()->getProfile()->getFullName();
-                        $response["followers"][]=$aux;
+                          $aux["idMember"]=$follower->getFollower()->getId();
+                          $aux["avatar"]=$follower->getFollower()->getUser()->getProfile()->getAvatar();
+                          $aux["name"]=$follower->getFollower()->getUser()->getProfile()->getFullName();
+                          $response["followers"][]=$aux;
                         }
-
+                       
 
                         $bcs = $member->getUser()->getBusinessCard();
                         foreach ($bcs as $key => $bc) {
@@ -194,8 +190,9 @@ class MemberController extends FOSRestController
                                     ), Response::HTTP_OK);
                 }else{
                     $follow = new Follow();
-                    $follow->setFollowing($member->getUser());
-                    $follow->setFollower($user);
+                    $idFollower = $em->getRepository("AppBundle:Member")->returnMemberID(array('group'=>$member->getGroups()->getId(),'user'=>$user->getId()));
+                    $follow->setFollowing($member);
+                    $follow->setFollower($em->getRepository("AppBundle:Member")->find($idFollower));
                     $em->persist($follow);
                     $em->flush();
 
@@ -220,16 +217,16 @@ class MemberController extends FOSRestController
      *  description="Unfollow another member",
      *  requirements={
      *      {
-     *          "name"="idFollowing",
+     *          "name"="idMember",
      *          "dataType"="string",
-     *          "description"="idFollowing is the id parameter provided in /ivq/profile/following api call "
+     *          "description"="idMember is the id parameter provided in /members api call "
      *      },
      *  },
      * )
      */
       public function unfollowMemberAction(){
        $request = $this->getRequest();
-       $following = $request->get('idFollowing',NULL);
+       $following = $request->get('idMember',NULL);
        if ($following=='')
        {
        	 return new JsonResponse(array(
@@ -240,7 +237,7 @@ class MemberController extends FOSRestController
                 $user = $this->get('security.context')->getToken()->getUser();
                 $em = $this->getDoctrine()->getEntityManager();
                
-               $following= $em->getRepository("AppBundle:User")->find($following);
+               $following= $em->getRepository("AppBundle:Member")->find($following);
                 if ($following==null)
                {
 					 return new JsonResponse(array(
@@ -256,7 +253,7 @@ class MemberController extends FOSRestController
                                     ), Response::HTTP_OK);
                }
 
-                $array["following"]= $following->getId();
+                $array["following"]= $following->getUser()->getId();
                 $array["follower"] =  $user->getId();
                 $isFollower = $em->getRepository("AppBundle:Follow")->isFollower($array);
 
@@ -264,10 +261,11 @@ class MemberController extends FOSRestController
                 	 return new JsonResponse(array(
                                     'message'=>"You aren't following this member.",
                                     ), Response::HTTP_OK);
-                }else{
+                    }else{
 
-                    $em->remove($em->getRepository("AppBundle:Follow")->getFollower($array)[0]);
-                    $em->flush();
+                    
+                    $em->getRepository("AppBundle:Follow")->unfollowMember($array);
+                  
 
                     return new JsonResponse(array(
                                     'message'=>"You are not longer a follower to this member." ,

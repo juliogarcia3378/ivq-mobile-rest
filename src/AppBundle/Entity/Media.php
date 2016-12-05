@@ -27,7 +27,7 @@ class Media
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="media")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id",onDelete="CASCADE")
      * })
      */
        private $user;

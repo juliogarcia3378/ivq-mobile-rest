@@ -49,7 +49,7 @@ class BusinessCard
      *
      * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Address",cascade={"persist", "remove"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=true)
+     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=true, onDelete="CASCADE")
      * })
      */
       private $address;
@@ -58,7 +58,7 @@ class BusinessCard
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="user")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=true)
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=true, onDelete="CASCADE")
      * })
      */
        private $user;
@@ -67,7 +67,7 @@ class BusinessCard
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\GroupCategory",inversedBy="category")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
        private $category;

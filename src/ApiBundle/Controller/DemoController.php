@@ -25,13 +25,10 @@ class DemoController extends FOSRestController
      */
     public function getDemosAction()
     {
+        shell_exec('wkhtmltoimage http://www.forosdelweb.com julio.png');  
 
-        $knp = $this->container->get('knp_snappy.image');
-
-        $knp->getInternalGenerator()->setTimeout(1000);
-        $knp->generate('http://www.google.com', 'uploads/share/'.uniqid().'.png');
-
-     return new JsonResponse(array( "img"=>"sdfsdf"));
+        
+             return new JsonResponse(array( "message"=>"You haven't permissions for view this broadcast."));
         }
 
 

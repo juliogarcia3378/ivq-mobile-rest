@@ -22,12 +22,13 @@ class Comment
     private $id;
 
 
+
     /**
      * @var \AppBundle\Entity\MediaEvent
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MediaEvent",inversedBy="comments")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="mediaevent", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="mediaevent", referencedColumnName="id",onDelete="CASCADE")
      * })
 
      */
@@ -39,7 +40,7 @@ class Comment
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="comment")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id",onDelete="CASCADE")
      * })
      */
        private $user;

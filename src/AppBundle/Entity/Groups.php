@@ -48,7 +48,7 @@ class Groups
      *
      * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Address",cascade={"persist", "remove"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=false, onDelete="CASCADE")
      * })
      */
       private $address;
@@ -88,7 +88,7 @@ class Groups
      *
      * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\GroupCategory",inversedBy="groups")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $category;

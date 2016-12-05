@@ -47,7 +47,7 @@ class Event
      *
      * @ORM\OneToOne(targetEntity="Address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=false)
+     *   @ORM\JoinColumn(name="address", referencedColumnName="id",nullable=false, onDelete="CASCADE")
      * })
      */
     private $address;
@@ -120,7 +120,7 @@ class Event
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Groups",inversedBy="event")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="groups", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="groups", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $groups;

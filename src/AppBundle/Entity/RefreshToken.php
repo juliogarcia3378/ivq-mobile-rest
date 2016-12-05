@@ -18,15 +18,15 @@ class RefreshToken extends BaseRefreshToken
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
     /**
      * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
      */
     protected $client;
 
     /**
     * @ORM\ManyToOne(targetEntity="User",cascade={"persist", "remove"})
+      * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
    */
     protected $user;
 }

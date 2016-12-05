@@ -27,7 +27,7 @@ class BusinessCardMedia
      * @var \AppBundle\Entity\BusinessCard
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BusinessCard",inversedBy="businessCardMedia")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="businessCard", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="businessCard", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
        private $businessCard;

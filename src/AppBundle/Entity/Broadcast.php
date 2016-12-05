@@ -26,7 +26,7 @@ class Broadcast
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Groups",inversedBy="broadcast")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="groups", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="groups", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $groups;
@@ -72,7 +72,7 @@ class Broadcast
      * @var AppBundle\Entity\Advertiser
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Advertiser",inversedBy="broadcast")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="advertiser", referencedColumnName="id",nullable=true)
+     *   @ORM\JoinColumn(name="advertiser", referencedColumnName="id",nullable=true, onDelete="CASCADE")
      * })
      */
        private $advertiser;
@@ -81,7 +81,7 @@ class Broadcast
      * @var AppBundle\Entity\BroadcastType
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BroadcastType",inversedBy="broadcast")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="broadcastType", referencedColumnName="id",nullable=true)
+     *   @ORM\JoinColumn(name="broadcastType", referencedColumnName="id",nullable=true, onDelete="CASCADE")
      * })
      */
        private $broadcastType;
@@ -90,6 +90,13 @@ class Broadcast
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     public $path;
+
+      /**
+     * @var \Users
+     *
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Survey",mappedBy="broadcast")
+     */
+    private $survey;
   
     /**
      * Get id
@@ -299,6 +306,30 @@ class Broadcast
         $this->advertiser = $advertiser;
 
         return $this;
+    }
+
+
+    /**
+     * Set User
+     *
+     * @param string $user
+     * @return Survey
+     */
+    public function setSurvey(\AppBundle\Entity\Survey $survey)
+    {
+        $this->survey= $survey;
+
+        return $this;
+    }
+
+    /**
+     * Get namee
+     *
+     * @return string
+     */
+    public function getSurvey()
+    {
+        return $this->survey;
     }
 
 

@@ -26,7 +26,7 @@ class Attendee
      * @var \AppBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="attendee")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
        private $user;
@@ -36,7 +36,7 @@ class Attendee
      * @var \AppBundle\Entity\Event
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event",inversedBy="attendee")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="event", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
        private $event;

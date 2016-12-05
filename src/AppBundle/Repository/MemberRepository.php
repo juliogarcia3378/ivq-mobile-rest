@@ -33,7 +33,7 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 	foreach ($response as $key => $member) {
 	 		$aux["id"]= $member->getUser()->getId();
 	 		$aux["name"]= $member->getUser()->getProfile()->getName();
-	 		$aux["followers"]= count($member->getUser()->getFollowing());
+	 		$aux["followers"]= count($member->getFollowing());
 	 		$aux["lastname"]= $member->getUser()->getProfile()->getLastname();
 	 		$aux["idMember"]= $member->getId();
 	 		$aux["avatar"]= $member->getUser()->getProfile()->getAvatar();
@@ -63,7 +63,18 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 	}
 	 	return $array;
 	 }
-
+      
+      public function returnMemberID($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+      	$em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('a')
+	  		 ->from('AppBundle:Member', 'a')
+        	 ->join('a.groups', 'groups')
+             ->join('a.user', 'user');
+         $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
+         $qb->andWhere('groups.id = :group')->setParameter('group', $filters['group']);
+          return $qb->getQuery()->getSingleResult();
+     }
 	 public function joinGroup($user,$group_id){
         $em = $this->getEntityManager();
 	 	$group = $em->getRepository("AppBundle:Groups")->find($group_id);

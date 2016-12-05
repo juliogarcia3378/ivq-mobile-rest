@@ -20,14 +20,14 @@ class AccessToken extends BaseAccessToken
 
     /**
      * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     protected $client;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="User",cascade={"persist", "remove"})
-
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $user;
 }

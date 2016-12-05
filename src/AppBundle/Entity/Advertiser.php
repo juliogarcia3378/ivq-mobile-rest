@@ -26,7 +26,7 @@ class Advertiser
      * @var \AppBundle\Entity\User
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User",inversedBy="advertiser")
      * @ORM\JoinColumns({
-     * @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="user", referencedColumnName="id",nullable=false, onDelete="CASCADE")
      * })
      */
        private $user;
@@ -40,7 +40,7 @@ class Advertiser
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\GroupCategory",inversedBy="advertiser" )
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="category", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $category;

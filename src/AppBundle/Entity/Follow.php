@@ -23,20 +23,20 @@ class Follow
 
 
       /**
-     * @var \AppBundle\Entity\User
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="following")
+     * @var \AppBundle\Entity\Member
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Member",inversedBy="following")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="following", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="following", referencedColumnName="id",onDelete="CASCADE")
      * })
      */
        private $following;
 
   
       /**
-     * @var \AppBundle\Entity\User
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User",inversedBy="follower")
+     * @var \AppBundle\Entity\Member
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Member",inversedBy="follower")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="follower", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="follower", referencedColumnName="id",onDelete="CASCADE")
      * })
      */
        private $follower;
@@ -67,11 +67,11 @@ class Follow
          /**
      * Set User
      *
-     * @param \AppBundle\Entity\User $following
+     * @param \AppBundle\Entity\Member $following
      *
      * @return User
      */
-    public function setFollowing(\AppBundle\Entity\User $following = null)
+    public function setFollowing(\AppBundle\Entity\Member $following = null)
     {
         $this->following = $following;
 
@@ -80,7 +80,7 @@ class Follow
             /**
      * Get User
      *
-     * @return \AppBundle\Entity\User
+     * @return \AppBundle\Entity\Member
      */
     public function getFollower()
     {
@@ -90,11 +90,11 @@ class Follow
          /**
      * Set User
      *
-     * @param \AppBundle\Entity\User $follower
+     * @param \AppBundle\Entity\Member $follower
      *
      * @return User
      */
-    public function setFollower(\AppBundle\Entity\User $follower = null)
+    public function setFollower(\AppBundle\Entity\Member $follower = null)
     {
         $this->follower = $follower;
 
@@ -105,7 +105,7 @@ class Follow
 
 
     public function __toString(){
-        return $this->getUser()->getId();
+        return $this->getMember()->getUser()->getId();
     }
 
       

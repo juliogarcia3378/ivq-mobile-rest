@@ -38,7 +38,7 @@ class Address
      * @var \AppBundle\Entity\State
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\State",inversedBy="address")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="state", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="state", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
        private $state;
@@ -208,9 +208,9 @@ class Address
         public function getDescription(){
             if ($this->getCity()!='')
 
-        return $this->getAddress().", ".$this->getCity().", zip:".$this->getZip().' ,'.$this->getState()->getCode();
+        return $this->getAddress().", ".$this->getCity().", ".$this->getState()->getCode().' '.$this->getZip();
 
-          return $this->getAddress().", zip:".$this->getZip().' ,'.$this->getState()->getCode();
+          return $this->getAddress().", ".$this->getState()->getCode().' ,'.$this->getZip();
     }
 
 

@@ -67,7 +67,7 @@ class Coupon
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Groups",inversedBy="event")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="groups", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="groups", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $groups;
