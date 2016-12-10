@@ -781,16 +781,18 @@ class UtilRepository2 {
         return UtilRepository2::doQueryResult($query, $resultType);
     }
 
-    public static function paginate(){
-            $pagination["start"]=UtilRepository2::getSession()->get("start");
-            $pagination["limit"]=UtilRepository2::getSession()->get("limit");
-            $pagination["total"]=UtilRepository2::getSession()->get("total");
-
+     public static function paginate(){
+        $pagination["start"]= (int)(UtilRepository2::getSession()->get("start")!=null)?(int) UtilRepository2::getSession()->get("start"): "0";
+        $pagination["limit"]=(UtilRepository2::getSession()->get("limit")!=null)? (int)UtilRepository2::getSession()->get("limit"): "0";
+        $pagination["total"]=(int)UtilRepository2::getSession()->get("total");
+            if ($pagination==null)
+              {
             UtilRepository2::getSession()->set("start",null);
             UtilRepository2::getSession()->set("limit",null);
-
+            }
             return $pagination;
-    }
+    
+}
 }
 
 ?>

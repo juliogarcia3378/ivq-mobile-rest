@@ -220,7 +220,9 @@ class Event
      * @return string
      */
     public function getPaidevent()
-    {
+    {  
+        if ($this->paid_event==null)
+        return false;
         return $this->paid_event;
     }
 
@@ -272,6 +274,8 @@ class Event
      */
     public function getTicketURL()
     {
+         if ($this->ticket_url==null)
+        return "";
         return $this->ticket_url;
     }
 
@@ -295,7 +299,9 @@ class Event
      * @return string
      */
     public function getInformation()
-    {
+    {  
+        if ($this->information==null)
+        return "";
         return $this->information;
     }
 
@@ -307,6 +313,8 @@ class Event
      */
     public function getWebsite()
     {
+         if ($this->website==null)
+        return "";
         return $this->website;
     }
 
@@ -369,6 +377,8 @@ class Event
      */
     public function getLogo()
     {
+       if ($this->logo==null)
+            return "";
         return $this->logo;
     }
 
@@ -452,3 +462,4 @@ class Event
         return $this->mediaEvent;
     }
 }
+

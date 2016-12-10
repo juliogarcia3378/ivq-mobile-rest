@@ -13,6 +13,8 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use AppBundle\Entity\Profile;
+use AppBundle\Repository\ProfileRepository;
+use AppBundle\Repository\BusinessCardMediaRepository;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\State;
@@ -44,8 +46,8 @@ class MediaController extends FOSRestController
                 $response =array();
                 $response['msg']='ok';
                 $response['userId']=$user->getId();
-                $response["video"]='';
-                $response["picture"]='';
+                $response["video"]=array();
+                $response["picture"]=array();
 
                 //my-media associated
                 foreach ($media as $key => $media) {
@@ -207,13 +209,49 @@ class MediaController extends FOSRestController
 
             $request = $this->getRequest();
              $id = $request->get('id');
+             $array = explode("_", $id);
+             $id=$array[1];
+
             
             if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
                
             $em = $this->getDoctrine()->getEntityManager();
-            $mymedia= $em->getRepository("AppBundle:Media")->find($id);
-            $em->remove($mymedia);
+            switch ($array[0]) {
+                case EMedia::Media:
+                  $mymedia= $em->getRepository("AppBundle:Media")->find($id);
+                  if ($mymedia!=null)
+                  $em->remove($mymedia);
+                    break;
+                case EMedia::Profile:
+                 $mymedia= $em->getRepository("AppBundle:Profile")->find($id);
+                 if ($mymedia!=null)
+                  {
+                 $mymedia->setAvatar(null);
+                 $em->persist($mymedia);
+                  }
+                    break;
+                 case EMedia::BCPicture:
+                 $mymedia= $em->getRepository("AppBundle:BusinessCard")->find($id);
+                 if ($mymedia!=null)
+                 $em->remove($mymedia);
+                    break;
+                 case EMedia::BCLogo:
+                 $mymedia= $em->getRepository("AppBundle:BusinessCard")->find($id);
+                 if($mymedia!=null)
+                 $em->remove($mymedia);
+                    break;
+
+                 case EMedia::BCMedia:
+                 $mymedia= $em->getRepository("AppBundle:BusinessCardMedia")->find($id);
+                 if ($mymedia!=null)
+                 $em->remove($mymedia);
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            
             $em->flush();
 
                 return new JsonResponse(array("msg"=>'Media removed',
@@ -313,3 +351,4 @@ class MediaController extends FOSRestController
 
 
  }
+

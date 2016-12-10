@@ -79,28 +79,27 @@ class CommentController extends FOSRestController
             return new JsonResponse(array( "error"=>"You dont have permissions."
                                    ));
         }
-
-
              /**
-     * @Route("/comment/add")
-     * @Rest\Get("/comment/add")
-     * @ApiDoc(
-     *  section = "Comments and Like Section",
-     *  description="add Comment",
-     *  requirements={
-     *      {
-     *          "name"="idMedia",
-     *          "dataType"="string",
-                "description"="IdMedia for /app/event/media/list api call "
-     *      }, {
-     *          "name"="comment",
-     *          "dataType"="string",
-                "description"="Comment "
-     *      },
-     *              }
-     * )
-     */
-      public function addCommentAction()
+         * Set and upload avatar for reps.
+         *
+         * @param ParamFetcher $paramFetcher
+         * @param Request $request
+          * @Route("/comment/add")
+          * @Rest\Post("/comment/add")
+         * @ApiDoc(
+         *  section = "Comments and Like Section",
+         *  description="add Comment",
+         *      resource = true,
+         *      https = true,
+         * )
+         *
+        *@RequestParam(name="idMedia", nullable=false, description="IdMedia for /app/event/media/list api call")
+        *@RequestParam(name="comment", nullable=false, description="Comment") 
+         *
+         * @return View
+         */
+
+            public function addCommentAction()
         {
          $request = $this->getRequest();
          $idMedia = $request->get('idMedia',NULL);

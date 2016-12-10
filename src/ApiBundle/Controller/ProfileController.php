@@ -44,6 +44,7 @@ class ProfileController extends FOSRestController
 	            							   "role"=>'ROLE_ADMIN',
 	            							   "userId"=>$user->getId(),
 	            							   'profile'=>array(
+'phone'=>$profile->getPhone(),
 	            							   		'name'=>$profile->getName(),
 	            							   		'avatar'=>$profile->getAvatar()
 	            							 ))
@@ -64,6 +65,7 @@ class ProfileController extends FOSRestController
                 $response['total_followers']=$followers;
                 $response['userId']=$user->getId();
                 if ($profile!=null){
+                     $response['profile']['phone']=$profile->getPhone();
                     $response['profile']['name']=$profile->getName();
                     $response['profile']['lastname']=$profile->getLastname();
                     $response['profile']['avatar']=$profile->getAvatar();
@@ -226,10 +228,11 @@ class ProfileController extends FOSRestController
                   if ($profile==null)
                     {
                     $profile = new Profile();
-                    $profile->setPhone($phone);
                     $user->setProfile($profile);
-                    }
-
+		    }
+                    $profile = $user->getProfile();
+                    if (isset($phone))
+                      $profile->setPhone($phone);
                 if ($profile->getAddress()==null){
                     $address = new Address();
                      if (!isset($city) || !isset($state)){

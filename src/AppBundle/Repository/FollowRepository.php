@@ -86,4 +86,24 @@ class FollowRepository extends \Core\ComunBundle\Util\NomencladoresRepository
      }
 
 
+         public function searchFollowers($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+                     $qb = $this->getQB();
+         $qb->join('follow.following', 'following')
+         ->join('following.user', 'user1')
+           ->join('follow.follower', 'member')
+           ->join('member.user', 'user')
+           ->join('user.profile', 'profile');
+         $qb->where('user1.id = :following')->setParameter('following', $filters['following']);
+             
+                $qb->andWhere('profile.name LIKE :search
+                               OR profile.lastname LIKE :search')  
+                               ->setParameter('search', '%'.$filters['search'].'%');                    
+        unset($filters['search']);
+         unset($filters['following']);
+         
+         if (count($this->filterQB($qb, $filters, ResultType::ArrayType))>0)
+            return $this->filterQB($qb, $filters, ResultType::ObjectType);
+        return array();                     
+}
+
 }

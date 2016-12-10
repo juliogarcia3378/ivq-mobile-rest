@@ -9,7 +9,7 @@ use Core\ComunBundle\Util\UtilRepository2;
 
 class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 {
-     public function listBroadcastByGroup($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+          public function listBroadcastByGroup($filters = array(),$order=null,$resultType=ResultType::ObjectType){
     
     $em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
@@ -17,6 +17,7 @@ class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	   ->from('AppBundle:Broadcast', 'b')
 	   ->join('b.groups', 'g')
          ->where('g.id = :group')
+         ->andWhere('b.status = 1')
          ->setParameter('group', $filters["group"]);
           if (isset($filters["start"]) && isset($filters["limit"])){
           
@@ -30,15 +31,22 @@ class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 	foreach ($response as $key => $broadcast) {
 	 		$aux["id"]= $broadcast->getId();
 	 		$aux["title"]= $broadcast->getName();
+	 		$aux["format"]= $broadcast->getFormat();
 	 		$aux["description"]= $broadcast->getDescription();
 	 		$aux["url"]= $broadcast->getPath();
 	 		$aux["date"]= $broadcast->getDate();
 	 		if($broadcast->getSurvey()!=null)
 	 		$aux["survey"]= $broadcast->getSurvey()->getId();
-	 		$array[]=$aux;
+	 	if ($broadcast->getFormat()=='picture')
+	 		$array["picture"][]=$aux;
+	 	if ($broadcast->getFormat()=='video')
+	 		$array["video"][]=$aux;
 	 	}
 	 	return $array;
 	 }
+
+
+
      public function havePermissions($filters = array(),$order=null,$resultType=ResultType::ObjectType){
     
     $em = $this->getEntityManager();

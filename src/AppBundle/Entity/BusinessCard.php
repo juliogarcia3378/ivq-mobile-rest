@@ -225,6 +225,8 @@ class BusinessCard
      */
     public function getName()
     {
+          if ($this->name ==null)
+            return "";
         return $this->name;
     }
 
@@ -249,6 +251,8 @@ class BusinessCard
      */
     public function getCompany()
     {
+          if ($this->company ==null)
+            return "";
         return $this->company;
     }
 
@@ -299,6 +303,8 @@ class BusinessCard
      */
     public function getLastname()
     {
+          if ($this->lastname ==null)
+            return "";
         return $this->lastname;
     }
         /**
@@ -322,6 +328,8 @@ class BusinessCard
      */
     public function getTitle()
     {
+          if ($this->title ==null)
+            return "";
         return $this->title;
     }
 
@@ -346,6 +354,8 @@ class BusinessCard
      */
     public function getPhone()
     {
+          if ($this->phone ==null)
+            return "";
         return $this->phone;
     }
 
@@ -370,6 +380,8 @@ class BusinessCard
      */
     public function getEmail()
     {
+       if ($this->email ==null)
+            return "";
         return $this->email;
     }
 
@@ -418,6 +430,8 @@ class BusinessCard
      */
     public function getFax()
     {
+          if ($this->fax ==null)
+            return "";
         return $this->fax;
     }
 
@@ -442,6 +456,8 @@ class BusinessCard
      */
     public function getWebsite()
     {
+          if ($this->website ==null)
+            return "";
         return $this->website;
     }
 
@@ -452,6 +468,8 @@ class BusinessCard
      */
     public function getNotes()
     {
+          if ($this->notes ==null)
+            return "";
         return $this->notes;
     }
 
@@ -475,7 +493,9 @@ class BusinessCard
      */
     public function getAbout()
     {
-        return $this->notes;
+        if ($this->about ==null)
+            return "";
+        return $this->about;
     }
 
         /**
@@ -513,6 +533,8 @@ class BusinessCard
      */
     public function getLogo()
     {
+        if ($this->logo ==null)
+            return "";
         return $this->logo;
     }
 
@@ -536,7 +558,8 @@ class BusinessCard
      * @return string 
      */
     public function getPicture()
-    {
+    {     if ($this->picture ==null)
+            return "";
         return $this->picture;
     }
      
@@ -615,3 +638,4 @@ class BusinessCard
 
 
 }
+

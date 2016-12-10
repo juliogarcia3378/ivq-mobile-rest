@@ -119,7 +119,8 @@ class Address
      * @return string
      */
     public function getAddress()
-    {
+    {   if ($this->address==null)
+        return "";
         return $this->address;
     }
 
@@ -143,6 +144,8 @@ class Address
      */
     public function getCity()
     {
+        if ($this->city==null)
+        return "";
         return $this->city;
     }
 

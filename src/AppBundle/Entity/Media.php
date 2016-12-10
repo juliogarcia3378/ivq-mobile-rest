@@ -119,6 +119,8 @@ class Media
      */
     public function getURL()
     {
+         if ($this->url==null)
+	return "";
         return $this->url;
     }
  

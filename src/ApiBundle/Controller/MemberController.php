@@ -63,6 +63,9 @@ class MemberController extends FOSRestController
                         $response['groups']=$groups;
                         $followers = $member->getFollowing();
                         $response["total_followers"]=count($followers);
+                        $response["businessCard"]=array();
+                        $response["bcards"]=array();
+                        $response["followers"]=array();
                         foreach ($followers as $key => $follower) {
                           $aux["id"]=$follower->getFollower()->getId();
                           $aux["idMember"]=$follower->getFollower()->getId();
@@ -116,6 +119,7 @@ class MemberController extends FOSRestController
 
 
                           $response["businessCard"][]=$aux;
+                          $response["bcards"][]=$aux;
                         }
                         
 

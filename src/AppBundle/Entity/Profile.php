@@ -159,7 +159,8 @@ class Profile
      * @return string
      */
     public function getAvatar()
-    {
+    {  if ($this->avatar==null)
+       return "";
         return $this->avatar;
     }
 
@@ -170,7 +171,7 @@ class Profile
      * @return Profile
      */
     public function setAvatar($avatar)
-    {
+    {  
         $this->avatar= $avatar;
 
         return $this;

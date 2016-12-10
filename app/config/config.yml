@@ -8,8 +8,8 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    base_directory: '/Applications/XAMPP/htdocs/ivq-rest/web'
-    #base_directory: '/var/www/html/IVQRest/web'
+    #base_directory: '/Applications/XAMPP/htdocs/ivq-rest/web'
+    base_directory: '/var/www/html/IVQRest/web'
     profile_directory: '/uploads/profile/'
     business_card_directory: '/uploads/businessCard/'
     media_directory: '/uploads/media/'
@@ -22,7 +22,7 @@ knp_snappy:
         options:    []
     image:
         enabled:    true
-        binary:     /usr/local/bin/wkhtmltoimage #"\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\"" for Windows users
+        binary:     /usr/bin/wkhtmltoimage #"\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\"" for Windows users
         options:    []
 
 framework:
@@ -121,3 +121,4 @@ fos_oauth_server:
     auth_code_class:     AppBundle\Entity\AuthCode
     service:
         user_provider: fos_user.user_manager             # This property will be used when valid credentials are given to load the user upon access token creation
+
