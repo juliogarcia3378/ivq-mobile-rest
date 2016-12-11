@@ -550,7 +550,7 @@ class appProdProjectContainer extends Container
         $a->addEventSubscriber(new \FOS\UserBundle\Entity\UserListener($this));
         $a->addEventListener(array(0 => 'loadClassMetadata'), $this->get('doctrine.orm.default_listeners.attach_entity_listeners'));
 
-        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'IVQ', 'user' => 'root', 'password' => 'password', 'charset' => 'UTF8', 'driverOptions' => array(), 'defaultTableOptions' => array()), new \Doctrine\DBAL\Configuration(), $a, array());
+        return $this->services['doctrine.dbal.default_connection'] = $this->get('doctrine.dbal.connection_factory')->createConnection(array('driver' => 'pdo_mysql', 'host' => '127.0.0.1', 'port' => NULL, 'dbname' => 'IVQ_', 'user' => 'root', 'password' => NULL, 'charset' => 'UTF8', 'driverOptions' => array(), 'defaultTableOptions' => array()), new \Doctrine\DBAL\Configuration(), $a, array());
     }
 
     /*
@@ -578,35 +578,30 @@ class appProdProjectContainer extends Container
      */
     protected function getDoctrine_Orm_DefaultEntityManagerService($lazyLoad = true)
     {
-        $a = $this->get('annotation_reader');
+        $a = new \Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver(array(($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine') => 'FOS\\UserBundle\\Entity', ($this->targetDirs[3].'/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine') => 'FOS\\OAuthServerBundle\\Entity'));
+        $a->setGlobalBasename('mapping');
 
-        $b = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($a, array(0 => ($this->targetDirs[3].'/src/AppBundle/Entity'), 1 => ($this->targetDirs[3].'/src/ApiBundle/Entity')));
+        $b = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
+        $b->addDriver(new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($this->get('annotation_reader'), array(0 => ($this->targetDirs[3].'/src/AppBundle/Entity'))), 'AppBundle\\Entity');
+        $b->addDriver($a, 'FOS\\UserBundle\\Entity');
+        $b->addDriver($a, 'FOS\\OAuthServerBundle\\Entity');
 
-        $c = new \Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver(array(($this->targetDirs[3].'/vendor/friendsofsymfony/user-bundle/FOS/UserBundle/Resources/config/doctrine') => 'FOS\\UserBundle\\Entity', ($this->targetDirs[3].'/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/doctrine') => 'FOS\\OAuthServerBundle\\Entity'));
-        $c->setGlobalBasename('mapping');
+        $c = new \Doctrine\ORM\Configuration();
+        $c->setEntityNamespaces(array('AppBundle' => 'AppBundle\\Entity', 'FOSUserBundle' => 'FOS\\UserBundle\\Entity', 'FOSOAuthServerBundle' => 'FOS\\OAuthServerBundle\\Entity'));
+        $c->setMetadataCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_metadata_cache'));
+        $c->setQueryCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_query_cache'));
+        $c->setResultCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_result_cache'));
+        $c->setMetadataDriverImpl($b);
+        $c->setProxyDir((__DIR__.'/doctrine/orm/Proxies'));
+        $c->setProxyNamespace('Proxies');
+        $c->setAutoGenerateProxyClasses(false);
+        $c->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
+        $c->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
+        $c->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
+        $c->setQuoteStrategy(new \Doctrine\ORM\Mapping\DefaultQuoteStrategy());
+        $c->setEntityListenerResolver($this->get('doctrine.orm.default_entity_listener_resolver'));
 
-        $d = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
-        $d->addDriver($b, 'AppBundle\\Entity');
-        $d->addDriver($b, 'ApiBundle\\Entity');
-        $d->addDriver($c, 'FOS\\UserBundle\\Entity');
-        $d->addDriver($c, 'FOS\\OAuthServerBundle\\Entity');
-
-        $e = new \Doctrine\ORM\Configuration();
-        $e->setEntityNamespaces(array('AppBundle' => 'AppBundle\\Entity', 'FOSUserBundle' => 'FOS\\UserBundle\\Entity', 'FOSOAuthServerBundle' => 'FOS\\OAuthServerBundle\\Entity', 'ApiBundle' => 'ApiBundle\\Entity'));
-        $e->setMetadataCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_metadata_cache'));
-        $e->setQueryCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_query_cache'));
-        $e->setResultCacheImpl($this->get('doctrine_cache.providers.doctrine.orm.default_result_cache'));
-        $e->setMetadataDriverImpl($d);
-        $e->setProxyDir((__DIR__.'/doctrine/orm/Proxies'));
-        $e->setProxyNamespace('Proxies');
-        $e->setAutoGenerateProxyClasses(false);
-        $e->setClassMetadataFactoryName('Doctrine\\ORM\\Mapping\\ClassMetadataFactory');
-        $e->setDefaultRepositoryClassName('Doctrine\\ORM\\EntityRepository');
-        $e->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
-        $e->setQuoteStrategy(new \Doctrine\ORM\Mapping\DefaultQuoteStrategy());
-        $e->setEntityListenerResolver($this->get('doctrine.orm.default_entity_listener_resolver'));
-
-        $this->services['doctrine.orm.default_entity_manager'] = $instance = \Doctrine\ORM\EntityManager::create($this->get('doctrine.dbal.default_connection'), $e);
+        $this->services['doctrine.orm.default_entity_manager'] = $instance = \Doctrine\ORM\EntityManager::create($this->get('doctrine.dbal.default_connection'), $c);
 
         $this->get('doctrine.orm.default_manager_configurator')->configure($instance);
 
@@ -690,7 +685,7 @@ class appProdProjectContainer extends Container
     {
         $this->services['doctrine_cache.providers.doctrine.orm.default_metadata_cache'] = $instance = new \Doctrine\Common\Cache\ArrayCache();
 
-        $instance->setNamespace('sf2orm_default_cc53b8553b07ab95a909d0b4393ed65505c9d83ddf761d5e72ce9fe2c9b8e52b');
+        $instance->setNamespace('sf2orm_default_312d8e00673f5dc8e79cc3614175c576a37dd7d9d69d8b5edda160d1b25c3729');
 
         return $instance;
     }
@@ -707,7 +702,7 @@ class appProdProjectContainer extends Container
     {
         $this->services['doctrine_cache.providers.doctrine.orm.default_query_cache'] = $instance = new \Doctrine\Common\Cache\ArrayCache();
 
-        $instance->setNamespace('sf2orm_default_cc53b8553b07ab95a909d0b4393ed65505c9d83ddf761d5e72ce9fe2c9b8e52b');
+        $instance->setNamespace('sf2orm_default_312d8e00673f5dc8e79cc3614175c576a37dd7d9d69d8b5edda160d1b25c3729');
 
         return $instance;
     }
@@ -724,7 +719,7 @@ class appProdProjectContainer extends Container
     {
         $this->services['doctrine_cache.providers.doctrine.orm.default_result_cache'] = $instance = new \Doctrine\Common\Cache\ArrayCache();
 
-        $instance->setNamespace('sf2orm_default_cc53b8553b07ab95a909d0b4393ed65505c9d83ddf761d5e72ce9fe2c9b8e52b');
+        $instance->setNamespace('sf2orm_default_312d8e00673f5dc8e79cc3614175c576a37dd7d9d69d8b5edda160d1b25c3729');
 
         return $instance;
     }
@@ -2107,7 +2102,7 @@ class appProdProjectContainer extends Container
      */
     protected function getJmsSerializer_DatetimeHandlerService()
     {
-        return $this->services['jms_serializer.datetime_handler'] = new \JMS\Serializer\Handler\DateHandler('Y-m-d\\TH:i:sO', 'UTC', true);
+        return $this->services['jms_serializer.datetime_handler'] = new \JMS\Serializer\Handler\DateHandler('Y-m-d\\TH:i:sO', 'America/Los_Angeles', true);
     }
 
     /*
@@ -4621,16 +4616,16 @@ class appProdProjectContainer extends Container
             'kernel.container_class' => 'appProdProjectContainer',
             'database_host' => '127.0.0.1',
             'database_port' => NULL,
-            'database_name' => 'IVQ',
+            'database_name' => 'IVQ_',
             'database_user' => 'root',
-            'database_password' => 'password',
+            'database_password' => NULL,
             'mailer_transport' => 'smtp',
             'mailer_host' => '127.0.0.1',
             'mailer_user' => NULL,
             'mailer_password' => NULL,
             'secret' => 'ThisTokenIsNotSoSecretChangeIt',
             'locale' => 'en',
-            'base_directory' => ($this->targetDirs[3].'/web'),
+            'base_directory' => '/Applications/XAMPP/htdocs/ivq-rest/web',
             'profile_directory' => '/uploads/profile/',
             'business_card_directory' => '/uploads/businessCard/',
             'media_directory' => '/uploads/media/',

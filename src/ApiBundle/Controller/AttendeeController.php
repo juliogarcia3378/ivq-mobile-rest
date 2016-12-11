@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use Core\ComunBundle\Enums\ENotification;
+use AppBundle\Entity\Notification;
 
 
 class AttendeeController extends FOSRestController
@@ -99,6 +101,17 @@ class AttendeeController extends FOSRestController
               return new JsonResponse(array('message'=>"This is an invalid event."));
          }
          $array["event"]=$event;
+            
+            $myMembership= $em->getRepository("AppBundle:Member")->returnMemberID(array('user'=>$user->getId(),'group'=>$event->getGroups()->getId()));
+            $myMember= $em->getRepository("AppBundle:Member")->find($myMembership);
+            
+            $notification = new Notification();
+            $notification->setMember($myMember);
+            $notification->setPicture("");
+            $notification->setEvent($event);
+            $notification->setNotificationType($em->getRepository("AppBundle:NotificationType")->find(ENotification::ATTEND_TO_EVENT));
+            $em->persist($notification);
+             
          
          $response = $em->getRepository("AppBundle:Attendee")->confirmAttendance($array);
          return new JsonResponse(array('message'=>$response));

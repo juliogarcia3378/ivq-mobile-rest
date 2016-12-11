@@ -39,7 +39,7 @@ class AttendeeRepository extends \Core\ComunBundle\Util\NomencladoresRepository
       
 	 	foreach ($response as $key => $attendee) {
             $aux["idUser"]= $attendee->getUser()->getId();
-            $aux["idMember"]= $em->getRepository("AppBundle:Groups")->returnMemberID(array('user'=>$aux["idUser"],'group'=>$idGroup));
+            $aux["idMember"]= $em->getRepository("AppBundle:Member")->returnMemberID(array('user'=>$aux["idUser"],'group'=>$idGroup));
 	 		$aux["name"]= $attendee->getUser()->getProfile()->getName();
 	 		$aux["lastname"]= $attendee->getUser()->getProfile()->getLastname();
 	 		$aux["avatar"]= $attendee->getUser()->getProfile()->getAvatar();

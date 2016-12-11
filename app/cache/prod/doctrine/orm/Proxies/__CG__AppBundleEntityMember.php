@@ -64,10 +64,10 @@ class Member extends \AppBundle\Entity\Member implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'groups', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'user', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'following', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'follower'];
+            return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'groups', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'user', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'notification', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'notifier', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'following', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'follower'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'groups', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'user', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'following', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'follower'];
+        return ['__isInitialized__', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'id', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'groups', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'user', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'notification', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'notifier', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'following', '' . "\0" . 'AppBundle\\Entity\\Member' . "\0" . 'follower'];
     }
 
     /**
@@ -307,6 +307,39 @@ class Member extends \AppBundle\Entity\Member implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFollower', []);
 
         return parent::getFollower();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notification)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addNotification', [$notification]);
+
+        return parent::addNotification($notification);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeNotification', [$notification]);
+
+        return parent::removeNotification($notification);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNotification()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNotification', []);
+
+        return parent::getNotification();
     }
 
 }

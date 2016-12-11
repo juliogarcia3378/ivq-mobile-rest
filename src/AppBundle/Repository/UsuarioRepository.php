@@ -83,4 +83,6 @@ class UsuarioRepository extends \Core\ComunBundle\Util\NomencladoresRepository
          return $this->filterQB($qb, $filters, ResultType::ObjectType);
      }
 
+     
+
 }

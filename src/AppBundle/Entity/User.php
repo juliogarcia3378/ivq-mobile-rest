@@ -80,6 +80,12 @@ class User extends BaseUser
 
     /**
      *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SavedBusinessCard",mappedBy="user", orphanRemoval=true, cascade={"persist","remove"})
+     */
+    private $savedBusinesscard;
+
+    /**
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Media",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $media;
@@ -91,11 +97,12 @@ class User extends BaseUser
      */
     private $comment;
 
-        /**
+    /**
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeMedia",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $likeMedia;
+
 
 
         /**
@@ -238,6 +245,7 @@ class User extends BaseUser
         $this->member = new \Doctrine\Common\Collections\ArrayCollection();
        
         $this->businesscard = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->savedBusinesscard = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comment = new \Doctrine\Common\Collections\ArrayCollection();
         $this->likeMedia = new \Doctrine\Common\Collections\ArrayCollection();
@@ -402,6 +410,43 @@ class User extends BaseUser
     {
         return $this->businesscard;
     }
+
+
+
+
+        /**
+     * Add BusinessCard
+     *
+     * @param \AppBundle\Entity\SavedBusinessCard $businesscard
+     * @return Follow
+     */
+    public function addSavedBusinessCard(\AppBundle\Entity\SavedBusinessCard $businesscard)
+    {
+        $this->savedBusinesscard[] = $businesscard;
+    
+        return $this;
+    }
+
+     /**
+     * Remove BusinessCard
+     *
+     * @param \AppBundle\Entity\SavedBusinessCard $businesscard
+     */
+    public function removeSavedBusinessCard(\AppBundle\Entity\SavedBusinessCard $businesscard)
+    {
+        $this->savedBusinesscard->removeElement($businesscard);
+    }
+
+    /**
+     * Get SavedBusinessCard
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSavedBusinessCard()
+    {
+        return $this->savedBusinesscard;
+    }
+
 
         /**
      * Add FavouriteGroup

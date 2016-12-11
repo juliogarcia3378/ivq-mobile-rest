@@ -18,12 +18,15 @@ use AppBundle\Repository\BusinessCardMediaRepository;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\State;
+use AppBundle\Entity\Notification;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\MediaEvent;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\Request as MyRequest;
 use Core\ComunBundle\Enums\EMedia;
+use Core\ComunBundle\Enums\ENotification;
+
 class MediaController extends FOSRestController
 {
 
@@ -39,9 +42,9 @@ class MediaController extends FOSRestController
      */
       public function mediaListAction()
         {
-        	$user = $this->get('security.context')->getToken()->getUser();
-	        if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) 
-	    	{
+            $user = $this->get('security.context')->getToken()->getUser();
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) 
+            {
                 $media = $user->getMedia();
                 $response =array();
                 $response['msg']='ok';
@@ -101,8 +104,8 @@ class MediaController extends FOSRestController
                     }
                   }
                 
-	            return new JsonResponse($response);
-	        }
+                return new JsonResponse($response);
+            }
               
             return new JsonResponse(array( "error"=>"You dont have permissions."
                                    ));
@@ -149,24 +152,13 @@ class MediaController extends FOSRestController
 
                     $mymedia = new Media();
                     $mymedia->setURL($this->uploadFile("media",$this->getParameter('media_directory')));
-                                            if (($_FILES["media"]["type"] == "video/mp4")
-                                            || ($_FILES["media"]["type"] == "video/mpeg")
-                                            || ($_FILES["media"]["type"] == "video/webm")
-                                            || ($_FILES["media"]["type"] == "video/x-flv")
-                                            || ($_FILES["media"]["type"] == "video/quicktime")
-                                            || ($_FILES["media"]["type"] == "video/x-m4v")
-                                            || ($_FILES["media"]["type"] == "video/x-matroska")
-                                            || ($_FILES["media"]["type"] == "audio/wmv")
-                                            || ($_FILES["media"]["type"] == "audio/wmv")
-                                            || ($_FILES["media"]["type"] == "video/x-ms-wmv"))
-                                                $mymedia->setFormat("video");
+                     $media=$this->getFileType();
+                     if ($media==false){
+                        return new JsonResponse(array( "error"=>"This format is unsupported"));
+                     }
+                     $mymedia->setFormat($media);
 
-                                            if (($_FILES["media"]["type"] == "image/pjpeg")
-                                            || ($_FILES["media"]["type"] == "image/gif")
-                                            || ($_FILES["media"]["type"] == "image/png")
-                                            || ($_FILES["media"]["type"] == "image/jpeg"))  
-                                                $mymedia->setFormat("picture");
-                                         $user->addMedia($mymedia);
+            $user->addMedia($mymedia);
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($mymedia);
             $em->flush();
@@ -313,38 +305,49 @@ class MediaController extends FOSRestController
 
                     $mymedia = new Media();
                     $mymedia->setURL($this->uploadFile("media",$this->getParameter('media_directory')));
-                                            if (($_FILES["media"]["type"] == "video/mp4")
-                                            || ($_FILES["media"]["type"] == "video/mpeg")
-                                            || ($_FILES["media"]["type"] == "audio/wmv")
-                                            || ($_FILES["media"]["type"] == "video/x-ms-wmv"))
-                                                $mymedia->setFormat("video");
 
-                                            if (($_FILES["media"]["type"] == "image/pjpeg")
-                                            || ($_FILES["media"]["type"] == "image/gif")
-                                            || ($_FILES["media"]["type"] == "image/png")
-                                            || ($_FILES["media"]["type"] == "image/jpeg"))  
-                                                $mymedia->setFormat("picture");
-                                         $user->addMedia($mymedia);
-           
+
+                     $media=$this->getFileType();
+                     if ($media==false){
+                        return new JsonResponse(array( "error"=>"This format is unsupported"));
+                     }
+                     $mymedia->setFormat($media);
+
+                   
+            
+            $user->addMedia($mymedia);
             $em->persist($mymedia);
-      
             $mediaEvent = new MediaEvent();
             $mediaEvent->setMedia($mymedia);
             $mediaEvent->setEvent($event);
-                $comment = $request->get('comment');
-                  if ($comment!=null){
-                     $mediaEvent->setComment($comment);
-                  }
+            $comment = $request->get('comment');
+            if ($comment!=null){
+                $mediaEvent->setComment($comment);
+            }
 
             $em->persist($mediaEvent);
-            $em->flush();
+            $myMembership= $em->getRepository("AppBundle:Member")->returnMemberID(array('user'=>$user->getId(),'group'=>$event->getGroups()->getId()));
+            
+            $myMember= $em->getRepository("AppBundle:Member")->find($myMembership);
 
-                return new JsonResponse(array("msg"=>'Media added',
-                                             )
-                                        );
+            $attendees = $em->getRepository("AppBundle:Attendee")->byEvent(array('event'=>$event));
+            foreach ($attendees as $key => $attend) {
+                   $attendee = $em->getRepository("AppBundle:Member")->find($attend['idMember']);
+                    if ($myMembership == $attend['idMember'])
+                        continue;
+                    $notification = new Notification();
+                    $notification->setMember($attendee);
+                    $notification->setPicture($event->getLogo());
+                    $notification->setOtherMember($myMember);
+                    $notification->setNotificationType($em->getRepository("AppBundle:NotificationType")->find(ENotification::ATTACHED_MEDIA_TO_YOUR_EVENT));
+                    $em->persist($notification);
+             }
+                    $em->flush();
+
+                return new JsonResponse(array("msg"=>'Media added'));
             }
             
-            return new JsonResponse(array( "error"=>"You dont have permissions upload media"
+            return new JsonResponse(array( "error"=>"You dont have permissions to upload media"
                                          )
                                    );
         }

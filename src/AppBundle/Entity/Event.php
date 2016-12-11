@@ -131,11 +131,18 @@ class Event
      */
     private $mediaEvent;
 
+         /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification",mappedBy="event",cascade={"persist","remove"})
+     */
+    private $notification;
+
 
 
   public function __construct()
     {
         $this->mediaEvent = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->notification = new \Doctrine\Common\Collections\ArrayCollection();
 
 
     }
@@ -460,6 +467,38 @@ class Event
     public function getMediaEvent()
     {
         return $this->mediaEvent;
+    }
+
+     /**
+     * Add MediaEvent
+     *
+     * @param \AppBundle\Entity\Notification $media
+     * @return MediaEvent
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notification[] = $notification;
+        return $this;
+    }
+
+     /**
+     * Remove MediaEvent
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notification->removeElement($notification);
+    }
+
+    /**
+     * Get Notification
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotification()
+    {
+        return $this->notification;
     }
 }
 

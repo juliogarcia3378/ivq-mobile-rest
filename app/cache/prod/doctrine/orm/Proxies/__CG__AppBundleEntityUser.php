@@ -64,10 +64,10 @@ class User extends \AppBundle\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'profile', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'advertiser', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'invalidAttempts', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_group', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'businesscard', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'media', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'comment', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'likeMedia', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'attendee', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'accessToken', 'token', 'linkedinID', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'plainPassword', 'lastLogin', 'confirmationToken', 'passwordRequestedAt', 'groups', 'locked', 'expired', 'expiresAt', 'roles', 'credentialsExpired', 'credentialsExpireAt'];
+            return ['__isInitialized__', 'id', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'profile', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'advertiser', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'invalidAttempts', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_group', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'businesscard', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'savedBusinesscard', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'media', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'comment', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'likeMedia', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'attendee', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'accessToken', 'token', 'linkedinID', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'plainPassword', 'lastLogin', 'confirmationToken', 'passwordRequestedAt', 'groups', 'locked', 'expired', 'expiresAt', 'roles', 'credentialsExpired', 'credentialsExpireAt'];
         }
 
-        return ['__isInitialized__', 'id', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'profile', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'advertiser', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'invalidAttempts', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_group', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'businesscard', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'media', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'comment', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'likeMedia', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'attendee', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'accessToken', 'token', 'linkedinID', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'plainPassword', 'lastLogin', 'confirmationToken', 'passwordRequestedAt', 'groups', 'locked', 'expired', 'expiresAt', 'roles', 'credentialsExpired', 'credentialsExpireAt'];
+        return ['__isInitialized__', 'id', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'profile', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'advertiser', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'invalidAttempts', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_group', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'favourite_member', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'businesscard', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'savedBusinesscard', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'media', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'comment', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'likeMedia', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'attendee', '' . "\0" . 'AppBundle\\Entity\\User' . "\0" . 'accessToken', 'token', 'linkedinID', 'username', 'usernameCanonical', 'email', 'emailCanonical', 'enabled', 'salt', 'password', 'plainPassword', 'lastLogin', 'confirmationToken', 'passwordRequestedAt', 'groups', 'locked', 'expired', 'expiresAt', 'roles', 'credentialsExpired', 'credentialsExpireAt'];
     }
 
     /**
@@ -472,6 +472,39 @@ class User extends \AppBundle\Entity\User implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBusinessCard', []);
 
         return parent::getBusinessCard();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addSavedBusinessCard(\AppBundle\Entity\SavedBusinessCard $businesscard)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addSavedBusinessCard', [$businesscard]);
+
+        return parent::addSavedBusinessCard($businesscard);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeSavedBusinessCard(\AppBundle\Entity\SavedBusinessCard $businesscard)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeSavedBusinessCard', [$businesscard]);
+
+        return parent::removeSavedBusinessCard($businesscard);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSavedBusinessCard()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSavedBusinessCard', []);
+
+        return parent::getSavedBusinessCard();
     }
 
     /**

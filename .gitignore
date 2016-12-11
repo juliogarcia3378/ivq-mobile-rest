@@ -1,2 +1,4 @@
-web/bundles
+web
+app/cache
+app/logs
 app/config

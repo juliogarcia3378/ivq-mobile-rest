@@ -13,6 +13,8 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use AppBundle\Entity\Follow;
+use AppBundle\Entity\Notification;
+use Core\ComunBundle\Enums\ENotification;
 
 
 
@@ -194,10 +196,24 @@ class MemberController extends FOSRestController
                                     ), Response::HTTP_OK);
                 }else{
                     $follow = new Follow();
-                    $idFollower = $em->getRepository("AppBundle:Member")->returnMemberID(array('group'=>$member->getGroups()->getId(),'user'=>$user->getId()));
                     $follow->setFollowing($member);
-                    $follow->setFollower($em->getRepository("AppBundle:Member")->find($idFollower));
+                    $idFollower = $em->getRepository("AppBundle:Member")->returnMemberID(array('group'=>$member->getGroups()->getId(),'user'=>$user->getId()));
+                    
+
+                    $userMember = $em->getRepository("AppBundle:Member")->find($idFollower);
+                    $follow->setFollower($userMember);
                     $em->persist($follow);
+
+
+                      
+                    $notification = new Notification();
+                    $notification->setMember($member);
+                    $notification->setPicture("");
+                    $notification->setOtherMember($userMember);
+                    $notification->setNotificationType($em->getRepository("AppBundle:NotificationType")->find(ENotification::STARTED_FOLLOWING_YOU));
+
+
+                    $em->persist($notification);
                     $em->flush();
 
                     return new JsonResponse(array(

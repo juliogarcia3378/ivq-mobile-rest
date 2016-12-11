@@ -92,7 +92,7 @@ class GroupRepository extends \Core\ComunBundle\Util\NomencladoresRepository
          $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
          $qb->andWhere('groups.id = :group')->setParameter('group', $filters['group']);
          if (count($qb->getQuery()->getResult())>0)
-            return $qb->getQuery()->getSingleResult()->getId();
+            return $qb->getQuery()->getSingleResult()->getMember()->getId();
             return false;
      }
 

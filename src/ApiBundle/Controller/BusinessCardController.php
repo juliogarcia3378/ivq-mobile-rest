@@ -467,23 +467,18 @@ class BusinessCardController extends FOSRestController
                                         'message'=>'The id provided is not valid',
                                         ), Response::HTTP_OK);
                             }
-
                     $mybcmedia = new BusinessCardMedia();
                     $mybcmedia->setURL($this->uploadFile("media",$this->getParameter('media_directory')));
-                                            if (($_FILES["media"]["type"] == "video/mp4")
-                                            || ($_FILES["media"]["type"] == "video/mpeg")
-                                            || ($_FILES["media"]["type"] == "audio/wmv")
-                                            || ($_FILES["media"]["type"] == "video/x-ms-wmv"))
-                                                $mybcmedia->setFormat("video");
 
-                                            if (($_FILES["media"]["type"] == "image/pjpeg")
-                                            || ($_FILES["media"]["type"] == "image/gif")
-                                            || ($_FILES["media"]["type"] == "image/png")
-                                            || ($_FILES["media"]["type"] == "image/jpeg"))  
-                                                $mybcmedia->setFormat("picture");
 
+                    $media=$this->getFileType();
+                     if ($media==false){
+                        return new JsonResponse(array( "error"=>"This format is unsupported"));
+                     }
+                     $mybcmedia->setFormat($media);
+                        $em->persist($mybcmedia);
                                          $bc->addBusinessCardMedia($mybcmedia);
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $em->persist($bc);
             $em->flush();
 

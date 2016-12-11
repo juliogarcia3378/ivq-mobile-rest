@@ -28,64 +28,6 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
         $request = $this->request;
 
         if (0 === strpos($pathinfo, '/ivq')) {
-            if (0 === strpos($pathinfo, '/ivq/group')) {
-                // join_group
-                if ($pathinfo === '/ivq/group/join') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_join_group;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::joinGroupAction',  '_format' => 'json',  '_route' => 'join_group',);
-                }
-                not_join_group:
-
-                // disjoin_group
-                if ($pathinfo === '/ivq/group/disjoin') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_disjoin_group;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::disjoinGroupAction',  '_format' => 'json',  '_route' => 'disjoin_group',);
-                }
-                not_disjoin_group:
-
-                // list_member
-                if ($pathinfo === '/ivq/group/members') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_list_member;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::listMemberAction',  '_format' => 'json',  '_route' => 'list_member',);
-                }
-                not_list_member:
-
-            }
-
-            // list_my_group
-            if ($pathinfo === '/ivq/my-groups') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_list_my_group;
-                }
-
-                return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::listMyGroupAction',  '_format' => 'json',  '_route' => 'list_my_group',);
-            }
-            not_list_my_group:
-
-            // view_group
-            if ($pathinfo === '/ivq/group/view') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_view_group;
-                }
-
-                return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::viewGroupAction',  '_format' => 'json',  '_route' => 'view_group',);
-            }
-            not_view_group:
-
             if (0 === strpos($pathinfo, '/ivq/event')) {
                 // attendees
                 if ($pathinfo === '/ivq/event/attendees') {
@@ -125,174 +67,44 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
             }
 
-            // search_followers
-            if ($pathinfo === '/ivq/follower/search') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_search_followers;
+            if (0 === strpos($pathinfo, '/ivq/b')) {
+                if (0 === strpos($pathinfo, '/ivq/broadcast')) {
+                    // broadcast_list
+                    if ($pathinfo === '/ivq/broadcast/list') {
+                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                            $allow = array_merge($allow, array('GET', 'HEAD'));
+                            goto not_broadcast_list;
+                        }
+
+                        return array (  '_controller' => 'ApiBundle\\Controller\\BroadcastController::broadcastListAction',  '_format' => 'json',  '_route' => 'broadcast_list',);
+                    }
+                    not_broadcast_list:
+
+                    // broadcast_view
+                    if ($pathinfo === '/ivq/broadcast/view') {
+                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                            $allow = array_merge($allow, array('GET', 'HEAD'));
+                            goto not_broadcast_view;
+                        }
+
+                        return array (  '_controller' => 'ApiBundle\\Controller\\BroadcastController::broadcastViewAction',  '_format' => 'json',  '_route' => 'broadcast_view',);
+                    }
+                    not_broadcast_view:
+
                 }
 
-                return array (  '_controller' => 'ApiBundle\\Controller\\FollowerController::searchFollowersAction',  '_format' => 'json',  '_route' => 'search_followers',);
-            }
-            not_search_followers:
-
-            if (0 === strpos($pathinfo, '/ivq/broadcast')) {
-                // broadcast_list
-                if ($pathinfo === '/ivq/broadcast/list') {
+                // get_my_business_card
+                if ($pathinfo === '/ivq/business-card/generate') {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_broadcast_list;
+                        goto not_get_my_business_card;
                     }
 
-                    return array (  '_controller' => 'ApiBundle\\Controller\\BroadcastController::broadcastListAction',  '_format' => 'json',  '_route' => 'broadcast_list',);
+                    return array (  '_controller' => 'ApiBundle\\Controller\\BusinessCardController::getMyBusinessCardAction',  '_format' => 'json',  '_route' => 'get_my_business_card',);
                 }
-                not_broadcast_list:
-
-                // broadcast_view
-                if ($pathinfo === '/ivq/broadcast/view') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_broadcast_view;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\BroadcastController::broadcastViewAction',  '_format' => 'json',  '_route' => 'broadcast_view',);
-                }
-                not_broadcast_view:
+                not_get_my_business_card:
 
             }
-
-            if (0 === strpos($pathinfo, '/ivq/media')) {
-                // media_list
-                if ($pathinfo === '/ivq/media') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_media_list;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::mediaListAction',  '_format' => 'json',  '_route' => 'media_list',);
-                }
-                not_media_list:
-
-                // add_media
-                if ($pathinfo === '/ivq/media/add') {
-                    if ($this->context->getMethod() != 'POST') {
-                        $allow[] = 'POST';
-                        goto not_add_media;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::addMediaAction',  '_format' => 'json',  '_route' => 'add_media',);
-                }
-                not_add_media:
-
-                // delete_media
-                if ($pathinfo === '/ivq/media/delete') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_delete_media;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::deleteMediaAction',  '_format' => 'json',  '_route' => 'delete_media',);
-                }
-                not_delete_media:
-
-            }
-
-            // add_media_to_event
-            if ($pathinfo === '/ivq/events/media/add') {
-                if ($this->context->getMethod() != 'POST') {
-                    $allow[] = 'POST';
-                    goto not_add_media_to_event;
-                }
-
-                return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::addMediaToEventAction',  '_format' => 'json',  '_route' => 'add_media_to_event',);
-            }
-            not_add_media_to_event:
-
-            if (0 === strpos($pathinfo, '/ivq/favorites')) {
-                if (0 === strpos($pathinfo, '/ivq/favorites/groups')) {
-                    // list_favourite_groups
-                    if ($pathinfo === '/ivq/favorites/groups/list') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_list_favourite_groups;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::listFavouriteGroupsAction',  '_format' => 'json',  '_route' => 'list_favourite_groups',);
-                    }
-                    not_list_favourite_groups:
-
-                    // add_group_favourite
-                    if ($pathinfo === '/ivq/favorites/groups/add') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_add_group_favourite;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::addGroupFavouriteAction',  '_format' => 'json',  '_route' => 'add_group_favourite',);
-                    }
-                    not_add_group_favourite:
-
-                    // remove_group
-                    if ($pathinfo === '/ivq/favorites/groups/remove') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_remove_group;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::removeGroupAction',  '_format' => 'json',  '_route' => 'remove_group',);
-                    }
-                    not_remove_group:
-
-                }
-
-                if (0 === strpos($pathinfo, '/ivq/favorites/members')) {
-                    // list_favourite_members
-                    if ($pathinfo === '/ivq/favorites/members/list') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_list_favourite_members;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::listFavouriteMembersAction',  '_format' => 'json',  '_route' => 'list_favourite_members',);
-                    }
-                    not_list_favourite_members:
-
-                    // add_member_favourite
-                    if ($pathinfo === '/ivq/favorites/members/add') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_add_member_favourite;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::addMemberFavouriteAction',  '_format' => 'json',  '_route' => 'add_member_favourite',);
-                    }
-                    not_add_member_favourite:
-
-                    // remove_member
-                    if ($pathinfo === '/ivq/favorites/members/remove') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_remove_member;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::removeMemberAction',  '_format' => 'json',  '_route' => 'remove_member',);
-                    }
-                    not_remove_member:
-
-                }
-
-            }
-
-            // get_my_business_card
-            if ($pathinfo === '/ivq/business-card/generate') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_get_my_business_card;
-                }
-
-                return array (  '_controller' => 'ApiBundle\\Controller\\BusinessCardController::getMyBusinessCardAction',  '_format' => 'json',  '_route' => 'get_my_business_card',);
-            }
-            not_get_my_business_card:
 
             // list_my_business_card
             if ($pathinfo === '/ivq/me/business-card/list') {
@@ -363,16 +175,41 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
 
             }
 
-            // get_demos
-            if ($pathinfo === '/ivq/testing') {
+            if (0 === strpos($pathinfo, '/ivq/comment')) {
+                // list_comments_by_media
+                if ($pathinfo === '/ivq/comments/list') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_list_comments_by_media;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\CommentController::listCommentsByMediaAction',  '_format' => 'json',  '_route' => 'list_comments_by_media',);
+                }
+                not_list_comments_by_media:
+
+                // add_comment
+                if ($pathinfo === '/ivq/comment/add') {
+                    if ($this->context->getMethod() != 'POST') {
+                        $allow[] = 'POST';
+                        goto not_add_comment;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\CommentController::addCommentAction',  '_format' => 'json',  '_route' => 'add_comment',);
+                }
+                not_add_comment:
+
+            }
+
+            // add_liketo_media
+            if ($pathinfo === '/ivq/media-attached/like') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                     $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_get_demos;
+                    goto not_add_liketo_media;
                 }
 
-                return array (  '_controller' => 'ApiBundle\\Controller\\DemoController::getDemosAction',  '_format' => 'json',  '_route' => 'get_demos',);
+                return array (  '_controller' => 'ApiBundle\\Controller\\CommentController::addLiketoMediaAction',  '_format' => 'json',  '_route' => 'add_liketo_media',);
             }
-            not_get_demos:
+            not_add_liketo_media:
 
             if (0 === strpos($pathinfo, '/ivq/coupon')) {
                 // list_coupons
@@ -435,78 +272,244 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             }
             not_index:
 
-            if (0 === strpos($pathinfo, '/ivq/comment')) {
-                // list_comments_by_media
-                if ($pathinfo === '/ivq/comments/list') {
+            // get_demos
+            if ($pathinfo === '/ivq/testing') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_get_demos;
+                }
+
+                return array (  '_controller' => 'ApiBundle\\Controller\\DemoController::getDemosAction',  '_format' => 'json',  '_route' => 'get_demos',);
+            }
+            not_get_demos:
+
+            if (0 === strpos($pathinfo, '/ivq/f')) {
+                if (0 === strpos($pathinfo, '/ivq/favorites')) {
+                    if (0 === strpos($pathinfo, '/ivq/favorites/groups')) {
+                        // list_favourite_groups
+                        if ($pathinfo === '/ivq/favorites/groups/list') {
+                            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                                $allow = array_merge($allow, array('GET', 'HEAD'));
+                                goto not_list_favourite_groups;
+                            }
+
+                            return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::listFavouriteGroupsAction',  '_format' => 'json',  '_route' => 'list_favourite_groups',);
+                        }
+                        not_list_favourite_groups:
+
+                        // add_group_favourite
+                        if ($pathinfo === '/ivq/favorites/groups/add') {
+                            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                                $allow = array_merge($allow, array('GET', 'HEAD'));
+                                goto not_add_group_favourite;
+                            }
+
+                            return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::addGroupFavouriteAction',  '_format' => 'json',  '_route' => 'add_group_favourite',);
+                        }
+                        not_add_group_favourite:
+
+                        // remove_group
+                        if ($pathinfo === '/ivq/favorites/groups/remove') {
+                            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                                $allow = array_merge($allow, array('GET', 'HEAD'));
+                                goto not_remove_group;
+                            }
+
+                            return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::removeGroupAction',  '_format' => 'json',  '_route' => 'remove_group',);
+                        }
+                        not_remove_group:
+
+                    }
+
+                    if (0 === strpos($pathinfo, '/ivq/favorites/members')) {
+                        // list_favourite_members
+                        if ($pathinfo === '/ivq/favorites/members/list') {
+                            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                                $allow = array_merge($allow, array('GET', 'HEAD'));
+                                goto not_list_favourite_members;
+                            }
+
+                            return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::listFavouriteMembersAction',  '_format' => 'json',  '_route' => 'list_favourite_members',);
+                        }
+                        not_list_favourite_members:
+
+                        // add_member_favourite
+                        if ($pathinfo === '/ivq/favorites/members/add') {
+                            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                                $allow = array_merge($allow, array('GET', 'HEAD'));
+                                goto not_add_member_favourite;
+                            }
+
+                            return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::addMemberFavouriteAction',  '_format' => 'json',  '_route' => 'add_member_favourite',);
+                        }
+                        not_add_member_favourite:
+
+                        // remove_member
+                        if ($pathinfo === '/ivq/favorites/members/remove') {
+                            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                                $allow = array_merge($allow, array('GET', 'HEAD'));
+                                goto not_remove_member;
+                            }
+
+                            return array (  '_controller' => 'ApiBundle\\Controller\\FavouriteController::removeMemberAction',  '_format' => 'json',  '_route' => 'remove_member',);
+                        }
+                        not_remove_member:
+
+                    }
+
+                }
+
+                // search_followers
+                if ($pathinfo === '/ivq/follower/search') {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_list_comments_by_media;
+                        goto not_search_followers;
                     }
 
-                    return array (  '_controller' => 'ApiBundle\\Controller\\CommentController::listCommentsByMediaAction',  '_format' => 'json',  '_route' => 'list_comments_by_media',);
+                    return array (  '_controller' => 'ApiBundle\\Controller\\FollowerController::searchFollowersAction',  '_format' => 'json',  '_route' => 'search_followers',);
                 }
-                not_list_comments_by_media:
-
-                // add_comment
-                if ($pathinfo === '/ivq/comment/add') {
-                    if ($this->context->getMethod() != 'POST') {
-                        $allow[] = 'POST';
-                        goto not_add_comment;
-                    }
-
-                    return array (  '_controller' => 'ApiBundle\\Controller\\CommentController::addCommentAction',  '_format' => 'json',  '_route' => 'add_comment',);
-                }
-                not_add_comment:
+                not_search_followers:
 
             }
 
-            if (0 === strpos($pathinfo, '/ivq/me')) {
-                // add_liketo_media
-                if ($pathinfo === '/ivq/media-attached/like') {
+            if (0 === strpos($pathinfo, '/ivq/group')) {
+                // join_group
+                if ($pathinfo === '/ivq/group/join') {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_add_liketo_media;
+                        goto not_join_group;
                     }
 
-                    return array (  '_controller' => 'ApiBundle\\Controller\\CommentController::addLiketoMediaAction',  '_format' => 'json',  '_route' => 'add_liketo_media',);
+                    return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::joinGroupAction',  '_format' => 'json',  '_route' => 'join_group',);
                 }
-                not_add_liketo_media:
+                not_join_group:
 
-                if (0 === strpos($pathinfo, '/ivq/member')) {
-                    // member_profile
-                    if ($pathinfo === '/ivq/member/profile') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_member_profile;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\MemberController::memberProfileAction',  '_format' => 'json',  '_route' => 'member_profile',);
+                // disjoin_group
+                if ($pathinfo === '/ivq/group/disjoin') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_disjoin_group;
                     }
-                    not_member_profile:
 
-                    // follow_member
-                    if ($pathinfo === '/ivq/member/follow') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_follow_member;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\MemberController::followMemberAction',  '_format' => 'json',  '_route' => 'follow_member',);
-                    }
-                    not_follow_member:
-
-                    // unfollow_member
-                    if ($pathinfo === '/ivq/member/unfollow') {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
-                            goto not_unfollow_member;
-                        }
-
-                        return array (  '_controller' => 'ApiBundle\\Controller\\MemberController::unfollowMemberAction',  '_format' => 'json',  '_route' => 'unfollow_member',);
-                    }
-                    not_unfollow_member:
-
+                    return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::disjoinGroupAction',  '_format' => 'json',  '_route' => 'disjoin_group',);
                 }
+                not_disjoin_group:
+
+                // list_member
+                if ($pathinfo === '/ivq/group/members') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_list_member;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::listMemberAction',  '_format' => 'json',  '_route' => 'list_member',);
+                }
+                not_list_member:
+
+            }
+
+            // list_my_group
+            if ($pathinfo === '/ivq/my-groups') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_list_my_group;
+                }
+
+                return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::listMyGroupAction',  '_format' => 'json',  '_route' => 'list_my_group',);
+            }
+            not_list_my_group:
+
+            // view_group
+            if ($pathinfo === '/ivq/group/view') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_view_group;
+                }
+
+                return array (  '_controller' => 'ApiBundle\\Controller\\GroupController::viewGroupAction',  '_format' => 'json',  '_route' => 'view_group',);
+            }
+            not_view_group:
+
+            if (0 === strpos($pathinfo, '/ivq/media')) {
+                // media_list
+                if ($pathinfo === '/ivq/media') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_media_list;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::mediaListAction',  '_format' => 'json',  '_route' => 'media_list',);
+                }
+                not_media_list:
+
+                // add_media
+                if ($pathinfo === '/ivq/media/add') {
+                    if ($this->context->getMethod() != 'POST') {
+                        $allow[] = 'POST';
+                        goto not_add_media;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::addMediaAction',  '_format' => 'json',  '_route' => 'add_media',);
+                }
+                not_add_media:
+
+                // delete_media
+                if ($pathinfo === '/ivq/media/delete') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_delete_media;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::deleteMediaAction',  '_format' => 'json',  '_route' => 'delete_media',);
+                }
+                not_delete_media:
+
+            }
+
+            // add_media_to_event
+            if ($pathinfo === '/ivq/events/media/add') {
+                if ($this->context->getMethod() != 'POST') {
+                    $allow[] = 'POST';
+                    goto not_add_media_to_event;
+                }
+
+                return array (  '_controller' => 'ApiBundle\\Controller\\MediaController::addMediaToEventAction',  '_format' => 'json',  '_route' => 'add_media_to_event',);
+            }
+            not_add_media_to_event:
+
+            if (0 === strpos($pathinfo, '/ivq/member')) {
+                // member_profile
+                if ($pathinfo === '/ivq/member/profile') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_member_profile;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\MemberController::memberProfileAction',  '_format' => 'json',  '_route' => 'member_profile',);
+                }
+                not_member_profile:
+
+                // follow_member
+                if ($pathinfo === '/ivq/member/follow') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_follow_member;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\MemberController::followMemberAction',  '_format' => 'json',  '_route' => 'follow_member',);
+                }
+                not_follow_member:
+
+                // unfollow_member
+                if ($pathinfo === '/ivq/member/unfollow') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_unfollow_member;
+                    }
+
+                    return array (  '_controller' => 'ApiBundle\\Controller\\MemberController::unfollowMemberAction',  '_format' => 'json',  '_route' => 'unfollow_member',);
+                }
+                not_unfollow_member:
 
             }
 
@@ -563,6 +566,97 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
         }
 
         if (0 === strpos($pathinfo, '/app')) {
+            // list_categories
+            if ($pathinfo === '/app/category/list') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_list_categories;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\CategoryController::listCategoriesAction',  '_format' => 'json',  '_route' => 'list_categories',);
+            }
+            not_list_categories:
+
+            if (0 === strpos($pathinfo, '/app/event')) {
+                // list_event
+                if ($pathinfo === '/app/event/list') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_list_event;
+                    }
+
+                    return array (  '_controller' => 'AppBundle\\Controller\\EventsController::listEventAction',  '_format' => 'json',  '_route' => 'list_event',);
+                }
+                not_list_event:
+
+                // details_event
+                if ($pathinfo === '/app/event/detail') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_details_event;
+                    }
+
+                    return array (  '_controller' => 'AppBundle\\Controller\\EventsController::detailsEventAction',  '_format' => 'json',  '_route' => 'details_event',);
+                }
+                not_details_event:
+
+                // list_media_by_event
+                if ($pathinfo === '/app/event/media/list') {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_list_media_by_event;
+                    }
+
+                    return array (  '_controller' => 'AppBundle\\Controller\\EventsController::listMediaByEventAction',  '_format' => 'json',  '_route' => 'list_media_by_event',);
+                }
+                not_list_media_by_event:
+
+            }
+
+            // list_groups
+            if ($pathinfo === '/app/group/list') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_list_groups;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\GroupController::listGroupsAction',  '_format' => 'json',  '_route' => 'list_groups',);
+            }
+            not_list_groups:
+
+            // list_nearby_groups
+            if ($pathinfo === '/app/nearby') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_list_nearby_groups;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\GroupController::listNearbyGroupsAction',  '_format' => 'json',  '_route' => 'list_nearby_groups',);
+            }
+            not_list_nearby_groups:
+
+            // search_groups
+            if ($pathinfo === '/app/group/search') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_search_groups;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\GroupController::searchGroupsAction',  '_format' => 'json',  '_route' => 'search_groups',);
+            }
+            not_search_groups:
+
+            // linkedin_login
+            if ($pathinfo === '/app/linkedin/login') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_linkedin_login;
+                }
+
+                return array (  '_controller' => 'AppBundle\\Controller\\LinkedinController::linkedinLoginAction',  '_format' => 'json',  '_route' => 'linkedin_login',);
+            }
+            not_linkedin_login:
+
             // reset_token
             if ($pathinfo === '/app/token/reset') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
@@ -629,61 +723,6 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
             }
             not_reset_password:
 
-            // list_groups
-            if ($pathinfo === '/app/group/list') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_list_groups;
-                }
-
-                return array (  '_controller' => 'AppBundle\\Controller\\GroupController::listGroupsAction',  '_format' => 'json',  '_route' => 'list_groups',);
-            }
-            not_list_groups:
-
-            // list_nearby_groups
-            if ($pathinfo === '/app/nearby') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_list_nearby_groups;
-                }
-
-                return array (  '_controller' => 'AppBundle\\Controller\\GroupController::listNearbyGroupsAction',  '_format' => 'json',  '_route' => 'list_nearby_groups',);
-            }
-            not_list_nearby_groups:
-
-            // search_groups
-            if ($pathinfo === '/app/group/search') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_search_groups;
-                }
-
-                return array (  '_controller' => 'AppBundle\\Controller\\GroupController::searchGroupsAction',  '_format' => 'json',  '_route' => 'search_groups',);
-            }
-            not_search_groups:
-
-            // list_categories
-            if ($pathinfo === '/app/category/list') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_list_categories;
-                }
-
-                return array (  '_controller' => 'AppBundle\\Controller\\CategoryController::listCategoriesAction',  '_format' => 'json',  '_route' => 'list_categories',);
-            }
-            not_list_categories:
-
-            // linkedin_login
-            if ($pathinfo === '/app/linkedin/login') {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_linkedin_login;
-                }
-
-                return array (  '_controller' => 'AppBundle\\Controller\\LinkedinController::linkedinLoginAction',  '_format' => 'json',  '_route' => 'linkedin_login',);
-            }
-            not_linkedin_login:
-
             // country
             if ($pathinfo === '/app/country/list') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
@@ -705,42 +744,6 @@ class appProdUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirecta
                 return array (  '_controller' => 'AppBundle\\Controller\\StateController::stateAction',  '_format' => 'json',  '_route' => 'state',);
             }
             not_state:
-
-            if (0 === strpos($pathinfo, '/app/event')) {
-                // list_event
-                if ($pathinfo === '/app/event/list') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_list_event;
-                    }
-
-                    return array (  '_controller' => 'AppBundle\\Controller\\EventsController::listEventAction',  '_format' => 'json',  '_route' => 'list_event',);
-                }
-                not_list_event:
-
-                // details_event
-                if ($pathinfo === '/app/event/detail') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_details_event;
-                    }
-
-                    return array (  '_controller' => 'AppBundle\\Controller\\EventsController::detailsEventAction',  '_format' => 'json',  '_route' => 'details_event',);
-                }
-                not_details_event:
-
-                // list_media_by_event
-                if ($pathinfo === '/app/event/media/list') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_list_media_by_event;
-                    }
-
-                    return array (  '_controller' => 'AppBundle\\Controller\\EventsController::listMediaByEventAction',  '_format' => 'json',  '_route' => 'list_media_by_event',);
-                }
-                not_list_media_by_event:
-
-            }
 
         }
 

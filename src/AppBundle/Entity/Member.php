@@ -41,6 +41,18 @@ class Member
      */
        private $user;
 
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification",mappedBy="member", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $notification;
+
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification",mappedBy="otherMember", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $notifier;
+
 
      /**
      *
@@ -57,6 +69,7 @@ class Member
     public function __construct(){
     $this->following = new \Doctrine\Common\Collections\ArrayCollection();
     $this->follower = new \Doctrine\Common\Collections\ArrayCollection();
+    $this->notification = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -192,6 +205,39 @@ class Member
         return $this->follower;
     }
       
+
+           /**
+     * Add Following
+     *
+     * @param \AppBundle\Entity\Notification $Following
+     * @return Follow
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notification[] = $notification;
+    
+        return $this;
+    }
+
+     /**
+     * Remove following
+     *
+     * @param \AppBundle\Entity\Notification $following
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notification->removeElement($notification);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNotification()
+    {
+        return $this->notification;
+    }
 
 
 }
