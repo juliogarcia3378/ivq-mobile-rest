@@ -8,10 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Rol
  *
- * @ORM\Table(name="eSurvey")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SurveyRepository")
+ * @ORM\Table(name="EMedia")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaRepository")
  */
-class ESurvey
+class EMedia
 {
     /**
      * @var integer
@@ -19,7 +19,7 @@ class ESurvey
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\SequenceGenerator(sequenceName="survey_type_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="emedia_type_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
@@ -35,9 +35,9 @@ class ESurvey
 
      /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Survey",mappedBy="broadcastType",cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Survey",mappedBy="mediaType",cascade={"persist","remove"})
      */
-    private $survey;
+    private $media;
   
     /**
      * Get id
@@ -77,17 +77,17 @@ class ESurvey
 
     public function __construct()
     {
-         $this->survey = new \Doctrine\Common\Collections\ArrayCollection();
+         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
     }
      /**
      * Add Member
      *
-     * @param \AppBundle\Entity\Survey $survey
+     * @param \AppBundle\Entity\Media $media
      * @return Survey
      */
-    public function addSurvey(\AppBundle\Entity\Survey $survey)
+    public function addMedia(\AppBundle\Entity\Media $media)
     {
-        $this->survey[] = $survey;
+        $this->media[] = $media;
     
         return $this;
     }
@@ -95,11 +95,11 @@ class ESurvey
      /**
      * Remove Survey
      *
-     * @param \AppBundle\Entity\Survey $survey
+     * @param \AppBundle\Entity\Media $media
      */
-    public function removeSurvey(\AppBundle\Entity\Survey $survey)
+    public function removeMedia(\AppBundle\Entity\Media $media)
     {
-        $this->survey->removeElement($survey);
+        $this->media->removeElement($media);
     }
 
     /**
@@ -107,9 +107,9 @@ class ESurvey
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getSurvey()
+    public function getMedia()
     {
-        return $this->survey;
+        return $this->media;
     }
 
     public function __toString(){

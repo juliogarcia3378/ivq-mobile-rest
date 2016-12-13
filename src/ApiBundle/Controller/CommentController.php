@@ -61,8 +61,8 @@ class CommentController extends FOSRestController
                 $user = $this->get('security.context')->getToken()->getUser();
                
             $em = $this->getDoctrine()->getEntityManager();
-            $mediaEvent= $em->getRepository("AppBundle:MediaEvent")->find($id);
-                if ($mediaEvent ==null)
+            $media= $em->getRepository("AppBundle:Media")->find($id);
+                if ($media ==null)
 	           return new JsonResponse(array( "error"=>"This media event is not valid."
                                    ));
              $array["idMedia"]=$id;
@@ -71,6 +71,12 @@ class CommentController extends FOSRestController
              $comments = $em->getRepository("AppBundle:Comment")->byMediaEvent($array);
 
              //   usort($response, "sortFunction");
+             if ($array['start']==null)
+                $array['start']=0;
+            if ($array['limit']==null)
+                $array['limit']=10;
+             UtilRepository2::getSession()->set("start", $array['start']);
+             UtilRepository2::getSession()->set("limit", $array['limit']);
             $pagination= UtilRepository2::paginate();
             return new JsonResponse(array("pagination"=>$pagination,"comments"=>$comments));
 
@@ -112,13 +118,13 @@ class CommentController extends FOSRestController
             $user = $this->get('security.context')->getToken()->getUser();
           
             $em = $this->getDoctrine()->getEntityManager();
-            $mediaEvent= $em->getRepository("AppBundle:MediaEvent")->find($idMedia);
-            if ($mediaEvent ==null)
+            $media= $em->getRepository("AppBundle:Media")->find($idMedia);
+            if ($media ==null)
               return new JsonResponse(array( "error"=>"This media event is not valid."
                                    ));    
          $array["user"]=$user;
          $array["comment"]=$comment;
-         $array["mediaEvent"]=$mediaEvent;
+         $array["media"]=$media;
          
          $response = $em->getRepository("AppBundle:Comment")->addComment($array);
          return new JsonResponse(array('message'=>$response));
@@ -151,13 +157,13 @@ class CommentController extends FOSRestController
               
          $array["user"]=$user;
          $em = $this->getDoctrine()->getEntityManager();
-         $media = $em->getRepository("AppBundle:MediaEvent")->find($idMedia);
+         $media = $em->getRepository("AppBundle:Media")->find($idMedia);
          if ($media==null){
               return new JsonResponse(array('message'=>"This is an invalid media."));
          }
          $array["media"]=$media;
          
-         $response = $em->getRepository("AppBundle:MediaEvent")->like($array);
+         $response = $em->getRepository("AppBundle:Media")->like($array);
          return new JsonResponse(array('message'=>$response));
         }
         return new JsonResponse(array('message'=>"You haven't permissions to assist this event."));

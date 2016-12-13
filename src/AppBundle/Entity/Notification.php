@@ -41,11 +41,15 @@ class Notification
      */
     private $date;
 
-    /**
-     * @var string
-     * @ORM\Column(name="picture", type="text", nullable=true)
+
+        /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media",inversedBy="mediaEvent")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="picture", referencedColumnName="id",onDelete="CASCADE")
+     * })
      */
-    private $picture;
+       private $picture;
 
     /**
     * @var \AppBundle\Entity\Event
@@ -206,7 +210,8 @@ class Notification
      * @return string 
      */
     public function getPicture()
-    {
+    {    if ($this->picture==null)
+        return "";
         return $this->picture;
     }
 

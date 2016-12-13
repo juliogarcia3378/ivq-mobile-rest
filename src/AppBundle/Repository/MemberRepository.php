@@ -32,11 +32,20 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
              
 	 	foreach ($response as $key => $member) {
 	 		$aux["id"]= $member->getUser()->getId();
+	 		$profile= $member->getUser()->getProfile();
+	 		if ($profile==null){
+	 		$aux["name"]= "";
+	 		$aux["followers"]= count($member->getFollowing());
+	 		$aux["lastname"]= "";
+	 		$aux["idMember"]= $member->getId();
+	 		$aux["avatar"]= "";
+	 		}else{
 	 		$aux["name"]= $member->getUser()->getProfile()->getName();
 	 		$aux["followers"]= count($member->getFollowing());
 	 		$aux["lastname"]= $member->getUser()->getProfile()->getLastname();
 	 		$aux["idMember"]= $member->getId();
-	 		$aux["avatar"]= $member->getUser()->getProfile()->getAvatar();
+	 		$aux["avatar"]= $member->getUser()->getProfile()->getAvatar()->getURL();
+	 		}
 	 		$array[]=$aux;
 	 	}
 	 	
@@ -73,7 +82,11 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
              ->join('a.user', 'user');
          $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
          $qb->andWhere('groups.id = :group')->setParameter('group', $filters['group']);
-          return $qb->getQuery()->getSingleResult();
+         $result = $qb->getQuery()->getResult();
+         if (count($result)==0)
+         	return null;
+         return $result[0]->getId();
+
      }
 	 public function joinGroup($user,$group_id){
         $em = $this->getEntityManager();
@@ -106,6 +119,7 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
           }
           else {
                 $em->remove($member[0]);
+             
                 $em->flush();
                  return "You are disjoined this group.";
           }

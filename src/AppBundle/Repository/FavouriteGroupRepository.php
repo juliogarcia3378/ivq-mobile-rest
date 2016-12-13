@@ -32,7 +32,7 @@ class FavouriteGroupRepository extends \Core\ComunBundle\Util\NomencladoresRepos
 	 	foreach ($response as $key => $favourite_group) {
             $aux["id"]= $favourite_group->getGroups()->getId();
 	 		$aux["name"]= $favourite_group->getGroups()->getName();
-            $aux["logo"]= $favourite_group->getGroups()->getLogo();
+            $aux["logo"]= $favourite_group->getGroups()->getLogo()->getURL();
 	 		$aux["category"]= $favourite_group->getGroups()->getCategory()->getName();
 	 		$aux["address"]= $favourite_group->getGroups()->getAddress()->getCityAndState();
 	 		$array[]=$aux;

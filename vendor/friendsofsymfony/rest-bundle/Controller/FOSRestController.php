@@ -27,31 +27,31 @@ abstract class FOSRestController extends Controller
     protected function sortFunction( $a, $b ) {
     return strtotime($a["date"]) - strtotime($b["date"]);
 }
-    protected function getFileType()
+    protected function getFileType($index="media")
     {
         if (
-            ($_FILES["media"]["type"] == "video/mp4")
-           || ($_FILES["media"]["type"] == "video/mpeg")
-           || ($_FILES["media"]["type"] == "audio/wmv")
-           || ($_FILES["media"]["type"] == "video/x-ms-wmv")
-           || ($_FILES["media"]["type"] == "video/webm")
-           || ($_FILES["media"]["type"] == "video/x-flv")
-           || ($_FILES["media"]["type"] == "video/quicktime")
-           || ($_FILES["media"]["type"] == "video/x-m4v")
-           || ($_FILES["media"]["type"] == "video/x-matroska")
+              ($_FILES[$index]["type"] == "video/mp4")
+           || ($_FILES[$index]["type"] == "video/mpeg")
+           || ($_FILES[$index]["type"] == "audio/wmv")
+           || ($_FILES[$index]["type"] == "video/x-ms-wmv")
+           || ($_FILES[$index]["type"] == "video/webm")
+           || ($_FILES[$index]["type"] == "video/x-flv")
+           || ($_FILES[$index]["type"] == "video/quicktime")
+           || ($_FILES[$index]["type"] == "video/x-m4v")
+           || ($_FILES[$index]["type"] == "video/x-matroska")
            )
             return "video";
 
         if (
-            ($_FILES["media"]["type"] == "image/pjpeg")
-           || ($_FILES["media"]["type"] == "image/gif")
-           || ($_FILES["media"]["type"] == "image/png")
-           || ($_FILES["media"]["type"] == "image/jpeg")
-           || ($_FILES["media"]["type"] == "image/bmp")
-           || ($_FILES["media"]["type"] == "image/gif")
-           || ($_FILES["media"]["type"] == "image/vnd.microsoft.icon")
-           || ($_FILES["media"]["type"] == "image/tiff")
-           || ($_FILES["media"]["type"] == "image/svg+xml")
+            ($_FILES[$index]["type"] == "image/pjpeg")
+           || ($_FILES[$index]["type"] == "image/gif")
+           || ($_FILES[$index]["type"] == "image/png")
+           || ($_FILES[$index]["type"] == "image/jpeg")
+           || ($_FILES[$index]["type"] == "image/bmp")
+           || ($_FILES[$index]["type"] == "image/gif")
+           || ($_FILES[$index]["type"] == "image/vnd.microsoft.icon")
+           || ($_FILES[$index]["type"] == "image/tiff")
+           || ($_FILES[$index]["type"] == "image/svg+xml")
            )
              return "picture";
        return false;
@@ -91,6 +91,27 @@ abstract class FOSRestController extends Controller
                             }
                  }
                  return null;
+    }
+
+    protected function copyFile($address){
+      $array = explode(".", $address);
+
+      $base = $this->getParameter('base_directory');
+      $uploaddir = $this->getParameter('saved_business_card_directory');
+      $file = date('Ymdhhmmss').uniqid().".".$array[count($array)-1];
+
+      $dest = $base.$uploaddir .basename($file);
+      copy($address, $dest);
+
+      $file= $this->getRequest()->getUriForPath($uploaddir.$file);
+                                         $file = str_replace("/app.php", "", $file);
+                                         $file = str_replace("/app_dev.php", "", $file);
+                                         return $file;
+
+      return $dest;
+
+
+
     }
 
     /**

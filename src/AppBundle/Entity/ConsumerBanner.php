@@ -29,13 +29,14 @@ class ConsumerBanner
      */
     private $title;
 
-
     /**
      * @var string
      * @ORM\Column(name="url", type="string", length=250, nullable=false)
      * @Assert\NotBlank(message="URL field required")
      */
     private $url;
+
+
 
     /**
      * @var string
@@ -45,12 +46,16 @@ class ConsumerBanner
     private $description;
 
 
-    /**
-     * @var string
-     * @ORM\Column(name="logo", type="text",  nullable=false)
-     * @Assert\NotBlank(message="Logo field required")
+
+
+       /**
+     * @var \AppBundle\Entity\ConsumerBanner
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="logo", referencedColumnName="id",nullable=false,onDelete="CASCADE")
+     * })
      */
-    private $logo;
+      private $logo;
 
 
   

@@ -55,7 +55,7 @@ class MediaController extends FOSRestController
                 //my-media associated
                 foreach ($media as $key => $media) {
                     $arr = array();
-                    $arr['id']=EMedia::Media."_".$media->getId();
+                    $arr['id']=$media->getId();
                     $arr['url']=$media->getURL();
                       if ($media->getFormat()=='video')
                         $response["video"][]=$arr;
@@ -67,8 +67,8 @@ class MediaController extends FOSRestController
                 if ($user->getProfile()!=null)
                 if ($user->getProfile()->getAvatar()!=null){
                     $arr = array();
-                    $arr['id']=EMedia::Profile."_".$user->getProfile()->getId();
-                    $arr['url']=$user->getProfile()->getAvatar();
+                    $arr['id']=$user->getProfile()->getAvatar()->getId();
+                    $arr['url']=$user->getProfile()->getAvatar()->getURL();
                         $response["picture"][]=$arr;
                 }
 
@@ -80,23 +80,22 @@ class MediaController extends FOSRestController
                     if ($bc->getFinished()==true){
                     
                     $arr = array();
-                    $arr['id']=EMedia::BCPicture."_".$bc->getId();
-                    $arr['url']=$bc->getPicture();
+                    $arr['id']=$bc->getId();
+                    $arr['url']=$bc->getPicture()->getURL();
                     $response["picture"][]=$arr;
 
-                    $arr['id']=EMedia::BCLogo."_".$bc->getId();
-                    $arr['url']=$bc->getLogo();
+                    $arr['id']=$bc->getLogo()->getId();
+                    $arr['url']=$bc->getLogo()->getURL();
                     $response["picture"][]=$arr;
-
                     $medias = $bc->getBusinessCardMedia();
                       foreach ($medias as $key => $media) {
                               $arr = array();
 
-                              $arr['id']=EMedia::BCMedia."_".$media->getId();
-                              $arr['url']=$media->getURL();
-                                if ($media->getFormat()=='video')
+                              $arr['id']=$media->getMedia()->getId();
+                              $arr['url']=$media->getMedia()->getURL();
+                                if ($media->getMedia()->getFormat()=='video')
                                   $response["video"][]=$arr;
-                                if ($media->getFormat()=='picture')
+                                if ($media->getMedia()->getFormat()=='picture')
                                   $response["picture"][]=$arr;
 
                                 }
@@ -201,50 +200,15 @@ class MediaController extends FOSRestController
 
             $request = $this->getRequest();
              $id = $request->get('id');
-             $array = explode("_", $id);
-             $id=$array[1];
 
             
             if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
-               
-            $em = $this->getDoctrine()->getEntityManager();
-            switch ($array[0]) {
-                case EMedia::Media:
-                  $mymedia= $em->getRepository("AppBundle:Media")->find($id);
-                  if ($mymedia!=null)
-                  $em->remove($mymedia);
-                    break;
-                case EMedia::Profile:
-                 $mymedia= $em->getRepository("AppBundle:Profile")->find($id);
-                 if ($mymedia!=null)
-                  {
-                 $mymedia->setAvatar(null);
-                 $em->persist($mymedia);
-                  }
-                    break;
-                 case EMedia::BCPicture:
-                 $mymedia= $em->getRepository("AppBundle:BusinessCard")->find($id);
-                 if ($mymedia!=null)
-                 $em->remove($mymedia);
-                    break;
-                 case EMedia::BCLogo:
-                 $mymedia= $em->getRepository("AppBundle:BusinessCard")->find($id);
-                 if($mymedia!=null)
-                 $em->remove($mymedia);
-                    break;
 
-                 case EMedia::BCMedia:
-                 $mymedia= $em->getRepository("AppBundle:BusinessCardMedia")->find($id);
-                 if ($mymedia!=null)
-                 $em->remove($mymedia);
-                    break;
-                default:
-                    # code...
-                    break;
-            }
-            
-            $em->flush();
+                $em = $this->getDoctrine()->getEntityManager();
+                $mymedia = $em->getRepository("AppBundle:Media")->find($id);
+                $em->remove($mymedia);
+                $em->flush();
 
                 return new JsonResponse(array("msg"=>'Media removed',
                                              )
@@ -313,7 +277,9 @@ class MediaController extends FOSRestController
                      }
                      $mymedia->setFormat($media);
 
-                   
+               $myMembership= $em->getRepository("AppBundle:Member")->returnMemberID(array('user'=>$user->getId(),'group'=>$event->getGroups()->getId()));
+               if ($myMembership==null)
+                  return new JsonResponse(array( "error"=>"You aren't a member in this group"));
             
             $user->addMedia($mymedia);
             $em->persist($mymedia);
@@ -326,11 +292,10 @@ class MediaController extends FOSRestController
             }
 
             $em->persist($mediaEvent);
-            $myMembership= $em->getRepository("AppBundle:Member")->returnMemberID(array('user'=>$user->getId(),'group'=>$event->getGroups()->getId()));
-            
-            $myMember= $em->getRepository("AppBundle:Member")->find($myMembership);
 
+            $myMember= $em->getRepository("AppBundle:Member")->find($myMembership);
             $attendees = $em->getRepository("AppBundle:Attendee")->byEvent(array('event'=>$event));
+
             foreach ($attendees as $key => $attend) {
                    $attendee = $em->getRepository("AppBundle:Member")->find($attend['idMember']);
                     if ($myMembership == $attend['idMember'])
@@ -339,6 +304,7 @@ class MediaController extends FOSRestController
                     $notification->setMember($attendee);
                     $notification->setPicture($event->getLogo());
                     $notification->setOtherMember($myMember);
+                    $notification->setEvent($event);
                     $notification->setNotificationType($em->getRepository("AppBundle:NotificationType")->find(ENotification::ATTACHED_MEDIA_TO_YOUR_EVENT));
                     $em->persist($notification);
              }

@@ -16,6 +16,7 @@ use AppBundle\Entity\Profile;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\Country;
 use AppBundle\Entity\State;
+use AppBundle\Entity\Media;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\Request as MyRequest;
@@ -40,15 +41,21 @@ class ProfileController extends FOSRestController
             $followers=0;
 	    	if ($this->get('security.context')->isGranted('ROLE_ADMIN')  === TRUE) 
 	    	{
-	            return new JsonResponse(array("msg"=>'ok',
-	            							   "role"=>'ROLE_ADMIN',
-	            							   "userId"=>$user->getId(),
-	            							   'profile'=>array(
-'phone'=>$profile->getPhone(),
-	            							   		'name'=>$profile->getName(),
-	            							   		'avatar'=>$profile->getAvatar()
-	            							 ))
-	            						);
+                $response = array("msg"=>'ok',
+                                               "role"=>'ROLE_ADMIN',
+                                               "userId"=>$user->getId());
+                if ($profile==null){
+                    $response["profile"]["phone"]="";
+                    $response["profile"]["name"]="";
+                    $response["profile"]["avatar"]="";
+                }else
+                {
+                    $response["profile"]["phone"]=$profile->getPhone();
+                    $response["profile"]["name"]=$profile->getName();
+                    $response["profile"]["avatar"]=$profile->getAvatar()->getURL();
+                }
+
+	            return new JsonResponse($response);
 	        }
 	        if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) 
 	    	{
@@ -65,17 +72,20 @@ class ProfileController extends FOSRestController
                 $response['total_followers']=$followers;
                 $response['userId']=$user->getId();
                 if ($profile!=null){
-                     $response['profile']['phone']=$profile->getPhone();
+                    $response['profile']['phone']=$profile->getPhone();
                     $response['profile']['name']=$profile->getName();
                     $response['profile']['lastname']=$profile->getLastname();
-                    $response['profile']['avatar']=$profile->getAvatar();
+                    if ($profile->getAvatar()!=null)
+                        $response['profile']['avatar']=$profile->getAvatar()->getURL();
+                    else
+                        $response['profile']['avatar']="";
                     if ($profile->getAddress()!=null){
-                    $response['profile']['city']=$profile->getAddress()->getCity();
-                    $response['profile']['state']=$profile->getAddress()->getState()->getName();
+                        $response['profile']['city']=$profile->getAddress()->getCity();
+                        $response['profile']['state']=$profile->getAddress()->getState()->getName();
                     }else
                     {
-                    $response['profile']['city']="";
-                    $response['profile']['state']="";
+                        $response['profile']['city']="";
+                        $response['profile']['state']="";
                     }
                 }
 	            return new JsonResponse($response);
@@ -87,7 +97,7 @@ class ProfileController extends FOSRestController
                                                "userId"=>$user->getId(),
                                               'profile'=>array(
                                                     'name'=>$profile->getName(),
-                                                    'avatar'=>$profile->getAvatar()
+                                                    'avatar'=>$profile->getAvatar()->getURL()
                                              ))
                                         );
             }
@@ -117,13 +127,21 @@ class ProfileController extends FOSRestController
                foreach ($members as $key => $member) {
                foreach ($member->getFollower() as $key => $follower) {
                     $aux["idMember"]=$follower->getFollowing()->getId();
-                    $aux["name"]=$follower->getFollowing()->getUser()->getProfile()->getName();
-                    $aux["lastname"]=$follower->getFollowing()->getUser()->getProfile()->getLastName();
-                    $aux["avatar"]=$follower->getFollowing()->getUser()->getProfile()->getAvatar();
+                    $profile = $follower->getFollowing()->getUser()->getProfile();
+                    if ($profile!=null){
+                    $aux["name"]=$profile->getName();
+                    $aux["lastname"]=$profile->getLastName();
+                    $aux["avatar"]=$profile->getAvatar()->getURL();
+                }else{
+                     $aux["name"]="";
+                    $aux["lastname"]="";
+                    $aux["avatar"]="";
+                }
                     $following[]=$aux;
+                }
                     
                }
-                 }
+                
             return new JsonResponse(array(
                                     'response'=>$following,
                                     ), Response::HTTP_OK);
@@ -154,9 +172,17 @@ class ProfileController extends FOSRestController
                   
                foreach ($member->getFollowing() as $key => $following) {
                     $aux["idMember"]=$following->getFollower()->getId();
+                    $profile = $following->getFollower()->getUser()->getProfile();
+                    if ($profile!=null){
                     $aux["name"]=$following->getFollower()->getUser()->getProfile()->getName();
                     $aux["lastname"]=$following->getFollower()->getUser()->getProfile()->getLastName();
-                    $aux["avatar"]=$following->getFollower()->getUser()->getProfile()->getAvatar();
+                    $aux["avatar"]=$following->getFollower()->getUser()->getProfile()->getAvatar()->getURL();
+                     }else
+                     {
+                    $aux["name"]="";
+                    $aux["lastname"]="";
+                    $aux["avatar"]="";
+                     }
                     $followers[]=$aux;
                     
                }
@@ -280,12 +306,21 @@ class ProfileController extends FOSRestController
   
       
                       if (isset($_FILES["avatar"])){
-                      $avatar = $_FILES["avatar"]["name"];              
-                         if ($avatar!=null){
+                      $file = $_FILES["avatar"]["name"];              
+                         if ($file!=null){
                                      if($_SERVER['REQUEST_METHOD']=='POST'){
-                        #$uploaddir = '/Applications/XAMPP/htdocs/ivq-rest/web/uploads/profile/';
-                        $avatar = $this->uploadFile("avatar",$this->getParameter('profile_directory'));
-                        $profile->setAvatar($avatar);
+
+                        $file = $this->uploadFile("avatar",$this->getParameter('profile_directory'));
+                        $format =$this->getFileType("avatar");
+
+                        if ($profile->getAvatar()==null){
+                        $media = new Media();
+                        $media->setURL($file);
+                        $media->setFormat($format);
+                        $profile->setAvatar($media);
+
+                        }else
+                        $profile->getAvatar()->setURL($file);
                             }
                  }
              }

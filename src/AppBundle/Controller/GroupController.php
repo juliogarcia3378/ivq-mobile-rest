@@ -55,11 +55,12 @@ class GroupController extends FOSRestController
                 $aux["phone"]=$group->getPhone();
                 $aux["email"]=$group->getEmail();
                 $aux["website"]=$group->getPhone();
-                $aux["logo"]=$group->getLogo();
+                $aux["logo"]=$group->getLogo()->getURL();
                 $aux["address"]=$group->getAddress()->getDescription();
                 $aux["category"]=$group->getCategory()->getName();
                 $array[]=$aux;
              }
+            UtilRepository2::getSession()->set("total",$total);
 
 
             $pagination= UtilRepository2::paginate();
@@ -110,11 +111,13 @@ class GroupController extends FOSRestController
                 $aux["phone"]=$group->getPhone();
                 $aux["email"]=$group->getEmail();
                 $aux["website"]=$group->getPhone();
-                $aux["logo"]=$group->getLogo();
+                $aux["logo"]=$group->getLogo()->getURL();
                 $aux["address"]=$group->getAddress()->getDescription();
                 $aux["category"]=$group->getCategory()->getName();
                 $array[]=$aux;
              }
+              UtilRepository2::getSession()->set("total",$total);
+
               
 
             $pagination= UtilRepository2::paginate();
@@ -172,12 +175,13 @@ class GroupController extends FOSRestController
                 $aux["phone"]=$group->getPhone();
                 $aux["email"]=$group->getEmail();
                 $aux["website"]=$group->getPhone();
-                $aux["logo"]=$group->getLogo();
+                $aux["logo"]=$group->getLogo()->getURL();
                 $aux["address"]=$group->getAddress()->getDescription();
                 $aux["category"]=$group->getCategory()->getName();
                 $array[]=$aux;
              }
 
+            UtilRepository2::getSession()->set("total",$total);
 
             $pagination= UtilRepository2::paginate();
             return new JsonResponse(array("pagination"=>$pagination,"groups"=>$array));

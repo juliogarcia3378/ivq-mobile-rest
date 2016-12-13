@@ -78,11 +78,7 @@ class User extends BaseUser
      */
     private $businesscard;
 
-    /**
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SavedBusinessCard",mappedBy="user", orphanRemoval=true, cascade={"persist","remove"})
-     */
-    private $savedBusinesscard;
+ 
 
     /**
      *
@@ -102,6 +98,18 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeMedia",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $likeMedia;
+
+        /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\likeBroadcast",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $likeBroadcast;
+
+        /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeEvent",mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $likeEvent;
 
 
 
@@ -243,13 +251,12 @@ class User extends BaseUser
         $this->roles = array();
         $this->credentialsExpired = false;
         $this->member = new \Doctrine\Common\Collections\ArrayCollection();
-       
         $this->businesscard = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->savedBusinesscard = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->attendee = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comment = new \Doctrine\Common\Collections\ArrayCollection();
         $this->likeMedia = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->attendee = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->likeBroadcast = new \Doctrine\Common\Collections\ArrayCollection();
 
 
     }
@@ -414,39 +421,7 @@ class User extends BaseUser
 
 
 
-        /**
-     * Add BusinessCard
-     *
-     * @param \AppBundle\Entity\SavedBusinessCard $businesscard
-     * @return Follow
-     */
-    public function addSavedBusinessCard(\AppBundle\Entity\SavedBusinessCard $businesscard)
-    {
-        $this->savedBusinesscard[] = $businesscard;
-    
-        return $this;
-    }
-
-     /**
-     * Remove BusinessCard
-     *
-     * @param \AppBundle\Entity\SavedBusinessCard $businesscard
-     */
-    public function removeSavedBusinessCard(\AppBundle\Entity\SavedBusinessCard $businesscard)
-    {
-        $this->savedBusinesscard->removeElement($businesscard);
-    }
-
-    /**
-     * Get SavedBusinessCard
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getSavedBusinessCard()
-    {
-        return $this->savedBusinesscard;
-    }
-
+   
 
         /**
      * Add FavouriteGroup
@@ -614,6 +589,40 @@ class User extends BaseUser
     public function getLikeMedia()
     {
         return $this->likeMedia;
+    }
+
+             /**
+     * Add Media
+     *
+     * @param \AppBundle\Entity\LikeMedia $like
+     * @return Media
+     */
+    public function addLikeBroadcast(\AppBundle\Entity\LikeBroadcast $like_)
+    {
+        $likeBroadcast->setUser($this);
+        $this->likeBroadcast[] = $like_;
+    
+        return $this;
+    }
+
+     /**
+     * Remove Media
+     *
+     * @param \AppBundle\Entity\LikeMedia $like_
+     */
+    public function removeLikeBroadcast(\AppBundle\Entity\LikeBroadcast $like_)
+    {
+        $this->likeBroadcast->removeElement($like_);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLikeBroadcast()
+    {
+        return $this->likeBroadcast;
     }
 
 

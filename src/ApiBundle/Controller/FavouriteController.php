@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use Core\ComunBundle\Util\UtilRepository2;
 
 
 class FavouriteController extends FOSRestController
@@ -57,6 +58,13 @@ class FavouriteController extends FOSRestController
          $pagination["start"]=$this->getRequest()->get("start");
          $pagination["limit"]=$this->getRequest()->get("limit");
          $pagination["elements"]=count($groups);
+            if ($array['start']==null)
+                $array['start']=0;
+            if ($array['limit']==null)
+                $array['limit']=10;
+             UtilRepository2::getSession()->set("start", $array['start']);
+             UtilRepository2::getSession()->set("limit", $array['limit']);
+             $pagination =UtilRepository2::paginate();
 
          return new JsonResponse(array('pagination'=>$pagination, "groups"=>$groups));
         }
@@ -177,7 +185,14 @@ class FavouriteController extends FOSRestController
          $members = $em->getRepository("AppBundle:FavouriteMember")->byUser($array);
          $pagination["start"]=$this->getRequest()->get("start");
          $pagination["limit"]=$this->getRequest()->get("limit");
-         $pagination["elements"]=count($members);
+            if ($array['start']==null)
+                $array['start']=0;
+            if ($array['limit']==null)
+                $array['limit']=10;
+             UtilRepository2::getSession()->set("start", $array['start']);
+             UtilRepository2::getSession()->set("limit", $array['limit']);
+             $pagination =UtilRepository2::paginate();
+
 
          return new JsonResponse(array('pagination'=>$pagination, "members"=>$members));
         }

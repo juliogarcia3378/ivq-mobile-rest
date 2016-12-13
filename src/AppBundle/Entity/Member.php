@@ -41,6 +41,9 @@ class Member
      */
        private $user;
 
+
+
+
      /**
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification",mappedBy="member", orphanRemoval=true, cascade={"persist", "remove"})

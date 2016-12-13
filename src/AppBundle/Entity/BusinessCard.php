@@ -122,19 +122,24 @@ class BusinessCard
      */
     private $about;
 
-    /**
-     * @var string
-     * @ORM\Column(name="logo", type="text",  nullable=true)
-     * @Assert\NotBlank(message="Logo field required")
+     /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="logo", referencedColumnName="id",nullable=true,onDelete="CASCADE")
+     * })
      */
     private $logo;
 
-        /**
-     * @var string
-     * @ORM\Column(name="picture", type="text",  nullable=true)
-     * @Assert\NotBlank(message="Picture field required")
+
+    /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="picture", referencedColumnName="id",nullable=true,onDelete="CASCADE")
+     * })
      */
-    private $picture;
+      private $picture;
 
     
     /**
@@ -142,6 +147,14 @@ class BusinessCard
      * @ORM\Column(name="finished", type="boolean", nullable=false)
      */
     private $finished;
+
+        /**
+     * @var string
+     * @ORM\Column(name="saved", type="boolean", nullable=false)
+     */
+    private $saved;
+
+
 
            /**
      *
@@ -155,6 +168,7 @@ class BusinessCard
     public function __construct()
     {
         $this->businessCardMedia = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->saved=false;
 
 
     }
@@ -510,8 +524,29 @@ class BusinessCard
 
         return $this;
     }
+     /* Set saved
+     *
+     * @param string $name
+     *
+     * @return Group
+     */
+    public function setSaved($saved)
+    {
+        $this->saved = $saved;
+    
+        return $this;
+    }
 
-
+     /* Set saved
+     *
+     * @param string $name
+     *
+     * @return Group
+     */
+    public function getSaved()
+    {
+        return $this->saved;
+    }
       
             /**
      * Set foto
@@ -519,7 +554,7 @@ class BusinessCard
      * @param string $logo
      * @return Groups
      */
-    public function setLogo($logo)
+    public function setLogo(\AppBundle\Entity\Media $logo)
     {
         $this->logo = $logo;
 
@@ -545,7 +580,7 @@ class BusinessCard
      * @param string $picture
      * @return Groups
      */
-    public function setPicture($picture)
+    public function setPicture(\AppBundle\Entity\Media $picture)
     {
         $this->picture = $picture;
 

@@ -21,6 +21,7 @@ use AppBundle\Entity\Coupon;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\Request as MyRequest;
+use Core\ComunBundle\Enums\ESurvey;
 
 class CouponController extends FOSRestController
 {
@@ -63,7 +64,7 @@ class CouponController extends FOSRestController
 
                   foreach ($coupons as $key => $coupon) {
                      $array['id']=$coupon->getId();
-                     $array['logo']=$coupon->getLogo();
+                     $array['logo']=$coupon->getLogo()->getURL();
                      $array['name']=$coupon->getName();
                      $array['information']=$coupon->getInformation();
                      $array['expiration']=$coupon->getExpiresAt();
@@ -112,7 +113,7 @@ class CouponController extends FOSRestController
 
 
                      $array['id']=$coupon->getId();
-                     $array['logo']=$coupon->getLogo();
+                     $array['logo']=$coupon->getLogo()->getURL();
                      $array['barcode']=$coupon->getBarcode();
                      $array['code']=$coupon->getCode();
                      $array['name']=$coupon->getName();
@@ -161,14 +162,29 @@ class CouponController extends FOSRestController
 
                      $array['id']=$survey->getId();
                      $array['question']=$survey->getQuestion();
-                     $array['type']=$survey->getType()->getId();
-                     $array['_type']=$survey->getType()->getName();
-                     $array['yes']["id"]=$survey->getYes()->getId();
-                     $array['yes']["text"]=$survey->getYes()->getName();
-                     $array['yes']["URL"]=$survey->getYes()->getURL();
-                     $array['no']["id"]=$survey->getNo()->getId();
-                     $array['no']["text"]=$survey->getNo()->getName();
-                     $array['no']["URL"]=$survey->getNo()->getURL();
+                     $array['media']=array();
+
+                         $yes["id"]=$survey->getYes()->getId();
+                         $yes["text"]=$survey->getYes()->getName();
+                         $no["id"]=$survey->getNo()->getId();
+                         $no["text"]=$survey->getNo()->getName();
+                         $yes["video"]="";
+                         $no["video"]="";
+                         $yes["picture"]="";
+                         $no["picture"]="";
+
+                     if ($survey->getType()->getId()==ESurvey::VIDEO){
+                         $yes["video"]=$survey->getYes()->getMedia()->getURL();
+                         $no["video"]=$survey->getNo()->getMedia()->getURL();
+                     }
+                    if ($survey->getType()->getId()==ESurvey::IMAGE){
+                         $yes["picture"]=$survey->getYes()->getMedia()->getURL();
+                         $no["picture"]=$survey->getNo()->getMedia()->getURL();
+                     }
+
+                     $array['media'][]=$yes;
+                     $array['media'][]=$no;
+
                 return new JsonResponse(array("response"=>$array));
             }
 

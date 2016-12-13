@@ -36,12 +36,14 @@ class SurveyRow
      */
     private $description;
 
-     /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="text", nullable=true)
+         /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media", referencedColumnName="id",nullable=false,onDelete="CASCADE")
+     * })
      */
-    private $url;
+      private $media;
 
 
   
@@ -109,9 +111,9 @@ class SurveyRow
      * @param string $state_code
      * @return Menu
      */
-    public function setURL($url)
+    public function setMedia(\AppBundle\Entity\Media $media)
     {
-        $this->url= $url;
+        $this->media= $media;
 
         return $this;
     }
@@ -121,9 +123,9 @@ class SurveyRow
      *
      * @return string
      */
-    public function getURL()
+    public function getMedia()
     {
-        return $this->url;
+        return $this->media;
     }
 
   

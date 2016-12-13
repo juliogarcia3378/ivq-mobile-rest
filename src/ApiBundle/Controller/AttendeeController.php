@@ -14,6 +14,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Core\ComunBundle\Enums\ENotification;
 use AppBundle\Entity\Notification;
+use Core\ComunBundle\Util\UtilRepository2;
 
 
 class AttendeeController extends FOSRestController
@@ -54,17 +55,16 @@ class AttendeeController extends FOSRestController
          if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
              $user = $this->get('security.context')->getToken()->getUser();
               
-        $array["user"]=$user->getId();
+         $array["user"]=$user->getId();
          $array["event"]=$_event;
-         $em = $this->getDoctrine()->getEntityManager();
-
+         $em = $this->getDoctrine()->getManager();
          $array["start"]=$this->getRequest()->get("start");
          $array["limit"]=$this->getRequest()->get("limit");
+         UtilRepository2::getSession()->set("start", $array['start']);
+         UtilRepository2::getSession()->set("limit", $array['limit']);
 
          $attendees = $em->getRepository("AppBundle:Attendee")->byEvent($array);
-         $pagination["start"]=$this->getRequest()->get("start");
-         $pagination["limit"]=$this->getRequest()->get("limit");
-         $pagination["elements"]=count($attendees);
+         $pagination= UtilRepository2::paginate();
 
          return new JsonResponse(array('pagination'=>$pagination, "attendees"=>$attendees));
         }
@@ -107,7 +107,7 @@ class AttendeeController extends FOSRestController
             
             $notification = new Notification();
             $notification->setMember($myMember);
-            $notification->setPicture("");
+            //$notification->setPicture("");
             $notification->setEvent($event);
             $notification->setNotificationType($em->getRepository("AppBundle:NotificationType")->find(ENotification::ATTEND_TO_EVENT));
             $em->persist($notification);

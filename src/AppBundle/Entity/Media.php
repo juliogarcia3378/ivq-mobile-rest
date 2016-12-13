@@ -32,6 +32,15 @@ class Media
      */
        private $user;
 
+     /**
+     * @var \AppBundle\Entity\EMedia
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EMedia",inversedBy="media")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="mediaType", referencedColumnName="id",onDelete="CASCADE")
+     * })
+     */
+       private $mediaType;
+
            /**
      * @var string
      * @ORM\Column(name="format", type="string", length=250, nullable=false)
@@ -48,15 +57,43 @@ class Media
 
      /**
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MediaEvent",mappedBy="media",cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\MediaEvent",mappedBy="media",cascade={"persist","remove"})
      */
     private $mediaEvent;
+
+        /**
+     * @var \Users
+     *
+     * @ORM\OneToOne(targetEntity="\AppBundle\Entity\Broadcast",mappedBy="media")
+     */
+    private $broadcast;
+
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment",mappedBy="media",cascade={"persist","remove"})
+     */
+    private $comments;
+
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeMedia",mappedBy="media",cascade={"persist","remove"})
+     */
+    private $likeMedia;
+
+
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Profile",mappedBy="avatar",cascade={"persist","remove"})
+     */
+    private $profile;
 
 
 
   public function __construct()
     {
-        $this->mediaEvent = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->likeMedia = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->profile = new \Doctrine\Common\Collections\ArrayCollection();
 
 
     }
@@ -123,6 +160,31 @@ class Media
 	return "";
         return $this->url;
     }
+
+        /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return url
+     */
+    public function setMediaType(\AppBundle\Entity\EMedia $mediaType)
+    {
+        $this->mediaType = $mediaType;
+    
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return url
+     */
+    public function getMediaType()
+    {
+        return $this->mediaType;
+    }
+
  
         /**
      * Get group
@@ -152,7 +214,7 @@ class Media
 
 
     public function __toString(){
-        return $this->getUser()->getId();
+        return $this->getUrl();
     }
 
      /**
@@ -161,20 +223,44 @@ class Media
      * @param \AppBundle\Entity\MediaEvent $media
      * @return Media
      */
-    public function addMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
+    public function setMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
     {
-        $this->mediaEvent[] = $mediaEvent;
+        $this->mediaEvent = $mediaEvent;
+        return $this;
+    }
+
+
+
+    /**
+     * Get Member
+     *
+     */
+    public function getMediaEvent()
+    {
+        return $this->mediaEvent;
+    }
+
+               /**
+     * Add Following
+     *
+     * @param \AppBundle\Entity\Notification $Following
+     * @return Follow
+     */
+    public function addLikeMedia(\AppBundle\Entity\LikeMedia $likeMedia)
+    {
+        $this->likeMedia[] = $likeMedia;
+    
         return $this;
     }
 
      /**
-     * Remove Media
+     * Remove following
      *
-     * @param \AppBundle\Entity\MediaEvent $mediaEvent
+     * @param \AppBundle\Entity\LikeMedia $following
      */
-    public function removeMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
+    public function removeLikeMedia(\AppBundle\Entity\LikeMedia $notification)
     {
-        $this->mediaEvent->removeElement($mediaEvent);
+        $this->likeMedia->removeElement($notification);
     }
 
     /**
@@ -182,10 +268,78 @@ class Media
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMediaEvent()
+    public function getLikeMedia()
     {
-        return $this->mediaEvent;
+        return $this->likeMedia;
     }
 
+              /**
+     * Add Comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     * @return Media
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+    
+        return $this;
+    }
+
+     /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get Comment
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComment()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Get Comment
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLikesJSON(){
+        $array = array();
+        foreach ($this->getLikeMedia() as $key => $likeMedia) {
+            $aux['id']=$likeMedia->getMedia()->getId();
+            $aux['user']["avatar"]=$likeMedia->getUser()->getProfile()->getAvatar()->getURL();
+            $aux['user']["name"]=$likeMedia->getUser()->getProfile()->getFullname();
+            $aux['date']=$likeMedia->getDate();
+            $array[]=$aux;
+        }
+
+        return $array;
+    }
       
+        /**
+     * Get Comment
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommentsJSON(){
+        $array = array();
+        foreach ($this->getComment() as $key => $comment) {
+            $aux['id']=$comment->getId();
+            $aux['user']["avatar"]=$comment->getUser()->getProfile()->getAvatar()->getURL();
+            $aux['user']["name"]=$comment->getUser()->getProfile()->getFullname();
+            $aux["comment"]=$comment->getComment();
+            $aux['date']=$comment->getDate();
+            $array[]=$aux;
+        }
+
+        return $array;
+    }
 }

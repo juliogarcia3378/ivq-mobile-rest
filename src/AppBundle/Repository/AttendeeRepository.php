@@ -28,21 +28,31 @@ class AttendeeRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	     ->join('user.profile', 'profile')
          ->where('event.id = :event')
          ->setParameter('event', $array["event"]);
-         if (isset($array["start"]) && isset($array["limit"])){
-         $qb->setFirstResult($array["start"])
-         ->setMaxResults($array["limit"]);
-			}
+        
+			
 	     $qb->orderBy('profile.name', 'ASC');
-	 	$response= $qb->getQuery()->getResult();
-             $array = array();
+	 	 $response= $qb->getQuery()->getResult();
+         UtilRepository2::getSession()->set("total", count($response));
 
-      
+
+          if (isset($array["start"]) && isset($array["limit"]))
+          {
+            $qb->setFirstResult($array["start"])
+            ->setMaxResults($array["limit"]);
+          }
+          $response= $qb->getQuery()->getResult();
+
+        $array = array();
 	 	foreach ($response as $key => $attendee) {
             $aux["idUser"]= $attendee->getUser()->getId();
             $aux["idMember"]= $em->getRepository("AppBundle:Member")->returnMemberID(array('user'=>$aux["idUser"],'group'=>$idGroup));
 	 		$aux["name"]= $attendee->getUser()->getProfile()->getName();
 	 		$aux["lastname"]= $attendee->getUser()->getProfile()->getLastname();
-	 		$aux["avatar"]= $attendee->getUser()->getProfile()->getAvatar();
+            $avatar = $attendee->getUser()->getProfile()->getAvatar();
+            if ($avatar==null)
+            $aux["avatar"]= "";
+            else    
+	 		$aux["avatar"]= $attendee->getUser()->getProfile()->getAvatar()->getURL();
 	 		$array[]=$aux;
 	 	}
 	 	return $array;
@@ -62,7 +72,6 @@ class AttendeeRepository extends \Core\ComunBundle\Util\NomencladoresRepository
          ->setParameter('user', $array["user"]->getId())
          ->setParameter('event', $array["event"]->getId());
 	 	$exist= $qb->getQuery()->getResult();
-        
         if (count($exist)==0){
              $attendee = new Attendee();
              $attendee->setEvent($array["event"]);

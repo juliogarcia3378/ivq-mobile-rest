@@ -7,32 +7,32 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Rol
  *
- * @ORM\Table(name="like_media")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LikeRepository")
+ * @ORM\Table(name="like_broadcast")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LikeBroadcastRepository")
  */
-class LikeMedia
+class likeBroadcast
 {
     /**
      * @var integer
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\SequenceGenerator(sequenceName="like_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="like_broadcast_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
 
 
     /**
-     * @var \AppBundle\Entity\Media
+     * @var \AppBundle\Entity\Broadcast
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media",inversedBy="likeMedia")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Broadcast",inversedBy="likeBroadcast")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media", referencedColumnName="id",onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="broadcast", referencedColumnName="id",onDelete="CASCADE")
      * })
 
      */
-       private $media;
+       private $broadcast;
 
   
   
@@ -77,19 +77,19 @@ class LikeMedia
      * Get event
      * @return \AppBundle\Entity\MediaEvent
      */
-    public function getMedia()
+    public function getBroadcast()
     {
-        return $this->media;
+        return $this->broadcast;
     }
  
          /**
      * Set Event
-     * @param \AppBundle\Entity\Media $event
-     * @return Event
+     * @param \AppBundle\Entity\Broadcast $broadcast
+     * @return Broadcast
      */
-    public function setMedia(\AppBundle\Entity\Media $mediaevent = null)
+    public function setBroadcast(\AppBundle\Entity\Broadcast $broadcast = null)
     {
-        $this->media = $mediaevent;
+        $this->broadcast = $broadcast;
 
         return $this;
     }
@@ -140,7 +140,7 @@ class LikeMedia
 
 
     public function __toString(){
-        return $this->getUser()->getId();
+        return "";
     }
 
       

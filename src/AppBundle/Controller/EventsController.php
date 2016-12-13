@@ -122,13 +122,23 @@ class EventsController extends FOSRestController
          $em = $this->getDoctrine()->getEntityManager();
          $array["start"]=$this->getRequest()->get("start");
          $array["limit"]=$this->getRequest()->get("limit");
+
+         if ($array['start']==null)
+            $array['start']=0;
+        if ($array['limit']==null)
+            $array['limit']=10;
+        UtilRepository2::getSession()->set("start", $array["start"] );
+        UtilRepository2::getSession()->set("limit", $array["limit"]);
+
         $media = $em->getRepository("AppBundle:MediaEvent")->byEvent($array);
-        $pagination["start"]=$this->getRequest()->get("start");
-        $pagination["limit"]=$this->getRequest()->get("limit");
-        $pagination["elements"]=count($media);
+         $pagination = UtilRepository2::paginate();
 
          return new JsonResponse(array('pagination'=>$pagination, "media"=>$media));
         }
+
+
+
+
 
 
     

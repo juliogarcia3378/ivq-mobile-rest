@@ -27,73 +27,31 @@ class MediaEventRepository extends \Core\ComunBundle\Util\NomencladoresRepositor
 	 	$response= $qb->getQuery()->getResult();
              $array = array();
 	 	foreach ($response as $key => $mediaevent) {
-	 		$aux["id"]= $mediaevent->getId();
+	 		$aux["id"]= $mediaevent->getMedia()->getId();
 	 		$aux["url"]= $mediaevent->getMedia()->getURL();
-	 		$aux["user"]["id"]= $mediaevent->getMedia()->getUser()->getId();
-	 		$aux["user"]["avatar"]= $mediaevent->getMedia()->getUser()->getProfile()->getAvatar();
-	 		$aux["user"]["fullname"]= $mediaevent->getMedia()->getUser()->getProfile()->getFullname();
-	 		$aux["user"]["address"]= $mediaevent->getMedia()->getUser()->getProfile()->getAddress()->getCityAndState();
-	 		$aux["date"]= $mediaevent->getDate();
+            $user=$mediaevent->getMedia()->getUser();
+	 		$aux["user"]["id"]= $user->getId();
+
+            $profile=$user->getProfile();
+            if ($profile!=null){
+	 		$aux["user"]["avatar"]= $profile->getAvatar()->getURL();
+	 		$aux["user"]["fullname"]= $profile->getFullname();
+	 		$aux["user"]["address"]= $profile->getAddress()->getCityAndState();
+        }else {
+            $aux["user"]["avatar"]= "";
+            $aux["user"]["fullname"]= "";
+            $aux["user"]["address"]= "";
+        }
+	 		$aux["date"]=    $mediaevent->getDate();
 			$aux["comment"]= $mediaevent->getComment();
-			$aux["likes"]= count($mediaevent->getLikeMedia());
-			$aux["comments"]= count($mediaevent->getComments());
+			$aux["likes"]=   $mediaevent->getMedia()->getLikesJSON();
+			$aux["comments"]=$mediaevent->getMedia()->getCommentsJSON();
 	 		$array[]=$aux;
 	 	}
 	 	return $array;
 
  } 
 
-  public function like($array)
- {
- 	$em = $this->getEntityManager();
- 	$qb = $em->createQueryBuilder();
-	 	$qb->select('me')
-	     ->from('AppBundle:MediaEvent', 'me')
-	     ->join('me.likemedia', 'lm')
-	     ->join('lm.user', 'u')
-         ->where('u.id = :user')
-         ->andWhere('me.id = :idMedia')
-         ->setParameter('user', $array["user"]->getId())
-         ->setParameter('idMedia', $array["media"]->getId());
-	 	$exist= $qb->getQuery()->getResult();
-        
-        if (count($exist)==0){
-             $likeMedia = new LikeMedia();
-             $likeMedia->setMediaEvent($array["media"]);
-             $likeMedia->setUser($array["user"]);
-             $em->persist($likeMedia);
-             $em->flush();
-             return  array("message"=>"You liked sucesfully this media.");
-        }else {
-         return  array("message"=>"You already liked this media before.");
-      
-        }
- }  
-
-
-  public function removeLike($array)
- {
- 	 	$em = $this->getEntityManager();
- 	   $qb = $em->createQueryBuilder();
-	 	$qb->select('e')
-	     ->from('AppBundle:Attendee', 'e')
-	     ->join('e.event', 'g')
-	     ->join('e.user', 'u')
-         ->where('g.id = :event')
-         ->andWhere('u.id = :user')
-         ->setParameter('user', $array["user"]->getId())
-         ->setParameter('event', $array["event"]->getId());
-	 	$exist= $qb->getQuery()->getResult();
-        
-        if (count($exist)!=0){
-             $em->remove($exist[0]);
-             $em->flush();
-             return array("message"=>"You aren't a attendee for this event.");
-        }else {
-         return array("message"=>"You left this event.");
-      
-        }
-
- }
+ 
 
 }

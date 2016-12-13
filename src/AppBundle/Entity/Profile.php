@@ -42,17 +42,15 @@ class Profile
      */
     private $phone;
 
-    /**
-     * @var string
-     * @ORM\Column(name="avatar", type="text", nullable=true)
-     */
-    private $avatar;
 
     /**
-     * @var string
-     * @ORM\Column(name="thumbnail", type="text", nullable=true)
+     * @var \AppBundle\Entity\Media
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media",inversedBy="profile",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="avatar", referencedColumnName="id")
+     * })
      */
-    private $thumbnail;
+       private $avatar;
 
 
     /**

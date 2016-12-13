@@ -57,8 +57,8 @@ class MemberController extends FOSRestController
                      $response = array();
                         $response['id']=$member->getId();
                         if ($member->getUser()->getProfile()!=null){
-                        $response['avatar']=$member->getUser()->getProfile()->getAvatar();
-                        $response['logo']=$member->getGroups()->getLogo();
+                        $response['avatar']=$member->getUser()->getProfile()->getAvatar()->getURL();
+                        $response['logo']=$member->getGroups()->getLogo()->getURL();
                         $response['address']=$member->getUser()->getProfile()->getAddress()->getCityAndState();
                         $response['name']=$member->getUser()->getProfile()->getFullName();
                          $groups=$em->getRepository('AppBundle:Groups')->byMemberSubscribed(array('user'=>$member->getUser()->getId()));
@@ -71,7 +71,7 @@ class MemberController extends FOSRestController
                         foreach ($followers as $key => $follower) {
                           $aux["id"]=$follower->getFollower()->getId();
                           $aux["idMember"]=$follower->getFollower()->getId();
-                          $aux["avatar"]=$follower->getFollower()->getUser()->getProfile()->getAvatar();
+                          $aux["avatar"]=$follower->getFollower()->getUser()->getProfile()->getAvatar()->getURL();
                           $aux["name"]=$follower->getFollower()->getUser()->getProfile()->getFullName();
                           $response["followers"][]=$aux;
                         }
@@ -84,13 +84,13 @@ class MemberController extends FOSRestController
                            }
                           $aux=array();
                           $aux["id"]=$bc->getId();
-                          $aux["logo"]=$bc->getLogo();
+                          $aux["logo"]=$bc->getLogo()->getURL();
                           $aux["title"]=$bc->getTitle();
                           $aux["name"]=$bc->getName();
                           $aux["lastname"]=$bc->getLastname();
                           $aux["fax"]=$bc->getFax();
                           $aux["phone"]=$bc->getPhone();
-                          $aux["picture"]=$bc->getPicture();
+                          $aux["picture"]=$bc->getPicture()->getURL();
                           $aux["category"]=$bc->getCategory()->getName();
 
                           if ($bc->getAddress()!=null)
@@ -105,12 +105,12 @@ class MemberController extends FOSRestController
                           foreach ($medias as $key => $media) {
                               $arr = array();
 
-                              $arr['id']=$media->getId();
-                              $arr['url']=$media->getURL();
-                                if ($media->getFormat()=='video'){
+                              $arr['id']=$media->getMedia()->getId();
+                              $arr['url']=$media->getMedia()->getURL();
+                                if ($media->getMedia()->getFormat()=='video'){
                                   $format["video"][]=$arr;
                                 }
-                                if ($media->getFormat()=='picture'){
+                                if ($media->getMedia()->getFormat()=='picture'){
                                   $format["picture"][]=$arr;
 
                                   }
@@ -208,7 +208,7 @@ class MemberController extends FOSRestController
                       
                     $notification = new Notification();
                     $notification->setMember($member);
-                    $notification->setPicture("");
+                    $notification->setPicture(null);
                     $notification->setOtherMember($userMember);
                     $notification->setNotificationType($em->getRepository("AppBundle:NotificationType")->find(ENotification::STARTED_FOLLOWING_YOU));
 

@@ -132,7 +132,7 @@ class SecurityController extends FOSRestController
                     ), Response::HTTP_OK);
 
           $userManager = $this->get('fos_user.user_manager');
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
        $exist= $em->getRepository("AppBundle:User")->findUserByMobile(array('mobile'=>$mobile));
        if (count($exist)>0)
                         return new JsonResponse(array(
@@ -170,7 +170,7 @@ class SecurityController extends FOSRestController
         $profile = new Profile();
         $profile->setName("");
         $profile->setLastName("");
-        $profile->setAvatar("");
+        $profile->setAvatar(NULL);
         $profile->setPhone($mobile);
         $user->setProfile($profile);
 
@@ -226,7 +226,7 @@ class SecurityController extends FOSRestController
         $request = $this->getRequest();
         $token = $request->get('token',NULL);
         $mobile = $request->get('mobile',NULL);
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         if (!isset($token) || !isset($mobile)){
               return new JsonResponse(array(
@@ -347,7 +347,7 @@ class SecurityController extends FOSRestController
         $encoder_service = $this->get('security.encoder_factory');
         $encoder = $encoder_service->getEncoder($user);
         $encoded_pass = $encoder->encodePassword($password, $user->getSalt());
-           $em = $this->getDoctrine()->getEntityManager();
+           $em = $this->getDoctrine()->getManager();
         if ($encoded_pass != $user->getPassword()) {
                   if (!$user->isEnabled())
                    {
@@ -411,7 +411,7 @@ class SecurityController extends FOSRestController
         {
             $request = $this->getRequest();
             $number= $request->get('number');
-              $em = $this->getDoctrine()->getEntityManager();
+              $em = $this->getDoctrine()->getManager();
             if (!isset($number)){
                   return new JsonResponse(array(
                         'error' => '301',
@@ -484,7 +484,7 @@ class SecurityController extends FOSRestController
                         ), Response::HTTP_OK);
              }
 
-              $em = $this->getDoctrine()->getEntityManager();
+              $em = $this->getDoctrine()->getManager();
             if (!isset($number) || !isset($token) ){
                   return new JsonResponse(array(
                         'error' => '301',

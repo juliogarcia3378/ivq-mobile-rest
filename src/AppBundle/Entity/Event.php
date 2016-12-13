@@ -94,19 +94,18 @@ class Event
      */
     private $website;
 
-    
-        /**
-     * @var string
-     * @ORM\Column(name="thumbnail", type="text", nullable=true)
-     */
-    private $thumbnail;
 
-    /**
-     * @var string
-     * @ORM\Column(name="logo", type="text",  nullable=false)
-     * @Assert\NotBlank(message="Logo field required")
+
+
+
+     /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media", referencedColumnName="id",nullable=false,onDelete="CASCADE")
+     * })
      */
-    private $logo;
+      private $logo;
 
     /**
      * @var string
@@ -137,10 +136,17 @@ class Event
      */
     private $notification;
 
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\likeEvent",mappedBy="likeEvent",cascade={"persist","remove"})
+     */
+    private $likeEvent;
+  
 
 
-  public function __construct()
+    public function __construct()
     {
+        $this->likeEvent = new \Doctrine\Common\Collections\ArrayCollection();
         $this->mediaEvent = new \Doctrine\Common\Collections\ArrayCollection();
         $this->notification = new \Doctrine\Common\Collections\ArrayCollection();
 
@@ -500,5 +506,41 @@ class Event
     {
         return $this->notification;
     }
+
+
+               /**
+     * Add Following
+     *
+     * @param \AppBundle\Entity\LikeEvent $likeEvent
+     * @return Follow
+     */
+    public function addLikeEvent(\AppBundle\Entity\LikeEvent $likeEvent)
+    {
+        $this->likeEvent[] = $likeEvent;
+    
+        return $this;
+    }
+
+     /**
+     * Remove following
+     *
+     * @param \AppBundle\Entity\LikeEvent $following
+     */
+    public function removeLikeEvent(\AppBundle\Entity\LikeEvent $likeEvent)
+    {
+        $this->likeEvent->removeElement($likeEvent);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLikeEvent()
+    {
+        return $this->likeEvent;
+    }
+
+
 }
 

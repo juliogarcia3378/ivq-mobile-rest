@@ -7,32 +7,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Rol
  *
- * @ORM\Table(name="like_media")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LikeRepository")
+ * @ORM\Table(name="like_event")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
  */
-class LikeMedia
+class LikeEvent
 {
     /**
      * @var integer
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\SequenceGenerator(sequenceName="like_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="like_event_id_seq", allocationSize=1, initialValue=1)
      */
     private $id;
 
 
 
     /**
-     * @var \AppBundle\Entity\Media
+     * @var \AppBundle\Entity\Event
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media",inversedBy="likeMedia")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Event",inversedBy="likeEvent")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media", referencedColumnName="id",onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="event", referencedColumnName="id",onDelete="CASCADE")
      * })
-
      */
-       private $media;
+       private $event;
 
   
   
@@ -75,21 +74,21 @@ class LikeMedia
 
     /**
      * Get event
-     * @return \AppBundle\Entity\MediaEvent
+     * @return \AppBundle\Entity\Event
      */
-    public function getMedia()
+    public function getEvent()
     {
-        return $this->media;
+        return $this->event;
     }
  
          /**
      * Set Event
-     * @param \AppBundle\Entity\Media $event
+     * @param \AppBundle\Entity\Event $event
      * @return Event
      */
-    public function setMedia(\AppBundle\Entity\Media $mediaevent = null)
+    public function setEvent(\AppBundle\Entity\Event $event = null)
     {
-        $this->media = $mediaevent;
+        $this->event = $event;
 
         return $this;
     }
@@ -140,8 +139,10 @@ class LikeMedia
 
 
     public function __toString(){
-        return $this->getUser()->getId();
+        return "";
     }
+
+
 
       
 

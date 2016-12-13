@@ -31,13 +31,25 @@ class FavouriteMemberRepository extends \Core\ComunBundle\Util\NomencladoresRepo
 	     $qb->orderBy('p.name', 'ASC');
 	 	$response= $qb->getQuery()->getResult();
              $array = array();
+             UtilRepository2::getSession()->set("total", count($response));
 	 	foreach ($response as $key => $favourite_member) {
+          
             $aux["id"]= $favourite_member->getMember()->getId();
+            $profile=$favourite_member->getMember()->getUser()->getProfile();
+            if ($profile==null){
+            $aux["name"]= "";
+            $aux["logo"]= "";
+            $aux["address"]= "";
+            }
+                else {
 	 		$aux["name"]= $favourite_member->getMember()->getUser()->getProfile()->getFullName();
-            $aux["logo"]= $favourite_member->getMember()->getUser()->getProfile()->getAvatar();
+            $aux["logo"]= $favourite_member->getMember()->getUser()->getProfile()->getAvatar()->getURL();
 	 		$aux["address"]= $favourite_member->getMember()->getUser()->getProfile()->getAddress()->getCityAndState();
+            }
 	 		$array[]=$aux;
+
 	 	}
+    
 	 	return $array;
 
  }   

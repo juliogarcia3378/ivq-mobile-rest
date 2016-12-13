@@ -28,23 +28,39 @@ class NotificationRepository extends \Core\ComunBundle\Util\NomencladoresReposit
         $array = array();
         foreach ($notifications as $key => $notification) {
             $array["id"]=$notification->getId();
-            $array["type"]["text"]=$notification->getNotificationType()->getName();
+            $array["type"]=$notification->getNotificationType()->getName();
             if (ENotification::ATTEND_TO_EVENT==$notification->getNotificationType()->getId()){
                 $event=$notification->getEvent();
                 $array["event"]["id"]=$event->getId();
                 $array["event"]["name"]=$event->getName();
-                $array["event"]["logo"]=$event->getLogo();
-                $array["member"]["id"]="";
+                $array["event"]["logo"]=$event->getLogo()->getUrl();
+                $array["member"]["id"]=$notification->getMember()->getId();
+                $profile=$notification->getMember()->getUser()->getProfile();
+                if ($profile==null){
                 $array["member"]["name"]="";
                 $array["member"]["avatar"]="";
+                }
+                  else{
+                $array["member"]["name"]=$notification->getMember()->getUser()->getProfile()->getFullname();
+                $array["member"]["avatar"]=$notification->getMember()->getUser()->getProfile()->getAvatar()->getURL();
+                }
             }else
             {
                 $array["member"]["id"]=$notification->getOtherMember()->getId();
+                $profile=$notification->getOtherMember()->getUser()->getProfile();
+                if ($profile==null){
+                $array["member"]["name"]="";
+                $array["member"]["avatar"]="";
+                }
+                  else{
                 $array["member"]["name"]=$notification->getOtherMember()->getUser()->getProfile()->getFullname();
-                $array["member"]["avatar"]=$notification->getOtherMember()->getUser()->getProfile()->getAvatar();
+                $array["member"]["avatar"]=$notification->getOtherMember()->getUser()->getProfile()->getAvatar()->getURL();
+                }
             }
-            $array["type"]["id"]=$notification->getNotificationType()->getId();
-            $array["picture"]=$notification->getPicture();
+            if ($notification->getPicture()!=null)
+            $array["picture"]=$notification->getPicture()->getUrl();
+          else 
+             $array["picture"]="";
             $response[]=$array;
             
         }

@@ -24,15 +24,15 @@ class Comment
 
 
     /**
-     * @var \AppBundle\Entity\MediaEvent
+     * @var \AppBundle\Entity\Media
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MediaEvent",inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media",inversedBy="comments")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="mediaevent", referencedColumnName="id",onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="media", referencedColumnName="id",onDelete="CASCADE")
      * })
 
      */
-       private $mediaEvent;
+       private $media;
 
   
   
@@ -82,21 +82,21 @@ class Comment
 
     /**
      * Get event
-     * @return \AppBundle\Entity\MediaEvent
+     * @return \AppBundle\Entity\Media
      */
-    public function getMediaEvent()
+    public function getMedia()
     {
-        return $this->mediaEvent;
+        return $this->media;
     }
  
          /**
      * Set Event
-     * @param \AppBundle\Entity\MediaEvent $event
+     * @param \AppBundle\Entity\Media $event
      * @return Event
      */
-    public function setMediaEvent(\AppBundle\Entity\MediaEvent $mediaevent = null)
+    public function setMedia(\AppBundle\Entity\Media $media = null)
     {
-        $this->mediaEvent = $mediaevent;
+        $this->media = $media;
 
         return $this;
     }

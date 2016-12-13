@@ -36,14 +36,16 @@ class MediaEvent
      */
        private $event;
 
-    /**
-     * @var \AppBundle\Entity\Media
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media",inversedBy="mediaEvent")
+   
+     /**
+     * @var \Profile
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Media", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="media", referencedColumnName="id",onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="media", referencedColumnName="id",nullable=true,onDelete="CASCADE")
      * })
      */
-       private $media;
+    private $media;
 
     /**
      * @var string
@@ -60,18 +62,7 @@ class MediaEvent
     private $comment;
 
 
-  /**
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment",mappedBy="mediaEvent",cascade={"persist","remove"})
-     */
-    private $comments;
-
-           /**
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\LikeMedia",mappedBy="mediaEvent",cascade={"persist","remove"})
-     */
-    private $likemedia;
-
+ 
 
 
 
@@ -79,10 +70,6 @@ class MediaEvent
   public function __construct()
     {
         $this->date = new \DateTime();
-        $this->likemedia = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
-
-
     }
 
 

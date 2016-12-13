@@ -32,19 +32,17 @@ class BusinessCardMedia
      */
        private $businessCard;
 
-           /**
-     * @var string
-     * @ORM\Column(name="format", type="string", length=250, nullable=false)
-     * @Assert\NotBlank(message="Name field required")
-     */
-    private $format;
 
-    /**
-     * @var string
-     * @ORM\Column(name="url", type="string", length=250, nullable=false)
-     * @Assert\NotBlank(message="URL field required")
+
+        /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media", referencedColumnName="id",nullable=false,onDelete="CASCADE")
+     * })
      */
-    private $url;
+      private $media;
+
 
 
 
@@ -59,54 +57,9 @@ class BusinessCardMedia
         return $this->id;
     }
  
-       /**
-     * Get format
-     *
-     * @return string
-     */
-    public function getFormat()
-    {
-        return $this->format;
-    }
+  
 
-        /**
-     * Set title
-     *
-     * @param string $format
-     *
-     * @return Group
-     */
-    public function setFormat($format)
-    {
-        $this->format = $format;
-    
-        return $this;
-    }
-
-
-    /**
-     * Set url
-     *
-     * @param string $url
-     *
-     * @return url
-     */
-    public function setURL($url)
-    {
-        $this->url = $url;
-    
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return url
-     */
-    public function getURL()
-    {
-        return $this->url;
-    }
+   
  
         /**
      * Get group
@@ -143,33 +96,24 @@ class BusinessCardMedia
      /**
      * Add Media
      *
-     * @param \AppBundle\Entity\MediaEvent $media
+     * @param \AppBundle\Entity\Media $media
      * @return Media
      */
-    public function addMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
+    public function setMedia(\AppBundle\Entity\Media $media)
     {
-        $this->mediaEvent[] = $mediaEvent;
+        $this->media = $media;
         return $this;
     }
 
-     /**
-     * Remove Media
-     *
-     * @param \AppBundle\Entity\MediaEvent $mediaEvent
-     */
-    public function removeMediaEvent(\AppBundle\Entity\MediaEvent $mediaEvent)
-    {
-        $this->mediaEvent->removeElement($mediaEvent);
-    }
 
     /**
      * Get Member
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMediaEvent()
+    public function getMedia()
     {
-        return $this->mediaEvent;
+        return $this->media;
     }
 
       

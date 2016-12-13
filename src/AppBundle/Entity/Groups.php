@@ -77,11 +77,14 @@ class Groups
      */
     private $website;
 
-        /**
-     * @var string
-     * @ORM\Column(name="logo", type="text", nullable=true)
+         /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="logo", referencedColumnName="id",nullable=false,onDelete="CASCADE")
+     * })
      */
-        private $logo;
+      private $logo;
 
     /**
      * @var \AppBundle\Entity\GroupCategory

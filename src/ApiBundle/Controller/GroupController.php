@@ -169,7 +169,7 @@ class GroupController extends FOSRestController
                         $array['id']=$member->getGroups()->getId();
                         $array['name']=$member->getGroups()->getName();
                         $array['category']=$member->getGroups()->getCategory()->getName();
-                        $array['logo']=$member->getGroups()->getLogo();
+                        $array['logo']=$member->getGroups()->getLogo()->getURL();
                         $array['address']=$member->getGroups()->getAddress()->getCityAndState();
                          $response[]=$array;
                      }
@@ -216,7 +216,7 @@ class GroupController extends FOSRestController
                         $array['address']=$group->getAddress()->getAddress();
                         $array['city']=$group->getAddress()->getCity();
                         $array['state']=$group->getAddress()->getState()->getName();
-                        $array['logo']=$group->getLogo();
+                        $array['logo']=$group->getLogo()->getURL();
                         $array['phone']=$group->getPhone();
                         $array['information']=$group->getDescription();
                          $response[]=$array;

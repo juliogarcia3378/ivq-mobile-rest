@@ -38,13 +38,6 @@ class Broadcast
      */
     private $name;
 
-    /**
-     * @var string
-     * @ORM\Column(name="format", type="string", length=250, nullable=false)
-     * @Assert\NotBlank(message="Name field required")
-     */
-    private $format;
-
 
 
     /**
@@ -86,10 +79,6 @@ class Broadcast
      */
        private $broadcastType;
 
-       /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    public $path;
 
       /**
      * @var \Users
@@ -98,6 +87,31 @@ class Broadcast
      */
     private $survey;
   
+
+
+         /**
+     * @var \AppBundle\Entity\Media
+     * @ORM\OneToOne(targetEntity="Media",cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="media", referencedColumnName="id",nullable=true,onDelete="CASCADE")
+     * })
+     */
+      private $media;
+
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\likeBroadcast",mappedBy="likeBroadcast",cascade={"persist","remove"})
+     */
+    private $likeBroadcast;
+  
+
+
+    public function __construct()
+    {
+        $this->likeBroadcast = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+
     /**
      * Get id
      *
@@ -116,7 +130,7 @@ class Broadcast
      */
     public function getFormat()
     {
-        return $this->format;
+        return $this->media->getFormat();
     }
 
         /**
@@ -128,7 +142,7 @@ class Broadcast
      */
     public function setFormat($format)
     {
-        $this->format = $format;
+        $this->media->setFormat($format);
     
         return $this;
     }
@@ -214,7 +228,7 @@ class Broadcast
      */
     public function setURL($url)
     {
-        $this->url = $url;
+        $this->media->setUrl($url);
 
         return $this;
     }
@@ -225,7 +239,7 @@ class Broadcast
      */
     public function getPath()
     {
-        return $this->path;
+        return $this->media->getPath();
     }
     /**
      * Get URL
@@ -234,7 +248,7 @@ class Broadcast
      */
     public function getURL()
     {
-        return $this->path;
+        return $this->media->getPath();
     }
       
     /**
@@ -332,6 +346,62 @@ class Broadcast
         return $this->survey;
     }
 
+    /**
+     * Set User
+     *
+     * @param string $user
+     * @return Survey
+     */
+    public function setMedia(\AppBundle\Entity\Media $media)
+    {
+        $this->media= $media;
+
+        return $this;
+    }
+
+    /**
+     * Get namee
+     *
+     * @return string
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+
+               /**
+     * Add Following
+     *
+     * @param \AppBundle\Entity\LikeBroadcast $Following
+     * @return Follow
+     */
+    public function addLikeBroadcast(\AppBundle\Entity\LikeBroadcast $likeBroadcast)
+    {
+        $this->likeBroadcast[] = $likeBroadcast;
+    
+        return $this;
+    }
+
+     /**
+     * Remove following
+     *
+     * @param \AppBundle\Entity\LikeBroadcast $following
+     */
+    public function removeLikeBroadcast(\AppBundle\Entity\LikeBroadcast $likeBroadcast)
+    {
+        $this->likeBroadcast->removeElement($likeBroadcast);
+    }
+
+    /**
+     * Get Member
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLikeBroadcast()
+    {
+        return $this->likeBroadcast;
+    }
 
 
 }
