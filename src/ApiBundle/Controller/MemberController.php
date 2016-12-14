@@ -162,21 +162,22 @@ class MemberController extends FOSRestController
        }
      if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
+                if ($user->getProfile()==null)
+                   return new JsonResponse(array('message'=>"Is required that you update your profile before follow a member."));
                 $em = $this->getDoctrine()->getEntityManager();
                $following = array();
                $member= $em->getRepository("AppBundle:Member")->find($member);
                 if ($member==null)
                {
-					 return new JsonResponse(array(
+					      return new JsonResponse(array(
                                     'error'=>"This member doesn't exist.",
                                     ), Response::HTTP_OK);
                }
 
                if (!$em->getRepository("AppBundle:Groups")->isMember(array('group'=>$member->getGroups()->getId(),'user'=>$user->getId())
                	)){
-               	   return new JsonResponse(array(
-                                    'error'=>"You haven't access to this group.",
-                                    ), Response::HTTP_OK);
+                       return new JsonResponse(array('message'=>"Please join this group to follow a member."));
+
                }
                 if ($member->getUser()->getId()==$user->getId())
                {

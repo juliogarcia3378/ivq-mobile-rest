@@ -39,24 +39,6 @@ class ProfileController extends FOSRestController
         	$user = $this->get('security.context')->getToken()->getUser();
             $profile = $user->getProfile();
             $followers=0;
-	    	if ($this->get('security.context')->isGranted('ROLE_ADMIN')  === TRUE) 
-	    	{
-                $response = array("msg"=>'ok',
-                                               "role"=>'ROLE_ADMIN',
-                                               "userId"=>$user->getId());
-                if ($profile==null){
-                    $response["profile"]["phone"]="";
-                    $response["profile"]["name"]="";
-                    $response["profile"]["avatar"]="";
-                }else
-                {
-                    $response["profile"]["phone"]=$profile->getPhone();
-                    $response["profile"]["name"]=$profile->getName();
-                    $response["profile"]["avatar"]=$profile->getAvatar()->getURL();
-                }
-
-	            return new JsonResponse($response);
-	        }
 	        if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) 
 	    	{
                 $memberships=$user->getMembers();
@@ -87,23 +69,19 @@ class ProfileController extends FOSRestController
                         $response['profile']['city']="";
                         $response['profile']['state']="";
                     }
+                }else{
+                    $response["profile"]["phone"]="";
+                    $response["profile"]["name"]="";
+                    $response["profile"]["avatar"]="";
+
                 }
 	            return new JsonResponse($response);
 	        }
-                        if ($this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
-            {
-                return new JsonResponse(array("msg"=>'ok',
-                                               "role"=>'ROLE_MEMBER',
-                                               "userId"=>$user->getId(),
-                                              'profile'=>array(
-                                                    'name'=>$profile->getName(),
-                                                    'avatar'=>$profile->getAvatar()->getURL()
-                                             ))
-                                        );
-            }
-            return new JsonResponse(array( "userId"=>$user->getId()
-                                         )
-                                   );
+            
+            return new JsonResponse(array(
+                                    'error' => '301',
+                                    'message'=>"You haven't permissions for this functionality" ,
+                                    ), Response::HTTP_OK);
         }
       
 
@@ -131,24 +109,25 @@ class ProfileController extends FOSRestController
                     if ($profile!=null){
                     $aux["name"]=$profile->getName();
                     $aux["lastname"]=$profile->getLastName();
-                    $aux["avatar"]=$profile->getAvatar()->getURL();
-                }else{
-                     $aux["name"]="";
-                    $aux["lastname"]="";
-                    $aux["avatar"]="";
-                }
+                        if ($profile->getAvatar()==null)
+                            $aux["avatar"]= "";
+                        else    
+                            $aux["avatar"]=$profile->getAvatar()->getURL();
+                    }else{
+                        $aux["name"]="";
+                        $aux["lastname"]="";
+                        $aux["avatar"]="";
+                    }
                     $following[]=$aux;
                 }
                     
                }
                 
-            return new JsonResponse(array(
-                                    'response'=>$following,
-                                    ), Response::HTTP_OK);
+            return new JsonResponse(array('response'=>$following), Response::HTTP_OK);
             }
             return new JsonResponse(array(
                                     'error' => '301',
-                                    'message'=>"You haven't permissions for this requirement" ,
+                                    'message'=>"You haven't permissions for this functionality" ,
                                     ), Response::HTTP_OK);
       }
      
@@ -193,7 +172,7 @@ class ProfileController extends FOSRestController
             }
             return new JsonResponse(array(
                                     'error' => '301',
-                                    'message'=>"You haven't permissions for this requirement" ,
+                                    'message'=>"You haven't permissions for this functionality" ,
                                     ), Response::HTTP_OK);
       }
       
@@ -339,9 +318,10 @@ class ProfileController extends FOSRestController
                                         );
             }
             
-            return new JsonResponse(array( "error"=>"You dont have permissions to change this user"
-                                         )
-                                   );
+            return new JsonResponse(array(
+                                    'error' => '301',
+                                    'message'=>"You haven't permissions for this functionality" ,
+                                    ), Response::HTTP_OK);
         }
 
 

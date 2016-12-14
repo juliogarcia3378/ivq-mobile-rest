@@ -16,10 +16,10 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
  	$em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('e')
-	   ->from('AppBundle:Event', 'e')
-	   ->join('e.groups', 'g')
-         ->where('g.id = :group')
-         ->setParameter('group', $array["group"]);
+	    ->from('AppBundle:Event', 'e')
+	    ->join('e.groups', 'g')
+        ->where('g.id = :group')
+        ->setParameter('group', $array["group"]);
          if (isset($array["start"]) && isset($array["limit"])){
          $qb->setFirstResult($array["start"])
          ->setMaxResults($array["limit"]);
@@ -36,7 +36,9 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 		$aux["name"]= $event->getName();
 	 	    $aux["paid_event"]= $event->getPaidevent();
 	 		if ($aux["paid_event"]!=false)
-	 		$aux["ticket"]= $event->getTicketURL();
+	 			$aux["ticket"]= $event->getTicketURL();
+	 	    else
+	 	    	$aux["ticket"]= "";
 	 		$aux["information"]= $event->getInformation();
 	 		$aux["date"]= $event->getDate();
 	 		$aux["updated_at"]= $event->getUpdatedAt();
@@ -55,9 +57,9 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
  	$em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('e')
-	   ->from('AppBundle:Event', 'e')
-         ->where('e.id = :event')
-         ->setParameter('event', $array["event"]);
+	    ->from('AppBundle:Event', 'e')
+        ->where('e.id = :event')
+        ->setParameter('event', $array["event"]);
 	 	$event= $qb->getQuery()->getSingleResult();
 
 
@@ -67,6 +69,8 @@ class EventRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	 		$aux["paid_event"]= $event->getPaidevent();
 	 		if ($aux["paid_event"]!=false)
 	 			$aux["ticket"]= $event->getTicketURL();
+	 		else
+	 			$aux["ticket"]="";
 	 		$aux["date"]= $event->getDate();
 	 		$aux["updated_at"]= $event->getUpdatedAt();
 	 		$aux["website"]= $event->getWebsite();

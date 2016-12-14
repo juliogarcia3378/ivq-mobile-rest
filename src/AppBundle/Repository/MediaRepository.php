@@ -15,13 +15,13 @@ class MediaRepository extends \Core\ComunBundle\Util\NomencladoresRepository
  	$em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('me')
-	     ->from('AppBundle:Media', 'me')
-	     ->join('me.likeMedia', 'lm')
-	     ->join('lm.user', 'u')
-         ->where('u.id = :user')
-         ->andWhere('me.id = :idMedia')
-         ->setParameter('user', $array["user"]->getId())
-         ->setParameter('idMedia', $array["media"]->getId());
+	    ->from('AppBundle:Media', 'me')
+	    ->join('me.likeMedia', 'lm')
+	    ->join('lm.user', 'u')
+        ->where('u.id = :user')
+        ->andWhere('me.id = :idMedia')
+        ->setParameter('user', $array["user"]->getId())
+        ->setParameter('idMedia', $array["media"]->getId());
 	 	$exist= $qb->getQuery()->getResult();
         
         if (count($exist)==0){

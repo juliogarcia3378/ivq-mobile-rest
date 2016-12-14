@@ -10,7 +10,7 @@ use AppBundle\Entity\LikeBroadcast;
 
 class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 {
-          public function listBroadcastByGroup($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+    public function listBroadcastByGroup($filters = array(),$order=null,$resultType=ResultType::ObjectType){
     
     $em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
@@ -67,7 +67,6 @@ class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
         ->setParameter('broadcast', $filters["broadcast"])
         ->setParameter('user', $filters["user"]);
 
-
          $response = $qb->getQuery()->getResult();
 	 	if (count($response)>0)
 	 		return true;
@@ -117,12 +116,11 @@ class BroadcastRepository extends \Core\ComunBundle\Util\NomencladoresRepository
          ->setParameter('idBroadcast', $array["broadcast"]->getId());
 	 	$exist= $qb->getQuery()->getResult();
         
-        
         if (count($exist)!=0){
         	$id = $exist[0];
-             $em->remove($em->getRepository("AppBundle:LikeBroadcast")->find($id));
-             $em->flush();
-             return  array("message"=>"You unliked this broadcast.");
+            $em->remove($em->getRepository("AppBundle:LikeBroadcast")->find($id));
+            $em->flush();
+            return  array("message"=>"You unliked this broadcast.");
         }else {
          return  array("message"=>"This broadcast is not liked by you.");
         }

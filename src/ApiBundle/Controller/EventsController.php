@@ -24,7 +24,7 @@ class EventsController extends FOSRestController
      * @Rest\Get("/event/dislike")
      * @ApiDoc(
      *  section = "Events",
-     *  description="Like an event ***(NEW)",
+     *  description="Dislike an event",
      *  requirements={
      *      {
      *          "name"="id",
@@ -61,7 +61,7 @@ class EventsController extends FOSRestController
      * @Rest\Get("/event/like")
      * @ApiDoc(
      *  section = "Events",
-     *  description="Dislike an event  ***(NEW)",
+     *  description="Like an event ",
      *  requirements={
      *      {
      *          "name"="id",

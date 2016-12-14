@@ -45,30 +45,28 @@ class BusinessCardController extends FOSRestController
     public function getMyBusinessCardAction()
     {
         if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
-             $this->get('security.context')->isGranted('ROLE_ADMIN')  === TRUE) 
-            {
-              
-            }
-              else return new JsonResponse(array( "error"=>"You arent a valid user"));
-            $request = $this->getRequest();
-            $id = $request->get('id',NULL);
-        $knp = $this->container->get('knp_snappy.image');
-        $knp->getInternalGenerator()->setTimeout(1000);
-        $pageUrl = $this->generateUrl('my-business-card', array('id'=>$id), true);
-        //var_dump($pageUrl);die;
-        $name=uniqid().'.png';
-        $url = 'uploads/share/'.$name;
-        $knp->generate($pageUrl, $url );
+            $this->get('security.context')->isGranted('ROLE_ADMIN')  === TRUE) 
+        {
+              $request = $this->getRequest();
+              $id = $request->get('id',NULL);
+              $knp = $this->container->get('knp_snappy.image');
+              $knp->getInternalGenerator()->setTimeout(1000);
+              $pageUrl = $this->generateUrl('my-business-card', array('id'=>$id), true);
+              $name=uniqid().'.png';
+              $url = 'uploads/share/'.$name;
+              $knp->generate($pageUrl, $url );
+              $base = $this->getParameter('base_directory');
+              $path = $base;
 
-        $base = $this->getParameter('base_directory');
-        $path = $base;
+              $file= $this->getRequest()->getUriForPath("/".$url);
+              $file = str_replace("/app.php", "", $file);
+              $file = str_replace("/app_dev.php", "", $file);
 
-       $file= $this->getRequest()->getUriForPath("/".$url);
-        $file = str_replace("/app.php", "", $file);
-        $file = str_replace("/app_dev.php", "", $file);
-
-     return new JsonResponse(array( "img"=>$file));
+              return new JsonResponse(array( "img"=>$file));
         }
+        return new JsonResponse(array( "error"=>"You arent a valid user"));
+            
+    }
 
 
 
@@ -81,7 +79,7 @@ class BusinessCardController extends FOSRestController
 
      * )
      */
-      public function listMyBusinessCardAction()
+    public function listMyBusinessCardAction()
         {
         	$user = $this->get('security.context')->getToken()->getUser();
             $profile = $user->getProfile();
@@ -93,60 +91,55 @@ class BusinessCardController extends FOSRestController
                 $businessCards = $user->getBusinessCard();
                 $response =array();
 
-                  foreach ($businessCards as $key => $bc) {
-                    if ($bc->getFinished()==true){
-                     $bcard['id']=$bc->getId();
-                     $bcard['name']=$bc->getName(). " ". $bc->getLastname();
-                     $bcard['picture']=$bc->getPicture()->getURL();
-                     $bcard['logo']=$bc->getLogo()->getURL();
-                     $bcard['category']=$bc->getCategory()->getName();
-                     $response[]=$bcard;}
-                  }
+                foreach ($businessCards as $key => $bc) {
+                    if ($bc->getFinished()==true && $bc->getSaved()==false){
+                    $bcard['id']=$bc->getId();
+                    $bcard['name']=$bc->getName(). " ". $bc->getLastname();
+                    $bcard['picture']=$bc->getPicture()->getURL();
+                    $bcard['logo']=$bc->getLogo()->getURL();
+                    $bcard['category']=$bc->getCategory()->getName();
+                    $response[]=$bcard;}
+                }
            
 	            return new JsonResponse(array("response"=>$response));
 	        }
 
-            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
-                                   );
+            return new JsonResponse(array( "message"=>"You dont have enough permissions. "));
         }
       
 
-  /**
-     * @Route("/saved-business-card/list")
-     * @Rest\Get("/saved-business-card/list")
-     * @ApiDoc(
-     *  section = "Saved Business Card",
-     *  description="Returns the saved business cards for user's logged",
+    /**
+    * @Route("/saved-business-card/list")
+    * @Rest\Get("/saved-business-card/list")
+    * @ApiDoc(
+    *  section = "Saved Business Card",
+    *  description="Returns the saved business cards for user's logged",
 
-     * )
-     */
-      public function listMySavedBusinessCardAction()
+    * )
+    */
+    public function listMySavedBusinessCardAction()
         {
             $user = $this->get('security.context')->getToken()->getUser();
             $profile = $user->getProfile();
-
             if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
              $this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
             {
-
                 $businessCards = $user->getBusinessCard();
                 $response =array();
-
-                  foreach ($businessCards as $key => $bc) {
-                    if ($bc->getFinished()==true and $bc->getSaved()==true){
-                     $bcard['id']=$bc->getId();
-                     $bcard['name']=$bc->getName(). " ". $bc->getLastname();
-                     $bcard['picture']=$bc->getPicture()->getURL();
-                     $bcard['logo']=$bc->getLogo()->getURL();
-                     $bcard['category']=$bc->getCategory()->getName();
-                     $response[]=$bcard;}
-                  }
-           
+                foreach ($businessCards as $key => $bc) {
+                    if ($bc->getFinished()==true and $bc->getSaved()==false){
+                        $bcard['id']=$bc->getId();
+                        $bcard['name']=$bc->getName(). " ". $bc->getLastname();
+                        $bcard['picture']=$bc->getPicture()->getURL();
+                        $bcard['logo']=$bc->getLogo()->getURL();
+                        $bcard['category']=$bc->getCategory()->getName();
+                        $response[]=$bcard;
+                    }
+                }
                 return new JsonResponse(array("response"=>$response));
             }
 
-            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
-                                   );
+            return new JsonResponse(array("message"=>"You dont have enough permissions. "));
         }
 
      /**
@@ -165,48 +158,43 @@ class BusinessCardController extends FOSRestController
 
      * )
      */
-      public function removeSavedBusinessCardAction()
+    public function removeSavedBusinessCardAction()
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $profile = $user->getProfile();
+        $request = $this->getRequest();
+        $id = $request->get('id',NULL);
+        if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
+        $this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
         {
-            $user = $this->get('security.context')->getToken()->getUser();
-            $profile = $user->getProfile();
-            $request = $this->getRequest();
-                $id = $request->get('id',NULL);
-            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
-             $this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
-            {
-               $em= $this->getDoctrine()->getManager();
-
-                $businessCards = $user->getBusinessCard();
-                $response =array();
-
-                  foreach ($businessCards as $key => $bc) {
-                    if ($bc->getId()==$id ){
-                       $em->remove($bc);
-                       $em->flush();
-                return new JsonResponse(array( "message"=>"Operation Sucesfully"));
-                    }
-                  }
-           
+            $em= $this->getDoctrine()->getManager();
+            $businessCards = $user->getBusinessCard();
+            $response =array();
+            foreach ($businessCards as $key => $bc) {
+                if ($bc->getId()==$id ){
+                    $em->remove($bc);
+                    $em->flush();
+                    return new JsonResponse(array( "message"=>"Operation Sucesfully"));
+                }
+            }
                 return new JsonResponse(array("message"=>"This business card is not valid."));
             }
+        return new JsonResponse(array( "message"=>"You dont have enough permissions. "));
+    }
 
-            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
-                                   );
-        }
-
-        /**
-     * @Route("/saved-business-card/add")
-     * @Rest\Get("/saved-business-card/add")
-     * @ApiDoc(
-     *  section = "Saved Business Card",
-     *  description="Add to my saved business cards section a copy for the b-card provided",
-     *  requirements={
-     *      {
-     *          "name"="id",
-     *          "dataType"="string",
-     *          "description"="business card id"
-     *      }
-           }
+    /**
+    * @Route("/saved-business-card/add")
+    * @Rest\Get("/saved-business-card/add")
+    * @ApiDoc(
+    *  section = "Saved Business Card",
+    *  description="Add to my saved business cards section a copy for the b-card provided",
+    *  requirements={
+    *      {
+    *          "name"="id",
+    *          "dataType"="string",
+    *          "description"="business card id"
+    *      }
+          }
 
      * )
      */
@@ -268,12 +256,9 @@ class BusinessCardController extends FOSRestController
 
                  $em->persist($new_bcard);
                  $em->flush();
-                return new JsonResponse(array( "message"=>"Operation Sucesfully"));
-                  }
-           
-
-            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
-                                   );
+                 return new JsonResponse(array( "message"=>"Operation Sucesfully"));
+            }
+            return new JsonResponse(array( "message"=>"You dont have enough permissions. "));
         }
 
        /**
@@ -292,7 +277,7 @@ class BusinessCardController extends FOSRestController
 
      * )
      */
-      public function listBusinessCardAction()
+    public function listBusinessCardAction()
         {
             $user = $this->get('security.context')->getToken()->getUser();
             $request = $this->getRequest();
@@ -796,6 +781,7 @@ class BusinessCardController extends FOSRestController
                     $logoM = $bc->getLogo();
                     $logoM->setURL($this->uploadPicture("logo",$this->getParameter('business_card_directory')));
                 $logoM->setFormat("picture");
+                $em->persist($logoM);
                 $bc->setLogo($logoM);
             }
 
@@ -806,6 +792,7 @@ class BusinessCardController extends FOSRestController
                     $pictureM = $bc->getPicture();
                     $pictureM->setURL($this->uploadPicture("picture",$this->getParameter('business_card_directory')));
                     $pictureM->setFormat("picture");
+                    $em->persist($pictureM);
                     $bc->setPicture($pictureM);
             }
             if (isset($address))

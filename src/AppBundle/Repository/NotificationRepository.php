@@ -26,31 +26,35 @@ class NotificationRepository extends \Core\ComunBundle\Util\NomencladoresReposit
 
         $response= array();
         $array = array();
-        foreach ($notifications as $key => $notification) {
+        foreach ($notifications as $key => $notification) 
+        {
             $array["id"]=$notification->getId();
             $array["type"]=$notification->getNotificationType()->getName();
-            if (ENotification::ATTEND_TO_EVENT==$notification->getNotificationType()->getId()){
+            if (ENotification::ATTEND_TO_EVENT==$notification->getNotificationType()->getId())
+            {
                 $event=$notification->getEvent();
                 $array["event"]["id"]=$event->getId();
                 $array["event"]["name"]=$event->getName();
                 $array["event"]["logo"]=$event->getLogo()->getUrl();
                 $array["member"]["id"]=$notification->getMember()->getId();
                 $profile=$notification->getMember()->getUser()->getProfile();
-                if ($profile==null){
-                $array["member"]["name"]="";
-                $array["member"]["avatar"]="";
+                if ($profile==null)
+                {
+                    $array["member"]["name"]="";
+                    $array["member"]["avatar"]="";
+                }else{
+                    $array["member"]["name"]=$notification->getMember()->getUser()->getProfile()->getFullname();
+                    $array["member"]["avatar"]=$notification->getMember()->getUser()->getProfile()->getAvatar()->getURL();
                 }
-                  else{
-                $array["member"]["name"]=$notification->getMember()->getUser()->getProfile()->getFullname();
-                $array["member"]["avatar"]=$notification->getMember()->getUser()->getProfile()->getAvatar()->getURL();
-                }
-            }else
-            {
+            } else {
+                $array["event"]["id"]="";
+                $array["event"]["name"]="";
+                $array["event"]["logo"]="";
                 $array["member"]["id"]=$notification->getOtherMember()->getId();
                 $profile=$notification->getOtherMember()->getUser()->getProfile();
                 if ($profile==null){
-                $array["member"]["name"]="";
-                $array["member"]["avatar"]="";
+                    $array["member"]["name"]="";
+                    $array["member"]["avatar"]="";
                 }
                   else{
                 $array["member"]["name"]=$notification->getOtherMember()->getUser()->getProfile()->getFullname();
@@ -58,9 +62,9 @@ class NotificationRepository extends \Core\ComunBundle\Util\NomencladoresReposit
                 }
             }
             if ($notification->getPicture()!=null)
-            $array["picture"]=$notification->getPicture()->getUrl();
-          else 
-             $array["picture"]="";
+               $array["picture"]=$notification->getPicture()->getUrl();
+            else 
+                $array["picture"]="";
             $response[]=$array;
             
         }

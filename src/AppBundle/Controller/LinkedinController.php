@@ -50,7 +50,7 @@ class LinkedinController extends FOSRestController
         $password=$linkedinID;
         
         $um = $this->get('fos_user.user_manager');
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
          $exist = $em->getRepository("AppBundle:User")->findUserByLinkedinID(array('linkedinID'=>$linkedinID));
 
           $user = $um->findUserByUsernameOrEmail($email);

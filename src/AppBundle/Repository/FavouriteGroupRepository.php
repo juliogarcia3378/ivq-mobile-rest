@@ -46,13 +46,13 @@ class FavouriteGroupRepository extends \Core\ComunBundle\Util\NomencladoresRepos
  	$em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('fg')
-	     ->from('AppBundle:FavouriteGroup', 'fg')
-	     ->join('fg.groups', 'g')
-	     ->join('fg.user', 'u')
-         ->where('g.id = :groups')
-         ->andWhere('u.id = :user')
-         ->setParameter('user', $array["user"]->getId())
-         ->setParameter('groups', $array["groups"]->getId());
+	    ->from('AppBundle:FavouriteGroup', 'fg')
+	    ->join('fg.groups', 'g')
+	    ->join('fg.user', 'u')
+        ->where('g.id = :groups')
+        ->andWhere('u.id = :user')
+        ->setParameter('user', $array["user"]->getId())
+        ->setParameter('groups', $array["groups"]->getId());
 	 	$exist= $qb->getQuery()->getResult();
         
         if (count($exist)==0){

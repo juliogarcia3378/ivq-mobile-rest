@@ -116,8 +116,21 @@ class SecurityController extends FOSRestController
         $password = $request->get('password',NULL);
         $email = $request->get('email',NULL);
         $mobile = $request->get('mobile',NULL);
-        
-
+        if (!preg_match('/^[1-9][0-9]{10}$/', $mobile))
+        {
+            return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'Your mobile is not valid.',
+                    ), Response::HTTP_OK);   
+        }
+        if (filter_var($email,FILTER_VALIDATE_EMAIL)===false)
+        {
+             return new JsonResponse(array(
+                    'error' => '301',
+                    'message'=>'Your email is not valid.',
+                    ), Response::HTTP_OK);
+        }
+         
         if (!isset($username) || !isset($password) || !isset($email) || !isset($mobile)){
               return new JsonResponse(array(
                     'error' => '301',
@@ -125,13 +138,16 @@ class SecurityController extends FOSRestController
                     ), Response::HTTP_OK);
         }
 
-        if (strlen($mobile)!=11)
-       return new JsonResponse(array(
+        if (strlen($username)>50 || strlen($email)>40)
+        {
+         return new JsonResponse(array(
                     'error' => '301',
-                    'message'=>'The mobile provided is not a valid number',
-                    ), Response::HTTP_OK);
+                    'message'=>'You have to long fields.',
+                    ), Response::HTTP_OK);   
+        }
 
-          $userManager = $this->get('fos_user.user_manager');
+
+        $userManager = $this->get('fos_user.user_manager');
         $em = $this->getDoctrine()->getManager();
        $exist= $em->getRepository("AppBundle:User")->findUserByMobile(array('mobile'=>$mobile));
        if (count($exist)>0)

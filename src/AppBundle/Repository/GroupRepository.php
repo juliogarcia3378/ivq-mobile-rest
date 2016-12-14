@@ -13,80 +13,69 @@ class GroupRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 {
     
     public function search($filters = array(),$order=null,$resultType=ResultType::ObjectType){
-         $qb = $this->getQB();
+        $qb = $this->getQB();
         $qb->join('groups.category', 'category');
-        if ($filters["search"]!=null)
+    if ($filters["search"]!=null)
          $qb->andWhere('groups.name LIKE :search')->setParameter('search', "%".$filters['search']."%");
-     if ($filters["category"]!=null)
+    if ($filters["category"]!=null)
          $qb->andWhere('category.id = :category')->setParameter('category', $filters['category']);
         
-         unset($filters['search']);
-         unset($filters['category']);
-         
-         return $this->filterQB($qb, $filters, ResultType::ObjectType);
+    unset($filters['search']);
+    unset($filters['category']);
+    return $this->filterQB($qb, $filters, ResultType::ObjectType);
      }
 
     public function searchNearby($filters = array(),$order=null,$resultType=ResultType::ObjectType){
         $arrayResult=array();
-         $zip = $filters['zip'];
-            unset($filters['zip']);
+        $zip = $filters['zip'];
+        unset($filters['zip']);
 
-         $qb = $this->getQB();
-         $qb->join('groups.address', 'address');
-         $qb->andWhere('address.zip = :zip')->setParameter('zip', $zip);
+        $qb = $this->getQB();
+        $qb->join('groups.address', 'address');
+        $qb->andWhere('address.zip = :zip')->setParameter('zip', $zip);
 
-         $response= $this->filterQB($qb, array(), ResultType::ObjectType);
-             //    var_dump(count($response));die;
+        $response= $this->filterQB($qb, array(), ResultType::ObjectType);
      
-         $arrayResult=array_merge($arrayResult,$response);
+        $arrayResult=array_merge($arrayResult,$response);
 
-      //return $arrayResult;
        
         $usa='us';
         $result =(array)Zippopotamus::nearby($usa, $zip);
             $areas= Array(); 
               $nearby = array();
               $array=(array)$result['nearby'];
-           foreach ($array as $key => $area) {
+        foreach ($array as $key => $area) {
             $el = (array)$area;
-             $nearby[$key]=$el['distance'];
-             $array[$key]=$el;
-            //$areas[]=$area['nearby'];
-                  }
-        array_multisort($nearby, SORT_ASC, $array);
+            $nearby[$key]=$el['distance'];
+            $array[$key]=$el;
+            array_multisort($nearby, SORT_ASC, $array);
 
-        $myarray = (array)$array;
+            $myarray = (array)$array;
+            foreach ($myarray as $key => $value) 
+            {
+                $qb = $this->getQB();
+                $qb->join('groups.address', 'address');
+                $qb->andWhere('address.zip = :zip')->setParameter('zip', $value['post code']);
+                $response= $this->filterQB($qb, $filters, ResultType::ObjectType);
+                $arrayResult=array_merge($arrayResult,$response);
+            }
+        return $arrayResult;
+    }
 
-         foreach ($myarray as $key => $value) {
+	public function isMember($filters = array(),$order=null,$resultType=ResultType::ObjectType)
+    {
          $qb = $this->getQB();
-         $qb->join('groups.address', 'address');
-         $qb->andWhere('address.zip = :zip')->setParameter('zip', $value['post code']);
-       //  var_dump($value['post code']);die;
-     
-         $response= $this->filterQB($qb, $filters, ResultType::ObjectType);
-         $arrayResult=array_merge($arrayResult,$response);
-         }
-
-         return $arrayResult;
-         
-     }
-     
-
-    
-
-	public function isMember($filters = array(),$order=null,$resultType=ResultType::ObjectType){
-         $qb = $this->getQB();
-        $qb->join('groups.member', 'member')
-           ->join('member.user', 'user');
+         $qb->join('groups.member', 'member')
+            ->join('member.user', 'user');
          $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
          $qb->andWhere('groups.id = :group')->setParameter('group', $filters['group']);
          if (count($qb->getQuery()->getResult())>0)
          	return true;
          	return false;
-     }
+    }
      
-        public function returnMemberID($filters = array(),$order=null,$resultType=ResultType::ObjectType){
-         $qb = $this->getQB();
+    public function returnMemberID($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+        $qb = $this->getQB();
         $qb->join('groups.member', 'member')
            ->join('member.user', 'user');
          $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
@@ -95,15 +84,25 @@ class GroupRepository extends \Core\ComunBundle\Util\NomencladoresRepository
             return $qb->getQuery()->getSingleResult()->getMember()->getId();
             return false;
      }
-
-     	public function listMembers($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+     
+    public function returnMemberID2($filters = array(),$order=null,$resultType=ResultType::ObjectType){
          $qb = $this->getQB();
-           
         $qb->join('groups.member', 'member')
            ->join('member.user', 'user');
-         
+         $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
          $qb->andWhere('groups.id = :group')->setParameter('group', $filters['group']);
-        
+         if (count($qb->getQuery()->getResult())>0){
+            $result = $qb->getQuery()->getResult();
+            return $result[0]->getMember()->getId();
+         }
+            return false;
+    }
+
+    public function listMembers($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+        $qb = $this->getQB();
+        $qb->join('groups.member', 'member')
+           ->join('member.user', 'user');
+         $qb->andWhere('groups.id = :group')->setParameter('group', $filters['group']);
          unset($filters['user']);
          unset($filters['group']);
          
@@ -111,18 +110,15 @@ class GroupRepository extends \Core\ComunBundle\Util\NomencladoresRepository
      }
 
         //this function list all groups as follower or following where user is subscribed
-        public function byMemberSubscribed($filters = array(),$order=null,$resultType=ResultType::ObjectType){
-         $qb = $this->getQB();
-           
+    public function byMemberSubscribed($filters = array(),$order=null,$resultType=ResultType::ObjectType){
+        $qb = $this->getQB();
         $qb->join('groups.member', 'member')
            ->join('member.user', 'user');
+        $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
+        unset($filters['user']);
+        unset($filters['group']);
          
-         $qb->andWhere('user.id = :user')->setParameter('user', $filters['user']);
-        
-         unset($filters['user']);
-         unset($filters['group']);
-         
-         return $this->filterQB($qb, $filters, ResultType::ArrayType);
+        return $this->filterQB($qb, $filters, ResultType::ArrayType);
      }
    
 }

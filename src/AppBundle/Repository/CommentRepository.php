@@ -16,30 +16,41 @@ class CommentRepository extends \Core\ComunBundle\Util\NomencladoresRepository
  	$em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('me')
-	   ->from('AppBundle:Comment', 'me')
-	   ->join('me.media', 'e')
-         ->where('e.id = :me')
-         ->setParameter('me', $array["idMedia"]);
-         
-	     $qb->orderBy('me.date', 'DESC');
+	    ->from('AppBundle:Comment', 'me')
+	    ->join('me.media', 'e')
+        ->where('e.id = :me')
+        ->setParameter('me', $array["idMedia"]);
+	    $qb->orderBy('me.date', 'DESC');
 	 	$response= $qb->getQuery()->getResult();
 	 	UtilRepository2::getSession()->set("total", count($response));
 
 	 	if (isset($array["start"]) && isset($array["limit"])){
-         $qb->setFirstResult($array["start"])
-         ->setMaxResults($array["limit"]);
-			}
+        $qb->setFirstResult($array["start"])
+        ->setMaxResults($array["limit"]);
+		}
 		$response= $qb->getQuery()->getResult();
 
 
-             $array = array();
+        $array = array();
 	 	foreach ($response as $key => $comment) {
 	 		$arr['id']=$comment->getId();
                     $arr['comment']=$comment->getComment();
                     $arr['date']=$comment->getDate();
                     $profile= $comment->getUser()->getProfile();
+                      if ($comment->getMedia()->getMediaEvent()!=null){
+                      	$find['group']=$comment->getMedia()->getMediaEvent()->getEvent()->getGroups()->getId();
+                      	$find['user']= $comment->getUser()->getId();
 
-                    //$arr['memberId']=$comment->getMedia()->getMediaEvent()->getId();
+                      	$id= $em->getRepository("AppBundle:Groups")->returnMemberID2($find);
+                      	if ($id!=false)
+                      		$arr['memberId']= $id;
+                      	else
+                      		$arr['memberId']= "";
+
+                      }
+
+                	else
+                		$arr['memberId']= "";
                     $arr['user']["id"]=$comment->getUser()->getId();
                     if ($profile==null){
                     $arr['user']["name"]="";
@@ -58,14 +69,14 @@ class CommentRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	  public function addComment($array)
 	 {
 	 	$em = $this->getEntityManager();
-
-	             $comment = new Comment();
-	             $comment->setUser($array["user"]);
-	             $comment->setMedia($array["media"]);
-	             $comment->setComment($array["comment"]);
-	             $em->persist($comment);
-	             $em->flush();
-	             return  array("message"=>"You have succesfully added a new comment.");
+	    $comment = new Comment();
+	    $comment->setUser($array["user"]);
+	    $comment->setMedia($array["media"]);
+	    $comment->setComment($array["comment"]);
+	    $em->persist($comment);
+	    $em->flush();
+	    
+	    return  array("message"=>"You have succesfully added a new comment.");
 	       
 	 }  
 

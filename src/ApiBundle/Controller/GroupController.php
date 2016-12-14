@@ -40,6 +40,12 @@ class GroupController extends FOSRestController
         {
          $request = $this->getRequest();
          $group = $request->get('group',NULL);
+       if ($group=='')
+       {
+         return new JsonResponse(array(
+                                    'error'=>"The group is not valid.",
+                                    ), Response::HTTP_OK);
+       }
          if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
              $user = $this->get('security.context')->getToken()->getUser();
               
@@ -57,7 +63,10 @@ class GroupController extends FOSRestController
                  }
 
          }
-          return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group."));
+            return new JsonResponse(array(
+                                    'error' => '301',
+                                    'message'=>"You haven't permissions for this requirement" ,
+                                    ), Response::HTTP_OK);
            
         }
 
@@ -80,12 +89,21 @@ class GroupController extends FOSRestController
         {
          $request = $this->getRequest();
          $group = $request->get('group',NULL);
+       if ($group=='')
+       {
+         return new JsonResponse(array(
+                                    'error'=>"The group is not valid.",
+                                    ), Response::HTTP_OK);
+       }
          if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
              $user = $this->get('security.context')->getToken()->getUser();
                 $em = $this->getDoctrine()->getEntityManager();
                 return new JsonResponse(array( "message"=>$em->getRepository("AppBundle:Member")->disjoinGroup($user->getId(),$group)));
          }
-          return new JsonResponse(array( "message"=>"You haven't permissions for accesing in this group"));
+            return new JsonResponse(array(
+                                    'error' => '301',
+                                    'message'=>"You haven't permissions for this requirement" ,
+                                    ), Response::HTTP_OK);
            
         }
      /**
@@ -109,7 +127,7 @@ class GroupController extends FOSRestController
          $group = $request->get('group',NULL);
             if ($group==NULL)
                  {
-                    return new JsonResponse(array( "message"=>"The group ID is not valid."));  
+                    return new JsonResponse(array( "message"=>"The group  is not valid."));  
                  }
            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 $user = $this->get('security.context')->getToken()->getUser();
@@ -121,7 +139,7 @@ class GroupController extends FOSRestController
 
                  if ($member==false)
                  {
-                    return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group."));  
+                    return new JsonResponse(array( "message"=>"You need to be a member for listing members in this group."));  
                  }
                    else
                  {
@@ -143,7 +161,10 @@ class GroupController extends FOSRestController
                  }
 
             }
-             return new JsonResponse(array( "message"=>"You haven't permissions for listing members in this group."));
+            return new JsonResponse(array(
+                                    'error' => '301',
+                                    'message'=>"You haven't permissions for this functionality" ,
+                                    ), Response::HTTP_OK);
          
          
         }
@@ -201,7 +222,7 @@ class GroupController extends FOSRestController
         $group = $request->get('group',NULL);
             if ($group==NULL)
                  {
-                    return new JsonResponse(array( "message"=>"The group ID is not valid."));  
+                    return new JsonResponse(array( "message"=>"The group is not valid."));  
                  }
            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE) {
                 

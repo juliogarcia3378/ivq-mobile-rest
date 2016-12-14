@@ -37,14 +37,14 @@ class FavouriteMemberRepository extends \Core\ComunBundle\Util\NomencladoresRepo
             $aux["id"]= $favourite_member->getMember()->getId();
             $profile=$favourite_member->getMember()->getUser()->getProfile();
             if ($profile==null){
-            $aux["name"]= "";
-            $aux["logo"]= "";
-            $aux["address"]= "";
+                $aux["name"]= "";
+                $aux["logo"]= "";
+                $aux["address"]= "";
             }
-                else {
-	 		$aux["name"]= $favourite_member->getMember()->getUser()->getProfile()->getFullName();
-            $aux["logo"]= $favourite_member->getMember()->getUser()->getProfile()->getAvatar()->getURL();
-	 		$aux["address"]= $favourite_member->getMember()->getUser()->getProfile()->getAddress()->getCityAndState();
+            else {
+    	 		$aux["name"]= $favourite_member->getMember()->getUser()->getProfile()->getFullName();
+                $aux["logo"]= $favourite_member->getMember()->getUser()->getProfile()->getAvatar()->getURL();
+    	 		$aux["address"]= $favourite_member->getMember()->getUser()->getProfile()->getAddress()->getCityAndState();
             }
 	 		$array[]=$aux;
 

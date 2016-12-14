@@ -15,15 +15,15 @@ class MediaEventRepository extends \Core\ComunBundle\Util\NomencladoresRepositor
  	$em = $this->getEntityManager();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('me')
-	   ->from('AppBundle:MediaEvent', 'me')
-	   ->join('me.event', 'e')
-         ->where('e.id = :event')
-         ->setParameter('event', $array["event"]);
-         if (isset($array["start"]) && isset($array["limit"])){
-         $qb->setFirstResult($array["start"])
-         ->setMaxResults($array["limit"]);
+	    ->from('AppBundle:MediaEvent', 'me')
+	    ->join('me.event', 'e')
+        ->where('e.id = :event')
+        ->setParameter('event', $array["event"]);
+        if (isset($array["start"]) && isset($array["limit"])){
+	         $qb->setFirstResult($array["start"])
+	         ->setMaxResults($array["limit"]);
 			}
-	     $qb->orderBy('e.name', 'ASC');
+	    $qb->orderBy('e.name', 'ASC');
 	 	$response= $qb->getQuery()->getResult();
              $array = array();
 	 	foreach ($response as $key => $mediaevent) {
@@ -42,9 +42,9 @@ class MediaEventRepository extends \Core\ComunBundle\Util\NomencladoresRepositor
             $aux["user"]["fullname"]= "";
             $aux["user"]["address"]= "";
         }
-	 		$aux["date"]=    $mediaevent->getDate();
+	 		$aux["date"]= $mediaevent->getDate();
 			$aux["comment"]= $mediaevent->getComment();
-			$aux["likes"]=   $mediaevent->getMedia()->getLikesJSON();
+			$aux["likes"]= $mediaevent->getMedia()->getLikesJSON();
 			$aux["comments"]=$mediaevent->getMedia()->getCommentsJSON();
 	 		$array[]=$aux;
 	 	}
