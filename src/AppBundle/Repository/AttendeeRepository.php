@@ -15,9 +15,7 @@ class AttendeeRepository extends \Core\ComunBundle\Util\NomencladoresRepository
  public function byEvent($array)
  {
  	$em = $this->getEntityManager();
-
-      $idGroup = $em->getRepository("AppBundle:Event")->find($array['event'])->getGroups()->getId();
-
+    $idGroup = $em->getRepository("AppBundle:Event")->find($array['event'])->getGroups()->getId();
  	$qb = $em->createQueryBuilder();
 	 	$qb->select('attendee')
 	     ->from('AppBundle:Attendee', 'attendee')
@@ -28,12 +26,10 @@ class AttendeeRepository extends \Core\ComunBundle\Util\NomencladoresRepository
 	     ->join('user.profile', 'profile')
          ->where('event.id = :event')
          ->setParameter('event', $array["event"]);
-        
 			
 	     $qb->orderBy('profile.name', 'ASC');
 	 	 $response= $qb->getQuery()->getResult();
          UtilRepository2::getSession()->set("total", count($response));
-
 
           if (isset($array["start"]) && isset($array["limit"]))
           {

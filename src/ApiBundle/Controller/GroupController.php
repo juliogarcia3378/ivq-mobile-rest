@@ -246,5 +246,79 @@ class GroupController extends FOSRestController
              return new JsonResponse(array( "message"=>"You aren't a valid user."));
         }
 
+         /**
+     * @Route("/group/ads")
+     * @Rest\Get("/group/ads")
+     * @ApiDoc(
+     *  section = "Groups",
+     *  description="Fetch an ad from a group",
+     *  requirements={
+     *      {
+     *          "name"="group",
+     *          "dataType"="string",
+     *          "description"=" Group ID"
+     *      }
+     *              }
+     * )
+     */
+      public function fetchAdAction()
+        {
+         $request = $this->getRequest();
+         $group = $request->get('group',NULL);
+         $em = $this->getDoctrine();
+       if ($group=='')
+       {
+         return new JsonResponse(array(
+                                    'error'=>"The group is not valid.",
+                                    ), Response::HTTP_OK);
+       }
+       $consumers = $em->getRepository("AppBundle:ConsumerBanner")->findBy(array('groups'=>$group));
+
+       if (count($consumers)==0)
+              $consumers = $em->getRepository("AppBundle:ConsumerBanner")->findAll();
+       if (count($consumers)==0)
+       {
+        return new JsonResponse(array("ad"=>array()));
+       }
+       $id=UtilRepository2::getSession()->get('ad');
+
+       if ($id==null){
+        UtilRepository2::getSession()->set('ad',$consumers[0]->getId());
+           $arr["id"] = $consumers[0]->getId();
+           $arr["url"] = $consumers[0]->getURL();
+           $arr["image"] = $consumers[0]->getLogo()->getURL();
+        return new JsonResponse(array("ad"=>$arr));
+       }else {
+          $index = -1;
+          foreach ($consumers as $key => $value) {
+             if ($value->getId()==$id){
+                $index = $key;
+                    if ($index+1 >= count($consumers)){
+                         UtilRepository2::getSession()->set('ad',$consumers[0]->getId());
+                         $arr["id"] = $consumers[0]->getId();
+                         $arr["url"] = $consumers[0]->getURL();
+                         $arr["image"] = $consumers[0]->getLogo()->getURL();
+                         return new JsonResponse(array("ad"=>$arr));
+                    }else{
+                         UtilRepository2::getSession()->set('ad',$consumers[$index+1]->getId());
+                         
+                         $arr["id"] = $consumers[$index+1]->getId();
+                         $arr["url"] = $consumers[$index+1]->getURL();
+                         $arr["image"] = $consumers[$index+1]->getLogo()->getURL();
+                         return new JsonResponse(array("ad"=>$arr));
+
+                    }
+             }else{
+                UtilRepository2::getSession()->set('ad',$consumers[0]->getId());
+                 $arr["id"] = $consumers[0]->getId();
+                 $arr["url"] = $consumers[0]->getURL();
+                 $arr["image"] = $consumers[0]->getLogo()->getURL();
+             }
+          }
+       }
+              
+        return new JsonResponse(array("ad"=>$arr));
+      }
+
      
  }

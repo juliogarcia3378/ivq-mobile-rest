@@ -57,6 +57,15 @@ class ConsumerBanner
      */
       private $logo;
 
+    /**
+     * @var \AdminBundle\Entity\Groups
+     * @ORM\ManyToOne(targetEntity="Groups",inversedBy="consumer_banner")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="groups", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+       private $groups;
+
 
   
     /**
@@ -168,6 +177,29 @@ class ConsumerBanner
         return $this->logo;
     }
 
+  /**
+     * Set State
+     *
+     * @param \Groups $groups
+     *
+     * @return Groups
+     */
+    public function setGroups(Groups $group = null)
+    {
+        $this->groups = $group;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \IVQ\AdminBundle\Entity\Groups
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
 
 
 }
