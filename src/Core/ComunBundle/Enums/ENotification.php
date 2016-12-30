@@ -7,5 +7,6 @@
 	 const 	SHARED_YOUR_PHOTO = 4;
 	 const 	ATTACHED_MEDIA_TO_YOUR_EVENT = 5;
 	 const 	ATTEND_TO_EVENT = 6;
+	 const 	SHARE_B_CARD = 7;
 } 
  ?>

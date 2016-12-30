@@ -835,4 +835,74 @@ class BusinessCardController extends FOSRestController
         }
 
 
+       /**
+     * @Route("/business-card/share")
+     * @Rest\Get("/business-card/share")
+     * @ApiDoc(
+     *  section = "Business Card",
+     *  description="Share the business card to others members in a group.",
+        *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="string",
+     *          "description"="business card ID"
+     *      },
+     *      {
+     *          "name"="group",
+     *          "dataType"="string",
+     *          "description"="group ID"
+     *      },
+     *      {
+     *          "name"="members",
+     *          "dataType"="string",
+     *          "description"="Members ID"
+     *      }
+           }
+
+     * )
+     */
+      public function shareBusinessCardAction()
+        {
+            $user = $this->get('security.context')->getToken()->getUser();
+            $request = $this->getRequest();
+            $id = $request->get('id',NULL);
+            $members_id = $request->get('members',NULL);
+            $group = $request->get('group',NULL);
+            if ($this->get('security.context')->isGranted('ROLE_MEMBER')  === TRUE ||
+             $this->get('security.context')->isGranted('ROLE_ADVERTISER')  === TRUE) 
+            {
+                $em = $this->getDoctrine()->getEntityManager();
+
+                $bc = $em->getRepository("AppBundle:BusinessCard")->find($id);
+                if ($bc==null){
+                     return new JsonResponse(array( "message"=>"Invalid Business Card. "));
+                }
+                if ($bc->getFinished()==false){
+                     return new JsonResponse(array( "message"=>"Invalid Business Card. "));
+                }
+                $members = explode(",", $members_id);
+
+            $myMembership= $em->getRepository("AppBundle:Member")->returnMemberID(array('user'=>$user->getId(),'group'=>$group));
+            if ($myMembership==null){
+                     return new JsonResponse(array('message'=>"Please join this group before share your business card ."));
+            }
+            $myMember= $em->getRepository("AppBundle:Member")->find($myMembership);
+
+            $shareBCard = $em->getRepository("AppBundle:BusinessCard")->shareBCardRequest($myMember,$bc,$members); 
+
+
+
+            
+
+
+           
+                return new JsonResponse(array("response"=>$shareBCard));
+            }
+
+            return new JsonResponse(array( "message"=>"You dont have enough permissions. ")
+                                   );
+        }
+    
+
+
  }

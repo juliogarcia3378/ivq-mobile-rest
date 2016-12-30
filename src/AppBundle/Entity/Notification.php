@@ -61,6 +61,15 @@ class Notification
        private $event;
 
     /**
+    * @var \AppBundle\Entity\BusinessCard
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BusinessCard",inversedBy="businessCard")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="businessCard", referencedColumnName="id",onDelete="CASCADE")
+     * })
+     */
+       private $businessCard;
+
+    /**
     * @var \AppBundle\Entity\Member
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Member",inversedBy="otherMember")
      * @ORM\JoinColumns({
@@ -166,6 +175,28 @@ class Notification
     public function setEvent(\AppBundle\Entity\Event $event = null)
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+
+        /**
+     * Get user
+     * @return \AppBundle\Entity\BusinessCard
+     */
+    public function getBusinessCard()
+    {
+        return $this->businessCard;
+    }
+
+     /**
+     * Set user
+     * @param \AppBundle\Entity\BusinessCard $b-card
+     * @return user
+     */
+    public function setBusinessCard(\AppBundle\Entity\BusinessCard $businessCard = null)
+    {
+        $this->businessCard = $businessCard;
 
         return $this;
     }

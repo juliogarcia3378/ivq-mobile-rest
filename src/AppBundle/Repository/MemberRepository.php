@@ -118,7 +118,7 @@ class MemberRepository extends \Core\ComunBundle\Util\NomencladoresRepository
         }else {
             $em->remove($member[0]);
             $em->flush();
-            eturn "You are disjoined this group.";
+            return "You are disjoined this group.";
         }
     }
 
